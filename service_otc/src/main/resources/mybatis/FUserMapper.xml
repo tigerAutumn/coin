@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.otc.dao.FUserMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.user.FUser" >
+    <id column="fid" property="fid" jdbcType="INTEGER" />
+    <result column="fshowid" property="fshowid" jdbcType="INTEGER" />
+    <result column="fintrocode" property="fintrocode" jdbcType="VARCHAR" />
+    <result column="floginname" property="floginname" jdbcType="VARCHAR" />
+    <result column="fnickname" property="fnickname" jdbcType="VARCHAR" />
+    <result column="floginpassword" property="floginpassword" jdbcType="VARCHAR" />
+    <result column="ftradepassword" property="ftradepassword" jdbcType="VARCHAR" />
+    <result column="ftelephone" property="ftelephone" jdbcType="VARCHAR" />
+    <result column="femail" property="femail" jdbcType="VARCHAR" />
+    <result column="frealname" property="frealname" jdbcType="VARCHAR" />
+    <result column="fidentityno" property="fidentityno" jdbcType="VARCHAR" />
+    <result column="fidentitytype" property="fidentitytype" jdbcType="INTEGER" />
+    <result column="fgoogleauthenticator" property="fgoogleauthenticator" jdbcType="VARCHAR" />
+    <result column="fgoogleurl" property="fgoogleurl" jdbcType="VARCHAR" />
+    <result column="fstatus" property="fstatus" jdbcType="INTEGER" />
+    <result column="fhasrealvalidate" property="fhasrealvalidate" jdbcType="BIT" />
+    <result column="fhasrealvalidatetime" property="fhasrealvalidatetime" jdbcType="TIMESTAMP" />
+    <result column="fistelephonebind" property="fistelephonebind" jdbcType="BIT" />
+    <result column="fismailbind" property="fismailbind" jdbcType="BIT" />
+    <result column="fgooglebind" property="fgooglebind" jdbcType="BIT" />
+    <result column="fupdatetime" property="fupdatetime" jdbcType="TIMESTAMP" />
+    <result column="ftradepwdtime" property="ftradepwdtime" jdbcType="TIMESTAMP" />
+    <result column="fareacode" property="fareacode" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="fintrouid" property="fintrouid" jdbcType="INTEGER" />
+    <result column="finvalidateintrocount" property="finvalidateintrocount" jdbcType="INTEGER" />
+    <result column="fiscny" property="fiscny" jdbcType="BIT" />
+    <result column="fiscoin" property="fiscoin" jdbcType="BIT" />
+    <result column="fbirth" property="fbirth" jdbcType="DATE" />
+    <result column="flastlogintime" property="flastlogintime" jdbcType="TIMESTAMP" />
+    <result column="fregistertime" property="fregistertime" jdbcType="TIMESTAMP" />
+    <result column="fleverlock" property="fleverlock" jdbcType="INTEGER" />
+    <result column="fqqopenid" property="fqqopenid" jdbcType="VARCHAR" />
+    <result column="funionid" property="funionid" jdbcType="VARCHAR" />
+    <result column="fagentid" property="fagentid" jdbcType="INTEGER" />
+    <result column="flastip" property="flastip" jdbcType="BIGINT" />
+    <result column="folduid" property="folduid" jdbcType="INTEGER" />
+    <result column="fplatform" property="fplatform" jdbcType="INTEGER" />
+    <result column="is_video" property="isVideo" jdbcType="BIT" />
+    <result column="video_time" property="videoTime" jdbcType="TIMESTAMP" />
+    <result column="is_open_phone_validate" property="isOpenPhoneValidate" jdbcType="BIT" />
+    <result column="is_open_google_validate" property="isOpenGoogleValidate" jdbcType="BIT" />
+    <result column="is_open_email_validate" property="isOpenEmailValidate" jdbcType="BIT" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
+    <result column="is_otc_action" property="isOtcAction" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    fid, fshowid, fintrocode, floginname, fnickname, floginpassword, ftradepassword, 
+    ftelephone, femail, frealname, fidentityno, fidentitytype, fgoogleauthenticator, 
+    fgoogleurl, fstatus, fhasrealvalidate, fhasrealvalidatetime, fistelephonebind, fismailbind, 
+    fgooglebind, fupdatetime, ftradepwdtime, fareacode, version, fintrouid, finvalidateintrocount, 
+    fiscny, fiscoin, fbirth, flastlogintime, fregistertime, fleverlock, fqqopenid, funionid, 
+    fagentid, flastip, folduid, fplatform, is_video, video_time, is_open_phone_validate, 
+    is_open_google_validate, is_open_email_validate, photo, is_otc_action
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from f_user
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from f_user
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.user.FUser" >
+    insert into f_user (fid, fshowid, fintrocode, 
+      floginname, fnickname, floginpassword, 
+      ftradepassword, ftelephone, femail, 
+      frealname, fidentityno, fidentitytype, 
+      fgoogleauthenticator, fgoogleurl, fstatus, 
+      fhasrealvalidate, fhasrealvalidatetime, fistelephonebind, 
+      fismailbind, fgooglebind, fupdatetime, 
+      ftradepwdtime, fareacode, version, 
+      fintrouid, finvalidateintrocount, fiscny, 
+      fiscoin, fbirth, flastlogintime, 
+      fregistertime, fleverlock, fqqopenid, 
+      funionid, fagentid, flastip, 
+      folduid, fplatform, is_video, 
+      video_time, is_open_phone_validate, is_open_google_validate, 
+      is_open_email_validate, photo, is_otc_action
+      )
+    values (#{fid,jdbcType=INTEGER}, #{fshowid,jdbcType=INTEGER}, #{fintrocode,jdbcType=VARCHAR}, 
+      #{floginname,jdbcType=VARCHAR}, #{fnickname,jdbcType=VARCHAR}, #{floginpassword,jdbcType=VARCHAR}, 
+      #{ftradepassword,jdbcType=VARCHAR}, #{ftelephone,jdbcType=VARCHAR}, #{femail,jdbcType=VARCHAR}, 
+      #{frealname,jdbcType=VARCHAR}, #{fidentityno,jdbcType=VARCHAR}, #{fidentitytype,jdbcType=INTEGER}, 
+      #{fgoogleauthenticator,jdbcType=VARCHAR}, #{fgoogleurl,jdbcType=VARCHAR}, #{fstatus,jdbcType=INTEGER}, 
+      #{fhasrealvalidate,jdbcType=BIT}, #{fhasrealvalidatetime,jdbcType=TIMESTAMP}, #{fistelephonebind,jdbcType=BIT}, 
+      #{fismailbind,jdbcType=BIT}, #{fgooglebind,jdbcType=BIT}, #{fupdatetime,jdbcType=TIMESTAMP}, 
+      #{ftradepwdtime,jdbcType=TIMESTAMP}, #{fareacode,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{fintrouid,jdbcType=INTEGER}, #{finvalidateintrocount,jdbcType=INTEGER}, #{fiscny,jdbcType=BIT}, 
+      #{fiscoin,jdbcType=BIT}, #{fbirth,jdbcType=DATE}, #{flastlogintime,jdbcType=TIMESTAMP}, 
+      #{fregistertime,jdbcType=TIMESTAMP}, #{fleverlock,jdbcType=INTEGER}, #{fqqopenid,jdbcType=VARCHAR}, 
+      #{funionid,jdbcType=VARCHAR}, #{fagentid,jdbcType=INTEGER}, #{flastip,jdbcType=BIGINT}, 
+      #{folduid,jdbcType=INTEGER}, #{fplatform,jdbcType=INTEGER}, #{isVideo,jdbcType=BIT}, 
+      #{videoTime,jdbcType=TIMESTAMP}, #{isOpenPhoneValidate,jdbcType=BIT}, #{isOpenGoogleValidate,jdbcType=BIT}, 
+      #{isOpenEmailValidate,jdbcType=BIT}, #{photo,jdbcType=VARCHAR}, #{isOtcAction,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.user.FUser" >
+    insert into f_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        fid,
+      </if>
+      <if test="fshowid != null" >
+        fshowid,
+      </if>
+      <if test="fintrocode != null" >
+        fintrocode,
+      </if>
+      <if test="floginname != null" >
+        floginname,
+      </if>
+      <if test="fnickname != null" >
+        fnickname,
+      </if>
+      <if test="floginpassword != null" >
+        floginpassword,
+      </if>
+      <if test="ftradepassword != null" >
+        ftradepassword,
+      </if>
+      <if test="ftelephone != null" >
+        ftelephone,
+      </if>
+      <if test="femail != null" >
+        femail,
+      </if>
+      <if test="frealname != null" >
+        frealname,
+      </if>
+      <if test="fidentityno != null" >
+        fidentityno,
+      </if>
+      <if test="fidentitytype != null" >
+        fidentitytype,
+      </if>
+      <if test="fgoogleauthenticator != null" >
+        fgoogleauthenticator,
+      </if>
+      <if test="fgoogleurl != null" >
+        fgoogleurl,
+      </if>
+      <if test="fstatus != null" >
+        fstatus,
+      </if>
+      <if test="fhasrealvalidate != null" >
+        fhasrealvalidate,
+      </if>
+      <if test="fhasrealvalidatetime != null" >
+        fhasrealvalidatetime,
+      </if>
+      <if test="fistelephonebind != null" >
+        fistelephonebind,
+      </if>
+      <if test="fismailbind != null" >
+        fismailbind,
+      </if>
+      <if test="fgooglebind != null" >
+        fgooglebind,
+      </if>
+      <if test="fupdatetime != null" >
+        fupdatetime,
+      </if>
+      <if test="ftradepwdtime != null" >
+        ftradepwdtime,
+      </if>
+      <if test="fareacode != null" >
+        fareacode,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="fintrouid != null" >
+        fintrouid,
+      </if>
+      <if test="finvalidateintrocount != null" >
+        finvalidateintrocount,
+      </if>
+      <if test="fiscny != null" >
+        fiscny,
+      </if>
+      <if test="fiscoin != null" >
+        fiscoin,
+      </if>
+      <if test="fbirth != null" >
+        fbirth,
+      </if>
+      <if test="flastlogintime != null" >
+        flastlogintime,
+      </if>
+      <if test="fregistertime != null" >
+        fregistertime,
+      </if>
+      <if test="fleverlock != null" >
+        fleverlock,
+      </if>
+      <if test="fqqopenid != null" >
+        fqqopenid,
+      </if>
+      <if test="funionid != null" >
+        funionid,
+      </if>
+      <if test="fagentid != null" >
+        fagentid,
+      </if>
+      <if test="flastip != null" >
+        flastip,
+      </if>
+      <if test="folduid != null" >
+        folduid,
+      </if>
+      <if test="fplatform != null" >
+        fplatform,
+      </if>
+      <if test="isVideo != null" >
+        is_video,
+      </if>
+      <if test="videoTime != null" >
+        video_time,
+      </if>
+      <if test="isOpenPhoneValidate != null" >
+        is_open_phone_validate,
+      </if>
+      <if test="isOpenGoogleValidate != null" >
+        is_open_google_validate,
+      </if>
+      <if test="isOpenEmailValidate != null" >
+        is_open_email_validate,
+      </if>
+      <if test="photo != null" >
+        photo,
+      </if>
+      <if test="isOtcAction != null" >
+        is_otc_action,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fshowid != null" >
+        #{fshowid,jdbcType=INTEGER},
+      </if>
+      <if test="fintrocode != null" >
+        #{fintrocode,jdbcType=VARCHAR},
+      </if>
+      <if test="floginname != null" >
+        #{floginname,jdbcType=VARCHAR},
+      </if>
+      <if test="fnickname != null" >
+        #{fnickname,jdbcType=VARCHAR},
+      </if>
+      <if test="floginpassword != null" >
+        #{floginpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="ftradepassword != null" >
+        #{ftradepassword,jdbcType=VARCHAR},
+      </if>
+      <if test="ftelephone != null" >
+        #{ftelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="femail != null" >
+        #{femail,jdbcType=VARCHAR},
+      </if>
+      <if test="frealname != null" >
+        #{frealname,jdbcType=VARCHAR},
+      </if>
+      <if test="fidentityno != null" >
+        #{fidentityno,jdbcType=VARCHAR},
+      </if>
+      <if test="fidentitytype != null" >
+        #{fidentitytype,jdbcType=INTEGER},
+      </if>
+      <if test="fgoogleauthenticator != null" >
+        #{fgoogleauthenticator,jdbcType=VARCHAR},
+      </if>
+      <if test="fgoogleurl != null" >
+        #{fgoogleurl,jdbcType=VARCHAR},
+      </if>
+      <if test="fstatus != null" >
+        #{fstatus,jdbcType=INTEGER},
+      </if>
+      <if test="fhasrealvalidate != null" >
+        #{fhasrealvalidate,jdbcType=BIT},
+      </if>
+      <if test="fhasrealvalidatetime != null" >
+        #{fhasrealvalidatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fistelephonebind != null" >
+        #{fistelephonebind,jdbcType=BIT},
+      </if>
+      <if test="fismailbind != null" >
+        #{fismailbind,jdbcType=BIT},
+      </if>
+      <if test="fgooglebind != null" >
+        #{fgooglebind,jdbcType=BIT},
+      </if>
+      <if test="fupdatetime != null" >
+        #{fupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ftradepwdtime != null" >
+        #{ftradepwdtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fareacode != null" >
+        #{fareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="fintrouid != null" >
+        #{fintrouid,jdbcType=INTEGER},
+      </if>
+      <if test="finvalidateintrocount != null" >
+        #{finvalidateintrocount,jdbcType=INTEGER},
+      </if>
+      <if test="fiscny != null" >
+        #{fiscny,jdbcType=BIT},
+      </if>
+      <if test="fiscoin != null" >
+        #{fiscoin,jdbcType=BIT},
+      </if>
+      <if test="fbirth != null" >
+        #{fbirth,jdbcType=DATE},
+      </if>
+      <if test="flastlogintime != null" >
+        #{flastlogintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fregistertime != null" >
+        #{fregistertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fleverlock != null" >
+        #{fleverlock,jdbcType=INTEGER},
+      </if>
+      <if test="fqqopenid != null" >
+        #{fqqopenid,jdbcType=VARCHAR},
+      </if>
+      <if test="funionid != null" >
+        #{funionid,jdbcType=VARCHAR},
+      </if>
+      <if test="fagentid != null" >
+        #{fagentid,jdbcType=INTEGER},
+      </if>
+      <if test="flastip != null" >
+        #{flastip,jdbcType=BIGINT},
+      </if>
+      <if test="folduid != null" >
+        #{folduid,jdbcType=INTEGER},
+      </if>
+      <if test="fplatform != null" >
+        #{fplatform,jdbcType=INTEGER},
+      </if>
+      <if test="isVideo != null" >
+        #{isVideo,jdbcType=BIT},
+      </if>
+      <if test="videoTime != null" >
+        #{videoTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isOpenPhoneValidate != null" >
+        #{isOpenPhoneValidate,jdbcType=BIT},
+      </if>
+      <if test="isOpenGoogleValidate != null" >
+        #{isOpenGoogleValidate,jdbcType=BIT},
+      </if>
+      <if test="isOpenEmailValidate != null" >
+        #{isOpenEmailValidate,jdbcType=BIT},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="isOtcAction != null" >
+        #{isOtcAction,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.user.FUser" >
+    update f_user
+    <set >
+      <if test="fshowid != null" >
+        fshowid = #{fshowid,jdbcType=INTEGER},
+      </if>
+      <if test="fintrocode != null" >
+        fintrocode = #{fintrocode,jdbcType=VARCHAR},
+      </if>
+      <if test="floginname != null" >
+        floginname = #{floginname,jdbcType=VARCHAR},
+      </if>
+      <if test="fnickname != null" >
+        fnickname = #{fnickname,jdbcType=VARCHAR},
+      </if>
+      <if test="floginpassword != null" >
+        floginpassword = #{floginpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="ftradepassword != null" >
+        ftradepassword = #{ftradepassword,jdbcType=VARCHAR},
+      </if>
+      <if test="ftelephone != null" >
+        ftelephone = #{ftelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="femail != null" >
+        femail = #{femail,jdbcType=VARCHAR},
+      </if>
+      <if test="frealname != null" >
+        frealname = #{frealname,jdbcType=VARCHAR},
+      </if>
+      <if test="fidentityno != null" >
+        fidentityno = #{fidentityno,jdbcType=VARCHAR},
+      </if>
+      <if test="fidentitytype != null" >
+        fidentitytype = #{fidentitytype,jdbcType=INTEGER},
+      </if>
+      <if test="fgoogleauthenticator != null" >
+        fgoogleauthenticator = #{fgoogleauthenticator,jdbcType=VARCHAR},
+      </if>
+      <if test="fgoogleurl != null" >
+        fgoogleurl = #{fgoogleurl,jdbcType=VARCHAR},
+      </if>
+      <if test="fstatus != null" >
+        fstatus = #{fstatus,jdbcType=INTEGER},
+      </if>
+      <if test="fhasrealvalidate != null" >
+        fhasrealvalidate = #{fhasrealvalidate,jdbcType=BIT},
+      </if>
+      <if test="fhasrealvalidatetime != null" >
+        fhasrealvalidatetime = #{fhasrealvalidatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fistelephonebind != null" >
+        fistelephonebind = #{fistelephonebind,jdbcType=BIT},
+      </if>
+      <if test="fismailbind != null" >
+        fismailbind = #{fismailbind,jdbcType=BIT},
+      </if>
+      <if test="fgooglebind != null" >
+        fgooglebind = #{fgooglebind,jdbcType=BIT},
+      </if>
+      <if test="fupdatetime != null" >
+        fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ftradepwdtime != null" >
+        ftradepwdtime = #{ftradepwdtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fareacode != null" >
+        fareacode = #{fareacode,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="fintrouid != null" >
+        fintrouid = #{fintrouid,jdbcType=INTEGER},
+      </if>
+      <if test="finvalidateintrocount != null" >
+        finvalidateintrocount = #{finvalidateintrocount,jdbcType=INTEGER},
+      </if>
+      <if test="fiscny != null" >
+        fiscny = #{fiscny,jdbcType=BIT},
+      </if>
+      <if test="fiscoin != null" >
+        fiscoin = #{fiscoin,jdbcType=BIT},
+      </if>
+      <if test="fbirth != null" >
+        fbirth = #{fbirth,jdbcType=DATE},
+      </if>
+      <if test="flastlogintime != null" >
+        flastlogintime = #{flastlogintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fregistertime != null" >
+        fregistertime = #{fregistertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fleverlock != null" >
+        fleverlock = #{fleverlock,jdbcType=INTEGER},
+      </if>
+      <if test="fqqopenid != null" >
+        fqqopenid = #{fqqopenid,jdbcType=VARCHAR},
+      </if>
+      <if test="funionid != null" >
+        funionid = #{funionid,jdbcType=VARCHAR},
+      </if>
+      <if test="fagentid != null" >
+        fagentid = #{fagentid,jdbcType=INTEGER},
+      </if>
+      <if test="flastip != null" >
+        flastip = #{flastip,jdbcType=BIGINT},
+      </if>
+      <if test="folduid != null" >
+        folduid = #{folduid,jdbcType=INTEGER},
+      </if>
+      <if test="fplatform != null" >
+        fplatform = #{fplatform,jdbcType=INTEGER},
+      </if>
+      <if test="isVideo != null" >
+        is_video = #{isVideo,jdbcType=BIT},
+      </if>
+      <if test="videoTime != null" >
+        video_time = #{videoTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isOpenPhoneValidate != null" >
+        is_open_phone_validate = #{isOpenPhoneValidate,jdbcType=BIT},
+      </if>
+      <if test="isOpenGoogleValidate != null" >
+        is_open_google_validate = #{isOpenGoogleValidate,jdbcType=BIT},
+      </if>
+      <if test="isOpenEmailValidate != null" >
+        is_open_email_validate = #{isOpenEmailValidate,jdbcType=BIT},
+      </if>
+      <if test="photo != null" >
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="isOtcAction != null" >
+        is_otc_action = #{isOtcAction,jdbcType=BIT},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.user.FUser" >
+    update f_user
+    set fshowid = #{fshowid,jdbcType=INTEGER},
+      fintrocode = #{fintrocode,jdbcType=VARCHAR},
+      floginname = #{floginname,jdbcType=VARCHAR},
+      fnickname = #{fnickname,jdbcType=VARCHAR},
+      floginpassword = #{floginpassword,jdbcType=VARCHAR},
+      ftradepassword = #{ftradepassword,jdbcType=VARCHAR},
+      ftelephone = #{ftelephone,jdbcType=VARCHAR},
+      femail = #{femail,jdbcType=VARCHAR},
+      frealname = #{frealname,jdbcType=VARCHAR},
+      fidentityno = #{fidentityno,jdbcType=VARCHAR},
+      fidentitytype = #{fidentitytype,jdbcType=INTEGER},
+      fgoogleauthenticator = #{fgoogleauthenticator,jdbcType=VARCHAR},
+      fgoogleurl = #{fgoogleurl,jdbcType=VARCHAR},
+      fstatus = #{fstatus,jdbcType=INTEGER},
+      fhasrealvalidate = #{fhasrealvalidate,jdbcType=BIT},
+      fhasrealvalidatetime = #{fhasrealvalidatetime,jdbcType=TIMESTAMP},
+      fistelephonebind = #{fistelephonebind,jdbcType=BIT},
+      fismailbind = #{fismailbind,jdbcType=BIT},
+      fgooglebind = #{fgooglebind,jdbcType=BIT},
+      fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP},
+      ftradepwdtime = #{ftradepwdtime,jdbcType=TIMESTAMP},
+      fareacode = #{fareacode,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
+      fintrouid = #{fintrouid,jdbcType=INTEGER},
+      finvalidateintrocount = #{finvalidateintrocount,jdbcType=INTEGER},
+      fiscny = #{fiscny,jdbcType=BIT},
+      fiscoin = #{fiscoin,jdbcType=BIT},
+      fbirth = #{fbirth,jdbcType=DATE},
+      flastlogintime = #{flastlogintime,jdbcType=TIMESTAMP},
+      fregistertime = #{fregistertime,jdbcType=TIMESTAMP},
+      fleverlock = #{fleverlock,jdbcType=INTEGER},
+      fqqopenid = #{fqqopenid,jdbcType=VARCHAR},
+      funionid = #{funionid,jdbcType=VARCHAR},
+      fagentid = #{fagentid,jdbcType=INTEGER},
+      flastip = #{flastip,jdbcType=BIGINT},
+      folduid = #{folduid,jdbcType=INTEGER},
+      fplatform = #{fplatform,jdbcType=INTEGER},
+      is_video = #{isVideo,jdbcType=BIT},
+      video_time = #{videoTime,jdbcType=TIMESTAMP},
+      is_open_phone_validate = #{isOpenPhoneValidate,jdbcType=BIT},
+      is_open_google_validate = #{isOpenGoogleValidate,jdbcType=BIT},
+      is_open_email_validate = #{isOpenEmailValidate,jdbcType=BIT},
+      photo = #{photo,jdbcType=VARCHAR},
+      is_otc_action = #{isOtcAction,jdbcType=BIT}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+</mapper>

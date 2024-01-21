@@ -1,0 +1,61 @@
+<div class="layui-form" lay-href="/openApi/list" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+        <div class="layui-inline">
+            <label class="layui-form-label">url</label>
+            <div class="layui-input-inline">
+                <input name="url" th:value="${url}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+          <div class="layui-btn-group">
+            <button class="layui-btn layui-btn-small" shiro:hasPermission="/openApi/save"
+                    lay-href="/openApi/go?url=openApi/add" lay-target="dialog"
+                    lay-width="850" lay-height="600">新增
+            </button>
+            <button class="layui-btn layui-btn-small" shiro:hasPermission="/openApi/update"
+                    lay-href="/openApi/go?url=openApi/update" lay-checked="id" lay-target="dialog"
+                    lay-width="850" lay-height="600">修改
+            </button>
+            <button class="layui-btn layui-btn-small" shiro:hasPermission="/openApi/delete"
+                    lay-href="/openApi/delete" lay-checked="id" lay-target="ajax" lay-tips="确定要删除吗?">删除
+            </button>
+        </div>
+    </div>
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>url</th>
+                <th>状态</th>
+                <th>权限</th>
+                <th>签名</th>
+                <th>描述</th>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                 </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(pageData.list)}">
+            <tr th:each="e : ${pageData.list}">
+                <td>
+                    <input type="checkbox" th:name="${e.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${e.url}"></td>
+                <td th:text="${e.statusStr}"></td>
+                <td th:text="${e.typesStr}"></td>
+                <td th:text="${e.ifSignVerify}"></td>
+                <td th:text="${e.description}"></td>
+                <td th:text="${#dates.format(e.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(e.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:attr="lay-pages=${pageData.totalPage}, lay-curr=${pageData.pageNum}"></div>
+</div>

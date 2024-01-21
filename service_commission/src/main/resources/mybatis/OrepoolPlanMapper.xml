@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.commission.dao.OrepoolPlanMapper">
+	<select id="getFixedPlanList" resultType="OrepoolPlan">
+		select p.income_rate, p.lock_period, p.visible_volume, p.type, p.status, p.id, (p.income_rate * 100) incomeVolume
+		,p.lock_volume/p.volume lockPercent, p.lock_coin_id, t.short_name coinName, t.web_logo coinIcon 
+			from orepool_plan p, system_coin_type t
+			where 
+			 	p.lock_coin_id = t.id
+				and p.type = 1 
+				and p.status != 1 
+			order by p.sort desc, p.create_time desc
+	</select>
+	
+	<select id="getCurrentPlanList" resultType="OrepoolPlan">
+		select p.income_rate, p.lock_period, p.visible_volume, p.type, p.status, p.id, (p.income_rate * 100) incomeVolume
+		,p.lock_volume/p.volume lockPercent, p.lock_coin_id, t.short_name coinName, t.web_logo coinIcon 
+			from orepool_plan p, system_coin_type t
+			where 
+			 	p.lock_coin_id = t.id
+				and p.type in (2,3)
+				and p.status != 1 
+			order by p.sort desc, p.create_time desc
+	</select>
+	
+	<select id="getPlanById" parameterType="java.lang.Integer" resultType="OrepoolPlan">
+		select p.*, ROUND(p.lock_volume/p.volume, 4) lockPercent, t.short_name coinName, t.web_logo coinIcon 
+			from orepool_plan p, system_coin_type t
+			where p.lock_coin_id = t.id and p.id = #{id}
+	</select>
+	
+	<select id="getFixedPlan" parameterType="java.lang.Integer" resultType="OrepoolPlan">
+		select * from orepool_plan
+			where type = 1 and status in (2,3,4)
+	</select>
+	
+	<update id="update" parameterType="OrepoolPlan" >
+    update orepool_plan 
+	<set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+    	type = #{type},
+      </if>
+      <if test="lockCoinId != null" >
+        lock_coin_id = #{lockCoinId},
+      </if>
+      <if test="incomeCoinId != null" >
+        income_coin_id = #{incomeCoinId},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume},
+      </if>
+      <if test="visibleVolume != null" >
+        visible_volume = #{visibleVolume},
+      </if>
+      <if test="lockVolume != null" >
+        lock_volume = #{lockVolume},
+      </if>
+      <if test="minAmount != null" >
+        min_amount = #{minAmount},
+      </if>
+      <if test="maxAmount != null" >
+        max_amount = #{maxAmount},
+      </if>
+      <if test="incomeRate != null" >
+        income_rate = #{incomeRate},
+      </if>
+      <if test="lockPeriod != null" >
+        lock_period = #{lockPeriod},
+      </if>
+      <if test="incomePeriod != null" >
+        income_period = #{incomePeriod},
+      </if>
+      <if test="status != null" >
+    	status = #{status},
+      </if>
+      <if test="sort != null" >
+    	sort = #{sort},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where 
+    	id = #{id,jdbcType=INTEGER}
+   </update>
+</mapper>

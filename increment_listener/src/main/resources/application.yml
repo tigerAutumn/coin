@@ -1,0 +1,39 @@
+# spark streaming
+steaming:
+  appName: ${steaming.appName}
+  interval: ${streaming.interval}
+
+# kafka
+kafka:
+  servers: ${kafka.bootstrap.servers}
+  group: ${kafka.group.id}
+  offset: ${kafka.auto.offset.reset}
+  topics: ${kafka.input.topics}
+
+# zookeeper 
+zookeeper:
+  server: ${zookeeper.server}
+  path: ${zookeeper.path}
+
+
+# hbase
+hbase:
+  master: ${hbase.master}
+  zookeeper:
+    quorum: ${hbase.zookeeper.quorum}
+    recovery:
+      retry: ${zookeeper.recovery.retry}
+    property:
+      clientPort: ${hbase.zookeeper.property.clientPort}
+  client:
+    retries:
+      number: ${hbase.client.retries.number}
+
+# redis
+redis:
+  host: ${redis.host}
+  port: ${redis.port}
+  timeout: ${redis.timeout}
+  password: ${redis.password}
+
+

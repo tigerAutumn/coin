@@ -1,0 +1,49 @@
+<div class="layui-form" lay-href="admin/rankActivityList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+        <div class="layui-inline" style = "display:none">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addRankActivity"
+				lay-href="/admin/addRankActivity" lay-target="dialog">新增</button>
+				
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/changeRankActivity"
+				lay-href="/admin/changeRankActivity" lay-checked="id" lay-target="dialog">修改</button>
+				
+	</div>
+	
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>名称</th>
+                <th>活动交易对</th>
+                <th>活动开始时间</th>
+                <th>活动结束时间</th>
+                <th>活动状态</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(activityList)}">
+            <tr th:each="activity : ${activityList.data}">
+                <td>
+                    <input type="checkbox" th:name="${activity.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${activity.id}"></td>
+                <td th:text="${activity.name}"></td>
+                <td th:text="${activity.tradeName}"></td>
+                <td th:text="${#dates.format(activity.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(activity.endTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${activity.status == 0? '未启用':'已启用'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(activityList)}"
+         th:attr="lay-pages=${activityList.totalPages}, lay-curr=${activityList.currentPage}"></div>
+</div>

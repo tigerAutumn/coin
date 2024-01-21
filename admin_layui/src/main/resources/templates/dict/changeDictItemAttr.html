@@ -1,0 +1,21 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/updateDictItemAttr.html">
+	<div class="layui-form-item">
+        <label class="layui-form-label">字典id：</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="Id" th:value="${dictItemAttr.Id}" />
+        	<input class="layui-input" name="dictitemid" lay-verify="required" th:value="${dictItemAttr.dictitemid}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">语言类别：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="langtype" lay-verify="required" th:value="${dictItemAttr.langtype}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">字典名称翻译：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="dictname" lay-verify="required" th:value="${dictItemAttr.dictname}" />
+        </div>
+    </div>
+</div>

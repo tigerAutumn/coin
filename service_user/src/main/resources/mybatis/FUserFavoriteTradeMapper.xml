@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace为对应对应Mapper接口，且SQL的id属性值必须与Mapper接口中的方法同名 -->
+<mapper namespace="com.qkwl.service.user.dao.FUserFavoriteTradeMapper">
+    <cache eviction="FIFO" flushInterval="50" size="512" readOnly="true"></cache>
+    <!-- 
+    <typeAliases>
+        <typeAlias alias="FUserFavoriteTrade" type="com.qkwl.common.dto.user.FUserFavoriteTrade" />
+    </typeAliases>
+    -->
+    <resultMap type="com.qkwl.common.dto.user.FUserFavoriteTrade" id="FUserFavoriteTradeMap">
+	    <id column="ID" property="id" />
+	    <result column="FUID" property="fuid"/>
+	    <result column="FFAVORITETRADELIST" property="ffavoritetradelist"/>
+	    <result column="FCREATETIME" property="fcreatetime"/>
+	</resultMap>
+	
+	<sql id="FUserFavoriteTrade_Column_List">
+		  fUserFavoriteTrade.ID,
+		  fUserFavoriteTrade.FUID,
+		  fUserFavoriteTrade.FFAVORITETRADELIST,
+		  fUserFavoriteTrade.FCREATETIME
+	</sql>
+	
+	<select id="get" resultMap="FUserFavoriteTradeMap">
+	    SELECT 
+	        <include refid="FUserFavoriteTrade_Column_List"/>
+	    FROM F_USER_FAVORITE_TRADE fUserFavoriteTrade
+	    WHERE 
+             fUserFavoriteTrade.ID = #{id}
+	</select>
+
+	<select id="selectByUid" resultMap="FUserFavoriteTradeMap">
+		SELECT
+		<include refid="FUserFavoriteTrade_Column_List"/>
+		FROM F_USER_FAVORITE_TRADE fUserFavoriteTrade
+		WHERE
+		fUserFavoriteTrade.FUID = #{fuid}
+	</select>
+
+	<sql id="DynamicSelectFUserFavoriteTradeValue">
+      <where>
+        <trim suffix="" prefixOverrides="AND | OR">
+			 <if test="fUserFavoriteTrade.id != null and fUserFavoriteTrade.id != '' ">		     
+	         AND ID= #{fUserFavoriteTrade.id}
+		     </if>      
+			 <if test="fUserFavoriteTrade.fuid != null and fUserFavoriteTrade.fuid != '' ">		     
+	         AND FUID= #{fUserFavoriteTrade.fuid}
+		     </if>      
+			 <if test="fUserFavoriteTrade.ffavoritetradelist != null and fUserFavoriteTrade.ffavoritetradelist != '' ">		     
+	         AND FFAVORITETRADELIST= #{fUserFavoriteTrade.ffavoritetradelist}
+		     </if>      
+		     <if test="fUserFavoriteTrade.fcreatetime != null">	
+	         AND FCREATETIME= #{fUserFavoriteTrade.fcreatetime}
+		     </if>      
+		</trim>
+      </where>		
+	</sql>
+	<select id="queryList" parameterType="com.qkwl.common.dto.user.FUserFavoriteTrade" resultMap="FUserFavoriteTradeMap">
+	    SELECT 
+	      <include refid="FUserFavoriteTrade_Column_List"/>
+	    FROM F_USER_FAVORITE_TRADE fUserFavoriteTrade
+	      <include refid="DynamicSelectFUserFavoriteTradeValue" />    
+	</select>
+	
+	<select id="pageQueryList" parameterType="com.qkwl.common.dto.user.FUserFavoriteTrade" resultMap="FUserFavoriteTradeMap">
+	    SELECT 
+	      <include refid="FUserFavoriteTrade_Column_List"/>
+	    FROM F_USER_FAVORITE_TRADE fUserFavoriteTrade
+	      <include refid="DynamicSelectFUserFavoriteTradeValue" />    
+	</select>
+	
+    <sql id="InsertFUserFavoriteTradeColume">
+      <trim suffix="" suffixOverrides=",">
+		 <if test="fUserFavoriteTrade.id != null and fUserFavoriteTrade.id != '' ">
+		  ID,
+		</if>
+		 <if test="fUserFavoriteTrade.fuid != null and fUserFavoriteTrade.fuid != '' ">
+		  FUID,
+		</if>
+		 <if test="fUserFavoriteTrade.ffavoritetradelist != null and fUserFavoriteTrade.ffavoritetradelist != '' ">
+		  FFAVORITETRADELIST,
+		</if>
+	     <if test="fUserFavoriteTrade.fcreatetime != null">
+		  FCREATETIME,
+		</if>
+      </trim>
+	</sql>
+	<sql id="InsertFUserFavoriteTradeValue">
+      <trim suffix="" suffixOverrides=",">
+			  <if test="fUserFavoriteTrade.id != null and fUserFavoriteTrade.id != '' ">
+	          #{fUserFavoriteTrade.id},
+	          </if>	           
+			  <if test="fUserFavoriteTrade.fuid != null and fUserFavoriteTrade.fuid != '' ">
+	          #{fUserFavoriteTrade.fuid},
+	          </if>	           
+			  <if test="fUserFavoriteTrade.ffavoritetradelist != null and fUserFavoriteTrade.ffavoritetradelist != '' ">
+	          #{fUserFavoriteTrade.ffavoritetradelist},
+	          </if>	           
+		      <if test="fUserFavoriteTrade.fcreatetime != null ">
+	          #{fUserFavoriteTrade.fcreatetime},
+	          </if>	           
+      </trim>
+	</sql>
+		
+	<sql id="DynamicUpdateFUserFavoriteTradeValue">
+      <trim suffix="" suffixOverrides=",">
+			  <if test="fUserFavoriteTrade.id != null and fUserFavoriteTrade.id != '' "> 
+	  	     ID= #{fUserFavoriteTrade.id},
+	  	    </if>           
+			  <if test="fUserFavoriteTrade.fuid != null and fUserFavoriteTrade.fuid != '' "> 
+	  	     FUID= #{fUserFavoriteTrade.fuid},
+	  	    </if>           
+			  <if test="fUserFavoriteTrade.ffavoritetradelist != null and fUserFavoriteTrade.ffavoritetradelist != '' "> 
+	  	     FFAVORITETRADELIST= #{fUserFavoriteTrade.ffavoritetradelist},
+	  	    </if>           
+		      <if test="fUserFavoriteTrade.fcreatetime != null ">
+	  	     FCREATETIME= #{fUserFavoriteTrade.fcreatetime}
+	  	    </if>           
+      </trim>
+	</sql>
+	
+	<insert id="insert" parameterType="com.qkwl.common.dto.user.FUserFavoriteTrade">
+	  INSERT INTO F_USER_FAVORITE_TRADE(
+	    <include refid="InsertFUserFavoriteTradeColume" />
+	  ) values (
+	    <include refid="InsertFUserFavoriteTradeValue" />
+	  )
+	</insert> 
+
+	<update id="update" parameterType="com.qkwl.common.dto.user.FUserFavoriteTrade">
+        UPDATE F_USER_FAVORITE_TRADE SET
+        <include refid="DynamicUpdateFUserFavoriteTradeValue" />
+        WHERE
+           ID = #{fUserFavoriteTrade.id}
+    </update>
+    
+    <update id="updateByUidSelective" parameterType="com.qkwl.common.dto.user.FUserFavoriteTrade" >
+    update f_user_favorite_trade
+    <set >
+      <if test="ffavoritetradelist != null" >
+        ffavoritetradelist = #{ffavoritetradelist,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fuid = #{fuid,jdbcType=INTEGER}
+  </update>
+</mapper>

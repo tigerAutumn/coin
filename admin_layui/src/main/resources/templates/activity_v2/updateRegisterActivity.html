@@ -1,0 +1,51 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/registerActivity/update">
+    <div class="layui-form-item">
+        <input class="layui-input" name="id" type="hidden" th:value="${content.id}"/>
+        <label class="layui-form-label">币种：</label>
+        <div class="layui-input-block">
+            <select name="airDropCoin">
+                <option th:each="coin : ${coinsList}" th:value="${coin.shortName}"
+                        th:text="${coin.shortName}" th:selected="${coin.shortName == content.airDropCoin}"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">空投数量：</label>
+            <div class="layui-input-block">
+                <input name="airDropAmount" class="layui-input" lay-verify="required"
+                       th:value="${content.airDropAmount}"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">空投总额度：</label>
+            <div class="layui-input-block">
+                <input name="airDropTotal" class="layui-input" lay-verify="required"
+                       th:value="${content.airDropTotal}"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">开始时间：</label>
+        <div class="layui-input-block">
+            <input lay-verify="required" class="layui-input" name="startTime"
+                   onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                   th:value="${#dates.format(content.startTime, 'yyyy-MM-dd HH:mm:ss')}"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束时间：</label>
+        <div class="layui-input-block">
+            <input lay-verify="required" class="layui-input" name="endTime"
+                   onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                   th:value="${#dates.format(content.endTime, 'yyyy-MM-dd HH:mm:ss')}"/>
+        </div>
+    </div>
+
+</div>

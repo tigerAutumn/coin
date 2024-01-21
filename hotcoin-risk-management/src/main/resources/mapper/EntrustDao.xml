@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hotcoin.dao.EntrustDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="hotcoin.model.po.EntrustPo" id="BaseResultMap">
+        <result property="fid" column="fid"/>
+        <result property="fuid" column="fuid"/>
+        <result property="ftradeid" column="ftradeid"/>
+        <result property="fbuycoinid" column="fbuycoinid"/>
+        <result property="fsellcoinid" column="fsellcoinid"/>
+        <result property="fstatus" column="fstatus"/>
+        <result property="ftype" column="ftype"/>
+        <result property="fmatchtype" column="fmatchtype"/>
+        <result property="flast" column="flast"/>
+        <result property="flastamount" column="flastamount"/>
+        <result property="flastcount" column="flastcount"/>
+        <result property="fprize" column="fprize"/>
+        <result property="fcount" column="fcount"/>
+        <result property="famount" column="famount"/>
+        <result property="fsuccessamount" column="fsuccessamount"/>
+        <result property="fleftcount" column="fleftcount"/>
+        <result property="ffees" column="ffees"/>
+        <result property="fleftfees" column="fleftfees"/>
+        <result property="fsource" column="fsource"/>
+        <result property="fhuobientrustid" column="fhuobientrustid"/>
+        <result property="fhuobiaccountid" column="fhuobiaccountid"/>
+        <result property="flastupdattime" column="flastupdattime"/>
+        <result property="fcreatetime" column="fcreatetime"/>
+        <result property="fagentid" column="fagentid"/>
+        <result property="version" column="version"/>
+        <result property="fleverorder" column="fleverorder"/>
+    </resultMap>
+
+    <update id="updateByfIdCAS" parameterType="hotcoin.model.po.EntrustPo">
+	  update f_entrust set
+	  fstatus = #{fstatus},
+	  flastupdattime = #{flastupdattime},
+	  version = version + 1
+	  where fid = #{fid} and version = #{version,jdbcType = BIGINT}
+	</update>
+    <!--
+          选择性插入
+        -->
+    <sql id="Base_Insert_Selective">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fid != null">
+                fid,
+            </if>
+            <if test="fuid != null">
+                fuid,
+            </if>
+            <if test="ftradeid != null">
+                ftradeid,
+            </if>
+            <if test="fbuycoinid != null">
+                fbuycoinid,
+            </if>
+            <if test="fsellcoinid != null">
+                fsellcoinid,
+            </if>
+            <if test="fstatus != null">
+                fstatus,
+            </if>
+            <if test="ftype != null">
+                ftype,
+            </if>
+            <if test="fmatchtype != null">
+                fmatchtype,
+            </if>
+            <if test="flast != null">
+                flast,
+            </if>
+            <if test="flastamount != null">
+                flastamount,
+            </if>
+            <if test="flastcount != null">
+                flastcount,
+            </if>
+            <if test="fprize != null">
+                fprize,
+            </if>
+            <if test="fcount != null">
+                fcount,
+            </if>
+            <if test="famount != null">
+                famount,
+            </if>
+            <if test="fsuccessamount != null">
+                fsuccessamount,
+            </if>
+            <if test="fleftcount != null">
+                fleftcount,
+            </if>
+            <if test="ffees != null">
+                ffees,
+            </if>
+            <if test="fleftfees != null">
+                fleftfees,
+            </if>
+            <if test="fsource != null">
+                fsource,
+            </if>
+            <if test="fhuobientrustid != null">
+                fhuobientrustid,
+            </if>
+            <if test="fhuobiaccountid != null">
+                fhuobiaccountid,
+            </if>
+            <if test="flastupdattime != null">
+                flastupdattime,
+            </if>
+            <if test="fcreatetime != null">
+                fcreatetime,
+            </if>
+            <if test="fagentid != null">
+                fagentid,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="fleverorder != null">
+                fleverorder
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fid != null">
+                #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid != null">
+                #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="ftradeid != null">
+                #{ftradeid,jdbcType=INTEGER},
+            </if>
+            <if test="fbuycoinid != null">
+                #{fbuycoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fsellcoinid != null">
+                #{fsellcoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus != null">
+                #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="ftype != null">
+                #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fmatchtype != null">
+                #{fmatchtype,jdbcType=INTEGER},
+            </if>
+            <if test="flast != null">
+                #{flast,jdbcType=DECIMAL},
+            </if>
+            <if test="flastamount != null">
+                #{flastamount,jdbcType=DECIMAL},
+            </if>
+            <if test="flastcount != null">
+                #{flastcount,jdbcType=INTEGER},
+            </if>
+            <if test="fprize != null">
+                #{fprize,jdbcType=DECIMAL},
+            </if>
+            <if test="fcount != null">
+                #{fcount,jdbcType=DECIMAL},
+            </if>
+            <if test="famount != null">
+                #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="fsuccessamount != null">
+                #{fsuccessamount,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftcount != null">
+                #{fleftcount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees != null">
+                #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftfees != null">
+                #{fleftfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fsource != null">
+                #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fhuobientrustid != null">
+                #{fhuobientrustid,jdbcType=BIGINT},
+            </if>
+            <if test="fhuobiaccountid != null">
+                #{fhuobiaccountid,jdbcType=INTEGER},
+            </if>
+            <if test="flastupdattime != null">
+                #{flastupdattime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fcreatetime != null">
+                #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fagentid != null">
+                #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="fleverorder != null">
+                #{fleverorder,jdbcType=TINYINT}
+            </if>
+        </trim>
+    </sql>
+
+    <!--
+      数据库表的基本查询列名集合
+    -->
+    <sql id="Base_Column_List">
+        fid, fuid, ftradeid, fbuycoinid, fsellcoinid, fstatus, ftype, fmatchtype, flast, flastamount, flastcount,
+        fprize, fcount, famount, fsuccessamount, fleftcount, ffees, fleftfees, fsource, fhuobientrustid,
+        fhuobiaccountid, flastupdattime, fcreatetime, fagentid, version, fleverorder
+    </sql>
+
+    <!--
+        Where子句
+      -->
+    <sql id="Base_Query_Where">
+        <if test="fid != null">
+            and fid = #{fid,jdbcType=INTEGER}
+        </if>
+        <if test="fuid != null">
+            and fuid = #{fuid,jdbcType=INTEGER}
+        </if>
+        <if test="ftradeid != null">
+            and ftradeid = #{ftradeid,jdbcType=INTEGER}
+        </if>
+        <if test="fbuycoinid != null">
+            and fbuycoinid = #{fbuycoinid,jdbcType=INTEGER}
+        </if>
+        <if test="fsellcoinid != null">
+            and fsellcoinid = #{fsellcoinid,jdbcType=INTEGER}
+        </if>
+        <if test="fstatus != null">
+            and fstatus = #{fstatus,jdbcType=INTEGER}
+        </if>
+        <if test="ftype != null">
+            and ftype = #{ftype,jdbcType=INTEGER}
+        </if>
+        <if test="fmatchtype != null">
+            and fmatchtype = #{fmatchtype,jdbcType=INTEGER}
+        </if>
+        <if test="flast != null">
+            and flast = #{flast,jdbcType=DECIMAL}
+        </if>
+        <if test="flastamount != null">
+            and flastamount = #{flastamount,jdbcType=DECIMAL}
+        </if>
+        <if test="flastcount != null">
+            and flastcount = #{flastcount,jdbcType=INTEGER}
+        </if>
+        <if test="fprize != null">
+            and fprize = #{fprize,jdbcType=DECIMAL}
+        </if>
+        <if test="fcount != null">
+            and fcount = #{fcount,jdbcType=DECIMAL}
+        </if>
+        <if test="famount != null">
+            and famount = #{famount,jdbcType=DECIMAL}
+        </if>
+        <if test="fsuccessamount != null">
+            and fsuccessamount = #{fsuccessamount,jdbcType=DECIMAL}
+        </if>
+        <if test="fleftcount != null">
+            and fleftcount = #{fleftcount,jdbcType=DECIMAL}
+        </if>
+        <if test="ffees != null">
+            and ffees = #{ffees,jdbcType=DECIMAL}
+        </if>
+        <if test="fleftfees != null">
+            and fleftfees = #{fleftfees,jdbcType=DECIMAL}
+        </if>
+        <if test="fsource != null">
+            and fsource = #{fsource,jdbcType=INTEGER}
+        </if>
+        <if test="fhuobientrustid != null">
+            and fhuobientrustid = #{fhuobientrustid,jdbcType=BIGINT}
+        </if>
+        <if test="fhuobiaccountid != null">
+            and fhuobiaccountid = #{fhuobiaccountid,jdbcType=INTEGER}
+        </if>
+        <if test="flastupdattime != null">
+            and flastupdattime = #{flastupdattime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="fcreatetime != null">
+            and fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="fagentid != null">
+            and fagentid = #{fagentid,jdbcType=INTEGER}
+        </if>
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+        <if test="fleverorder != null">
+            and fleverorder = #{fleverorder,jdbcType=TINYINT}
+        </if>
+    </sql>
+
+    <!--
+        基本更新字段
+    -->
+    <sql id="Base_Update_Column">
+        <set>
+            <if test="fid != null">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid != null">
+                fuid = #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="ftradeid != null">
+                ftradeid = #{ftradeid,jdbcType=INTEGER},
+            </if>
+            <if test="fbuycoinid != null">
+                fbuycoinid = #{fbuycoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fsellcoinid != null">
+                fsellcoinid = #{fsellcoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus != null">
+                fstatus = #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="ftype != null">
+                ftype = #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fmatchtype != null">
+                fmatchtype = #{fmatchtype,jdbcType=INTEGER},
+            </if>
+            <if test="flast != null">
+                flast = #{flast,jdbcType=DECIMAL},
+            </if>
+            <if test="flastamount != null">
+                flastamount = #{flastamount,jdbcType=DECIMAL},
+            </if>
+            <if test="flastcount != null">
+                flastcount = #{flastcount,jdbcType=INTEGER},
+            </if>
+            <if test="fprize != null">
+                fprize = #{fprize,jdbcType=DECIMAL},
+            </if>
+            <if test="fcount != null">
+                fcount = #{fcount,jdbcType=DECIMAL},
+            </if>
+            <if test="famount != null">
+                famount = #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="fsuccessamount != null">
+                fsuccessamount = #{fsuccessamount,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftcount != null">
+                fleftcount = #{fleftcount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees != null">
+                ffees = #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftfees != null">
+                fleftfees = #{fleftfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fsource != null">
+                fsource = #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fhuobientrustid != null">
+                fhuobientrustid = #{fhuobientrustid,jdbcType=BIGINT},
+            </if>
+            <if test="fhuobiaccountid != null">
+                fhuobiaccountid = #{fhuobiaccountid,jdbcType=INTEGER},
+            </if>
+            <if test="flastupdattime != null">
+                flastupdattime = #{flastupdattime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fcreatetime != null">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fagentid != null">
+                fagentid = #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="fleverorder != null">
+                fleverorder = #{fleverorder,jdbcType=TINYINT}
+            </if>
+        </set>
+    </sql>
+
+    <!--
+        分页查询数据库表
+      -->
+    <select id="selectPaged" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from f_entrust
+    </select>
+
+    <!--
+      根据主键查询数据库表
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from f_entrust
+        where fid = #{fid,jdbcType=INTEGER}
+    </select>
+
+
+    <!--
+      根据主键删除数据库表中的记录
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete FROM f_entrust
+        where fid = #{fid,jdbcType=INTEGER}
+    </delete>
+
+    <!--
+      添加一条记录到数据库表中
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="hotcoin.model.po.EntrustPo">
+        insert into f_entrust
+        (<include refid="Base_Column_List"/>)
+        values (
+        <if test="fid != null">
+            #{fid,jdbcType=INTEGER},
+        </if>
+        <if test="fuid != null">
+            #{fuid,jdbcType=INTEGER},
+        </if>
+        <if test="ftradeid != null">
+            #{ftradeid,jdbcType=INTEGER},
+        </if>
+        <if test="fbuycoinid != null">
+            #{fbuycoinid,jdbcType=INTEGER},
+        </if>
+        <if test="fsellcoinid != null">
+            #{fsellcoinid,jdbcType=INTEGER},
+        </if>
+        <if test="fstatus != null">
+            #{fstatus,jdbcType=INTEGER},
+        </if>
+        <if test="ftype != null">
+            #{ftype,jdbcType=INTEGER},
+        </if>
+        <if test="fmatchtype != null">
+            #{fmatchtype,jdbcType=INTEGER},
+        </if>
+        <if test="flast != null">
+            #{flast,jdbcType=DECIMAL},
+        </if>
+        <if test="flastamount != null">
+            #{flastamount,jdbcType=DECIMAL},
+        </if>
+        <if test="flastcount != null">
+            #{flastcount,jdbcType=INTEGER},
+        </if>
+        <if test="fprize != null">
+            #{fprize,jdbcType=DECIMAL},
+        </if>
+        <if test="fcount != null">
+            #{fcount,jdbcType=DECIMAL},
+        </if>
+        <if test="famount != null">
+            #{famount,jdbcType=DECIMAL},
+        </if>
+        <if test="fsuccessamount != null">
+            #{fsuccessamount,jdbcType=DECIMAL},
+        </if>
+        <if test="fleftcount != null">
+            #{fleftcount,jdbcType=DECIMAL},
+        </if>
+        <if test="ffees != null">
+            #{ffees,jdbcType=DECIMAL},
+        </if>
+        <if test="fleftfees != null">
+            #{fleftfees,jdbcType=DECIMAL},
+        </if>
+        <if test="fsource != null">
+            #{fsource,jdbcType=INTEGER},
+        </if>
+        <if test="fhuobientrustid != null">
+            #{fhuobientrustid,jdbcType=BIGINT},
+        </if>
+        <if test="fhuobiaccountid != null">
+            #{fhuobiaccountid,jdbcType=INTEGER},
+        </if>
+        <if test="flastupdattime != null">
+            #{flastupdattime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="fcreatetime != null">
+            #{fcreatetime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="fagentid != null">
+            #{fagentid,jdbcType=INTEGER},
+        </if>
+        <if test="version != null">
+            #{version,jdbcType=BIGINT},
+        </if>
+        <if test="fleverorder != null">
+            #{fleverorder,jdbcType=TINYINT}
+        </if>
+        )
+    </insert>
+
+    <!--
+     有选择的添加一条记录到数据库表中
+   -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="hotcoin.model.po.EntrustPo">
+        insert into f_entrust
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      有选择的可忽略添加一条记录到数据库表中
+    -->
+    <insert id="insertSelectiveIgnore" useGeneratedKeys="true" keyProperty="id"
+            parameterType="hotcoin.model.po.EntrustPo">
+        insert ignore into f_entrust
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      根据主键有选择的更新数据库表
+    -->
+    <update id="updateByPrimaryKeySelective" parameterType="hotcoin.model.po.EntrustPo">
+        update f_entrust
+        <include refid="Base_Update_Column"></include>
+        where fid = #{fid,jdbcType=INTEGER}
+    </update>
+
+
+    <!--
+      根据主键更新数据库表
+    -->
+    <update id="updateByPrimaryKey" parameterType="hotcoin.model.po.EntrustPo">
+        update f_entrust
+        <set>
+            <if test="fid != null">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid != null">
+                fuid = #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="ftradeid != null">
+                ftradeid = #{ftradeid,jdbcType=INTEGER},
+            </if>
+            <if test="fbuycoinid != null">
+                fbuycoinid = #{fbuycoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fsellcoinid != null">
+                fsellcoinid = #{fsellcoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus != null">
+                fstatus = #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="ftype != null">
+                ftype = #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fmatchtype != null">
+                fmatchtype = #{fmatchtype,jdbcType=INTEGER},
+            </if>
+            <if test="flast != null">
+                flast = #{flast,jdbcType=DECIMAL},
+            </if>
+            <if test="flastamount != null">
+                flastamount = #{flastamount,jdbcType=DECIMAL},
+            </if>
+            <if test="flastcount != null">
+                flastcount = #{flastcount,jdbcType=INTEGER},
+            </if>
+            <if test="fprize != null">
+                fprize = #{fprize,jdbcType=DECIMAL},
+            </if>
+            <if test="fcount != null">
+                fcount = #{fcount,jdbcType=DECIMAL},
+            </if>
+            <if test="famount != null">
+                famount = #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="fsuccessamount != null">
+                fsuccessamount = #{fsuccessamount,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftcount != null">
+                fleftcount = #{fleftcount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees != null">
+                ffees = #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftfees != null">
+                fleftfees = #{fleftfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fsource != null">
+                fsource = #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fhuobientrustid != null">
+                fhuobientrustid = #{fhuobientrustid,jdbcType=BIGINT},
+            </if>
+            <if test="fhuobiaccountid != null">
+                fhuobiaccountid = #{fhuobiaccountid,jdbcType=INTEGER},
+            </if>
+            <if test="flastupdattime != null">
+                flastupdattime = #{flastupdattime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fcreatetime != null">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fagentid != null">
+                fagentid = #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="fleverorder != null">
+                fleverorder = #{fleverorder,jdbcType=TINYINT}
+            </if>
+        </set>
+        where fid = #{fid,jdbcType=INTEGER}
+    </update>
+
+    <!--
+      批量添加记录到数据库表中
+    -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into f_entrust
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            fid, fuid, ftradeid, fbuycoinid, fsellcoinid, fstatus, ftype, fmatchtype, flast, flastamount, flastcount,
+            fprize, fcount, famount, fsuccessamount, fleftcount, ffees, fleftfees, fsource, fhuobientrustid,
+            fhuobiaccountid, flastupdattime, fcreatetime, fagentid, version, fleverorder
+        </trim>
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.fid,jdbcType=INTEGER}, #{item.fuid,jdbcType=INTEGER}, #{item.ftradeid,jdbcType=INTEGER},
+                #{item.fbuycoinid,jdbcType=INTEGER}, #{item.fsellcoinid,jdbcType=INTEGER},
+                #{item.fstatus,jdbcType=INTEGER}, #{item.ftype,jdbcType=INTEGER}, #{item.fmatchtype,jdbcType=INTEGER},
+                #{item.flast,jdbcType=DECIMAL}, #{item.flastamount,jdbcType=DECIMAL},
+                #{item.flastcount,jdbcType=INTEGER}, #{item.fprize,jdbcType=DECIMAL}, #{item.fcount,jdbcType=DECIMAL},
+                #{item.famount,jdbcType=DECIMAL}, #{item.fsuccessamount,jdbcType=DECIMAL},
+                #{item.fleftcount,jdbcType=DECIMAL}, #{item.ffees,jdbcType=DECIMAL}, #{item.fleftfees,jdbcType=DECIMAL},
+                #{item.fsource,jdbcType=INTEGER}, #{item.fhuobientrustid,jdbcType=BIGINT},
+                #{item.fhuobiaccountid,jdbcType=INTEGER}, #{item.flastupdattime,jdbcType=TIMESTAMP},
+                #{item.fcreatetime,jdbcType=TIMESTAMP}, #{item.fagentid,jdbcType=INTEGER},
+                #{item.version,jdbcType=BIGINT}, #{item.fleverorder,jdbcType=TINYINT}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--
+      根据主键批量更新数据库表中的记录
+    -->
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            update f_entrust
+            <set>
+                <trim suffixOverrides=",">
+                    <if test="item.fid != null">
+                        fid = #{item.fid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fuid != null">
+                        fuid = #{item.fuid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.ftradeid != null">
+                        ftradeid = #{item.ftradeid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fbuycoinid != null">
+                        fbuycoinid = #{item.fbuycoinid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fsellcoinid != null">
+                        fsellcoinid = #{item.fsellcoinid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fstatus != null">
+                        fstatus = #{item.fstatus,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.ftype != null">
+                        ftype = #{item.ftype,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fmatchtype != null">
+                        fmatchtype = #{item.fmatchtype,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.flast != null">
+                        flast = #{item.flast,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.flastamount != null">
+                        flastamount = #{item.flastamount,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.flastcount != null">
+                        flastcount = #{item.flastcount,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fprize != null">
+                        fprize = #{item.fprize,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.fcount != null">
+                        fcount = #{item.fcount,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.famount != null">
+                        famount = #{item.famount,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.fsuccessamount != null">
+                        fsuccessamount = #{item.fsuccessamount,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.fleftcount != null">
+                        fleftcount = #{item.fleftcount,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.ffees != null">
+                        ffees = #{item.ffees,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.fleftfees != null">
+                        fleftfees = #{item.fleftfees,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.fsource != null">
+                        fsource = #{item.fsource,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fhuobientrustid != null">
+                        fhuobientrustid = #{item.fhuobientrustid,jdbcType=BIGINT},
+                    </if>
+                    <if test="item.fhuobiaccountid != null">
+                        fhuobiaccountid = #{item.fhuobiaccountid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.flastupdattime != null">
+                        flastupdattime = #{item.flastupdattime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.fcreatetime != null">
+                        fcreatetime = #{item.fcreatetime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.fagentid != null">
+                        fagentid = #{item.fagentid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.version != null">
+                        version = #{item.version,jdbcType=BIGINT},
+                    </if>
+                    <if test="item.fleverorder != null">
+                        fleverorder = #{item.fleverorder,jdbcType=TINYINT}
+                    </if>
+                </trim>
+            </set>
+            <where>
+                <trim suffixOverrides=",">
+                    where fid = #{item.fid,jdbcType=INTEGER}
+                </trim>
+            </where>
+        </foreach>
+    </update>
+
+    <!--
+     使用给定的字段名定义Where子句
+   -->
+    <sql id="Identifiers_Array_Conditions">
+        <foreach collection="array" index="index" item="item" separator=" and ">
+            <if test="item == 'fid'">
+                fid = #{fid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fuid'">
+                fuid = #{fuid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'ftradeid'">
+                ftradeid = #{ftradeid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fbuycoinid'">
+                fbuycoinid = #{fbuycoinid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fsellcoinid'">
+                fsellcoinid = #{fsellcoinid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fstatus'">
+                fstatus = #{fstatus,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'ftype'">
+                ftype = #{ftype,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fmatchtype'">
+                fmatchtype = #{fmatchtype,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'flast'">
+                flast = #{flast,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'flastamount'">
+                flastamount = #{flastamount,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'flastcount'">
+                flastcount = #{flastcount,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fprize'">
+                fprize = #{fprize,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'fcount'">
+                fcount = #{fcount,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'famount'">
+                famount = #{famount,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'fsuccessamount'">
+                fsuccessamount = #{fsuccessamount,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'fleftcount'">
+                fleftcount = #{fleftcount,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'ffees'">
+                ffees = #{ffees,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'fleftfees'">
+                fleftfees = #{fleftfees,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'fsource'">
+                fsource = #{fsource,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fhuobientrustid'">
+                fhuobientrustid = #{fhuobientrustid,jdbcType=BIGINT}
+            </if>
+            <if test="item == 'fhuobiaccountid'">
+                fhuobiaccountid = #{fhuobiaccountid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'flastupdattime'">
+                flastupdattime = #{flastupdattime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'fcreatetime'">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'fagentid'">
+                fagentid = #{fagentid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'version'">
+                version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="item == 'fleverorder'">
+                fleverorder = #{fleverorder,jdbcType=TINYINT}
+            </if>
+        </foreach>
+    </sql>
+
+    <!--
+      存在即更新否则插入
+    -->
+    <update id="upsert" parameterType="hotcoin.model.po.EntrustPo">
+        insert into f_entrust
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            fid, fuid, ftradeid, fbuycoinid, fsellcoinid, fstatus, ftype, fmatchtype, flast, flastamount, flastcount,
+            fprize, fcount, famount, fsuccessamount, fleftcount, ffees, fleftfees, fsource, fhuobientrustid,
+            fhuobiaccountid, flastupdattime, fcreatetime, fagentid, version, fleverorder
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{fid,jdbcType=INTEGER}, #{fuid,jdbcType=INTEGER}, #{ftradeid,jdbcType=INTEGER},
+            #{fbuycoinid,jdbcType=INTEGER}, #{fsellcoinid,jdbcType=INTEGER}, #{fstatus,jdbcType=INTEGER},
+            #{ftype,jdbcType=INTEGER}, #{fmatchtype,jdbcType=INTEGER}, #{flast,jdbcType=DECIMAL},
+            #{flastamount,jdbcType=DECIMAL}, #{flastcount,jdbcType=INTEGER}, #{fprize,jdbcType=DECIMAL},
+            #{fcount,jdbcType=DECIMAL}, #{famount,jdbcType=DECIMAL}, #{fsuccessamount,jdbcType=DECIMAL},
+            #{fleftcount,jdbcType=DECIMAL}, #{ffees,jdbcType=DECIMAL}, #{fleftfees,jdbcType=DECIMAL},
+            #{fsource,jdbcType=INTEGER}, #{fhuobientrustid,jdbcType=BIGINT}, #{fhuobiaccountid,jdbcType=INTEGER},
+            #{flastupdattime,jdbcType=TIMESTAMP}, #{fcreatetime,jdbcType=TIMESTAMP}, #{fagentid,jdbcType=INTEGER},
+            #{version,jdbcType=BIGINT}, #{fleverorder,jdbcType=TINYINT}
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            #{fid,jdbcType=INTEGER}, #{fuid,jdbcType=INTEGER}, #{ftradeid,jdbcType=INTEGER},
+            #{fbuycoinid,jdbcType=INTEGER}, #{fsellcoinid,jdbcType=INTEGER}, #{fstatus,jdbcType=INTEGER},
+            #{ftype,jdbcType=INTEGER}, #{fmatchtype,jdbcType=INTEGER}, #{flast,jdbcType=DECIMAL},
+            #{flastamount,jdbcType=DECIMAL}, #{flastcount,jdbcType=INTEGER}, #{fprize,jdbcType=DECIMAL},
+            #{fcount,jdbcType=DECIMAL}, #{famount,jdbcType=DECIMAL}, #{fsuccessamount,jdbcType=DECIMAL},
+            #{fleftcount,jdbcType=DECIMAL}, #{ffees,jdbcType=DECIMAL}, #{fleftfees,jdbcType=DECIMAL},
+            #{fsource,jdbcType=INTEGER}, #{fhuobientrustid,jdbcType=BIGINT}, #{fhuobiaccountid,jdbcType=INTEGER},
+            #{flastupdattime,jdbcType=TIMESTAMP}, #{fcreatetime,jdbcType=TIMESTAMP}, #{fagentid,jdbcType=INTEGER},
+            #{version,jdbcType=BIGINT}, #{fleverorder,jdbcType=TINYINT}
+        </trim>
+    </update>
+
+
+    <!--
+      带有空值检查的存在即更新否则插入
+    -->
+    <update id="upsertSelective" parameterType="hotcoin.model.po.EntrustPo">
+        insert into f_entrust
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fid !=null ">
+                fid,
+            </if>
+            <if test="fuid !=null ">
+                fuid,
+            </if>
+            <if test="ftradeid !=null ">
+                ftradeid,
+            </if>
+            <if test="fbuycoinid !=null ">
+                fbuycoinid,
+            </if>
+            <if test="fsellcoinid !=null ">
+                fsellcoinid,
+            </if>
+            <if test="fstatus !=null ">
+                fstatus,
+            </if>
+            <if test="ftype !=null ">
+                ftype,
+            </if>
+            <if test="fmatchtype !=null ">
+                fmatchtype,
+            </if>
+            <if test="flast !=null ">
+                flast,
+            </if>
+            <if test="flastamount !=null ">
+                flastamount,
+            </if>
+            <if test="flastcount !=null ">
+                flastcount,
+            </if>
+            <if test="fprize !=null ">
+                fprize,
+            </if>
+            <if test="fcount !=null ">
+                fcount,
+            </if>
+            <if test="famount !=null ">
+                famount,
+            </if>
+            <if test="fsuccessamount !=null ">
+                fsuccessamount,
+            </if>
+            <if test="fleftcount !=null ">
+                fleftcount,
+            </if>
+            <if test="ffees !=null ">
+                ffees,
+            </if>
+            <if test="fleftfees !=null ">
+                fleftfees,
+            </if>
+            <if test="fsource !=null ">
+                fsource,
+            </if>
+            <if test="fhuobientrustid !=null ">
+                fhuobientrustid,
+            </if>
+            <if test="fhuobiaccountid !=null ">
+                fhuobiaccountid,
+            </if>
+            <if test="flastupdattime !=null ">
+                flastupdattime,
+            </if>
+            <if test="fcreatetime !=null ">
+                fcreatetime,
+            </if>
+            <if test="fagentid !=null ">
+                fagentid,
+            </if>
+            <if test="version !=null ">
+                version,
+            </if>
+            <if test="fleverorder !=null ">
+                fleverorder
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fid !=null ">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid !=null ">
+                fuid = #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="ftradeid !=null ">
+                ftradeid = #{ftradeid,jdbcType=INTEGER},
+            </if>
+            <if test="fbuycoinid !=null ">
+                fbuycoinid = #{fbuycoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fsellcoinid !=null ">
+                fsellcoinid = #{fsellcoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus !=null ">
+                fstatus = #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="ftype !=null ">
+                ftype = #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fmatchtype !=null ">
+                fmatchtype = #{fmatchtype,jdbcType=INTEGER},
+            </if>
+            <if test="flast !=null ">
+                flast = #{flast,jdbcType=DECIMAL},
+            </if>
+            <if test="flastamount !=null ">
+                flastamount = #{flastamount,jdbcType=DECIMAL},
+            </if>
+            <if test="flastcount !=null ">
+                flastcount = #{flastcount,jdbcType=INTEGER},
+            </if>
+            <if test="fprize !=null ">
+                fprize = #{fprize,jdbcType=DECIMAL},
+            </if>
+            <if test="fcount !=null ">
+                fcount = #{fcount,jdbcType=DECIMAL},
+            </if>
+            <if test="famount !=null ">
+                famount = #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="fsuccessamount !=null ">
+                fsuccessamount = #{fsuccessamount,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftcount !=null ">
+                fleftcount = #{fleftcount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees !=null ">
+                ffees = #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftfees !=null ">
+                fleftfees = #{fleftfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fsource !=null ">
+                fsource = #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fhuobientrustid !=null ">
+                fhuobientrustid = #{fhuobientrustid,jdbcType=BIGINT},
+            </if>
+            <if test="fhuobiaccountid !=null ">
+                fhuobiaccountid = #{fhuobiaccountid,jdbcType=INTEGER},
+            </if>
+            <if test="flastupdattime !=null ">
+                flastupdattime = #{flastupdattime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fcreatetime !=null ">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fagentid !=null ">
+                fagentid = #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="version !=null ">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="fleverorder !=null ">
+                fleverorder = #{fleverorder,jdbcType=TINYINT}
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="fid !=null ">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid !=null ">
+                fuid = #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="ftradeid !=null ">
+                ftradeid = #{ftradeid,jdbcType=INTEGER},
+            </if>
+            <if test="fbuycoinid !=null ">
+                fbuycoinid = #{fbuycoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fsellcoinid !=null ">
+                fsellcoinid = #{fsellcoinid,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus !=null ">
+                fstatus = #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="ftype !=null ">
+                ftype = #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fmatchtype !=null ">
+                fmatchtype = #{fmatchtype,jdbcType=INTEGER},
+            </if>
+            <if test="flast !=null ">
+                flast = #{flast,jdbcType=DECIMAL},
+            </if>
+            <if test="flastamount !=null ">
+                flastamount = #{flastamount,jdbcType=DECIMAL},
+            </if>
+            <if test="flastcount !=null ">
+                flastcount = #{flastcount,jdbcType=INTEGER},
+            </if>
+            <if test="fprize !=null ">
+                fprize = #{fprize,jdbcType=DECIMAL},
+            </if>
+            <if test="fcount !=null ">
+                fcount = #{fcount,jdbcType=DECIMAL},
+            </if>
+            <if test="famount !=null ">
+                famount = #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="fsuccessamount !=null ">
+                fsuccessamount = #{fsuccessamount,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftcount !=null ">
+                fleftcount = #{fleftcount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees !=null ">
+                ffees = #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="fleftfees !=null ">
+                fleftfees = #{fleftfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fsource !=null ">
+                fsource = #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fhuobientrustid !=null ">
+                fhuobientrustid = #{fhuobientrustid,jdbcType=BIGINT},
+            </if>
+            <if test="fhuobiaccountid !=null ">
+                fhuobiaccountid = #{fhuobiaccountid,jdbcType=INTEGER},
+            </if>
+            <if test="flastupdattime !=null ">
+                flastupdattime = #{flastupdattime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fcreatetime !=null ">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fagentid !=null ">
+                fagentid = #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="version !=null ">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="fleverorder !=null ">
+                fleverorder = #{fleverorder,jdbcType=TINYINT}
+            </if>
+        </trim>
+    </update>
+
+    <select id="query" resultMap="BaseResultMap" parameterType="hotcoin.model.po.EntrustPo">
+        select
+        <include refid="Base_Column_List"/>
+        from f_entrust
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(*) from f_entrust
+    </select>
+
+
+    <delete id="deleteBatch">
+        delete from f_entrust where fid in
+        <foreach item="fid" collection="list" open="(" separator="," close=")">
+            #{fid}
+        </foreach>
+    </delete>
+
+</mapper>

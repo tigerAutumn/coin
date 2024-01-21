@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.coin.mapper.UserWalletBalanceLogMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.wallet.UserWalletBalanceLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="coin_id" property="coinId" jdbcType="INTEGER" />
+    <result column="field_id" property="fieldId" jdbcType="VARCHAR" />
+    <result column="change" property="change" jdbcType="DECIMAL" />
+    <result column="src_id" property="srcId" jdbcType="INTEGER" />
+    <result column="src_type" property="srcType" jdbcType="INTEGER" />
+    <result column="direction" property="direction" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="createdatestamp" property="createdatestamp" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, coin_id, field_id, `change`, src_id, src_type, direction, createtime, createdatestamp
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_wallet_balance_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_wallet_balance_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.wallet.UserWalletBalanceLog" >
+    insert into user_wallet_balance_log (id, uid, coin_id, 
+      field_id, `change`, src_id, 
+      src_type, direction, createtime, 
+      createdatestamp)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, 
+      #{fieldId,jdbcType=VARCHAR}, #{change,jdbcType=DECIMAL}, #{srcId,jdbcType=INTEGER}, 
+      #{srcType,jdbcType=INTEGER}, #{direction,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createdatestamp,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.wallet.UserWalletBalanceLog" >
+    insert into user_wallet_balance_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="coinId != null" >
+        coin_id,
+      </if>
+      <if test="fieldId != null" >
+        field_id,
+      </if>
+      <if test="change != null" >
+        `change`,
+      </if>
+      <if test="srcId != null" >
+        src_id,
+      </if>
+      <if test="srcType != null" >
+        src_type,
+      </if>
+      <if test="direction != null" >
+        direction,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="createdatestamp != null" >
+        createdatestamp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null" >
+        #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldId != null" >
+        #{fieldId,jdbcType=VARCHAR},
+      </if>
+      <if test="change != null" >
+        #{change,jdbcType=DECIMAL},
+      </if>
+      <if test="srcId != null" >
+        #{srcId,jdbcType=INTEGER},
+      </if>
+      <if test="srcType != null" >
+        #{srcType,jdbcType=INTEGER},
+      </if>
+      <if test="direction != null" >
+        #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdatestamp != null" >
+        #{createdatestamp,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.wallet.UserWalletBalanceLog" >
+    update user_wallet_balance_log
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null" >
+        coin_id = #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldId != null" >
+        field_id = #{fieldId,jdbcType=VARCHAR},
+      </if>
+      <if test="change != null" >
+        `change` = #{change,jdbcType=DECIMAL},
+      </if>
+      <if test="srcId != null" >
+        src_id = #{srcId,jdbcType=INTEGER},
+      </if>
+      <if test="srcType != null" >
+        src_type = #{srcType,jdbcType=INTEGER},
+      </if>
+      <if test="direction != null" >
+        direction = #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdatestamp != null" >
+        createdatestamp = #{createdatestamp,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.wallet.UserWalletBalanceLog" >
+    update user_wallet_balance_log
+    set uid = #{uid,jdbcType=INTEGER},
+      coin_id = #{coinId,jdbcType=INTEGER},
+      field_id = #{fieldId,jdbcType=VARCHAR},
+      `change` = #{change,jdbcType=DECIMAL},
+      src_id = #{srcId,jdbcType=INTEGER},
+      src_type = #{srcType,jdbcType=INTEGER},
+      direction = #{direction,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      createdatestamp = #{createdatestamp,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

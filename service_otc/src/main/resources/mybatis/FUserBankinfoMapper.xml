@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qkwl.service.otc.dao.FUserBankinfoMapper">
+  
+  <sql id="bankinfoColumn">fid, fuid, fname, fbanknumber, fbanktype, fcreatetime, fstatus, version, 
+    init, faddress, frealname, fprov, fcity, ftype, fdist,is_default,logo,qrcode_img</sql>
+    
+  <select id="getBankInfoListByUser" resultType="com.qkwl.common.dto.capital.FUserBankinfoDTO" >
+    select 
+    	<include refid="bankinfoColumn" />
+    from 
+    	f_user_bankinfo 
+    where 
+    	f_user_bankinfo.fuid = #{fuid,jdbcType=INTEGER} 
+    	and f_user_bankinfo.ftype= #{ftype,jdbcType=INTEGER} 
+    	and f_user_bankinfo.is_default = 1 
+  </select>
+</mapper>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.OtcAppealMapper" >
+  <sql id="Base_Column_List" >
+    id, order_id, order_no, user_id, result, remark, operate_id, create_time, update_time, 
+    image_url, status, content,type
+  </sql>
+  <select id="selectByPrimaryKey" resultType="OtcAppeal" parameterType="java.lang.Long" >
+	  /*TDDL:MASTER*/
+    select 
+    <include refid="Base_Column_List" />
+    from otc_appeal
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByOrderId" resultType="OtcAppeal">
+	  /*TDDL:MASTER*/
+    select 
+    <include refid="Base_Column_List" />
+    from otc_appeal
+    where 1=1 
+    <if test="orderId != null" >
+        and order_id = #{orderId,jdbcType=BIGINT} 
+     </if>
+    <if test="userId != null" >
+        and user_id = #{userId,jdbcType=INTEGER}
+     </if>
+     <if test="statusList != null" >
+        and status in
+        <foreach collection="statusList" index="index" item="item" open="(" separator="," close=")">
+                #{item}       
+        </foreach>   
+     </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from otc_appeal
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="OtcAppeal" >
+    insert into otc_appeal (order_id, order_no, 
+      user_id, result, remark, 
+      operate_id, create_time, update_time, 
+      image_url, status, content,type
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{result,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{imageUrl,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{content,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="OtcAppeal" >
+    insert into otc_appeal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="operateId != null" >
+        operate_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="imageUrl != null" >
+        image_url,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null" >
+        #{operateId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="OtcAppeal" >
+    update otc_appeal
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageUrl != null" >
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="OtcAppeal" >
+    update otc_appeal
+    set order_id = #{orderId,jdbcType=BIGINT},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      result = #{result,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      content = #{content,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.user.dao.UserInfoExtendMapper" >
+	<select id="select" parameterType="UserInfoExtend" resultType="UserInfoExtend">
+    select *
+    from user_info_extend
+    where 
+    	user_id = #{userId}
+  	</select>
+	
+	<update id="update" parameterType="UserInfoExtend">
+	update user_info_extend 
+		set platform = #{platform},
+		    device_token = #{deviceToken},
+			update_time = NOW()
+		where id = #{id}
+	</update>
+	
+	<insert id="insert" parameterType="UserInfoExtend">
+    insert into user_info_extend (
+    	user_id, 
+      	platform, 
+      	device_token,
+      	create_time,
+      	update_time
+      )
+    values (
+      	#{userId}, 
+      	#{platform}, 
+      	#{deviceToken},
+      	NOW(),
+      	NOW()
+    )
+  </insert>
+</mapper>

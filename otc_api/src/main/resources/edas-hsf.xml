@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:hsf="http://www.taobao.com/hsf" xmlns="http://www.springframework.org/schema/beans"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.taobao.com/hsf
+       http://www.taobao.com/hsf/hsf.xsd"
+	   default-autowire="byName">
+
+	<hsf:consumer id="otcAdvertServiceConsumer" interface="com.qkwl.common.rpc.otc.IOtcAdvertService"
+				  version="1.1" group="otc">
+	</hsf:consumer>
+	
+	<hsf:consumer id="otcUserServiceConsumer" interface="com.qkwl.common.rpc.otc.IOtcUserService"
+				  version="1.1" group="otc">
+	</hsf:consumer>
+	
+	<!-- otc wallet -->
+	<hsf:consumer id="otcCoinWalletServiceConsumer" interface="com.qkwl.common.rpc.otc.IOtcCoinWalletService"
+				  version="1.1" group="otc">
+	</hsf:consumer>
+	
+	<hsf:consumer id="otcOrderServiceConsumer" interface="com.qkwl.common.rpc.otc.OtcOrderService"
+				  version="1.1" group="otc" clientTimeout="10000">
+	</hsf:consumer>
+	
+</beans>

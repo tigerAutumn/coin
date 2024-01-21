@@ -1,0 +1,122 @@
+<div class="layui-form" lay-href="admin/otc/otcOrderList" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+	<div class="layui-form-item layui-search-box">
+		<div class="layui-inline">
+			<label class="layui-form-label">关键词[广告编号/订单编注]</label>
+			<div class="layui-input-inline">
+				<input name="keywords" th:value="${keywords }" class="layui-input" />
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">币种：</label>
+			<div class="layui-input-inline">
+				<select type="combox" name="coinId">
+					<option th:each="v : ${coinTypeMap}" th:value="${v.key}" th:text="${v.value}" th:selected="${v.key == coinId}"></option>
+				</select>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">UID：</label>
+			<div class="layui-input-inline">
+				<input type="number" name="userId" th:value="${userId}" class="layui-input" />
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">订单类型：</label>
+			<div class="layui-input-inline">
+				<select type="combox" name="side">
+					<option th:each="v : ${sideMap}" th:value="${v.key}" th:text="${v.value}" th:selected="${v.key eq side}"></option>
+				</select>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">订单状态：</label>
+			<div class="layui-input-inline">
+				<select type="combox" name="status">
+					<option th:each="v : ${otcStatusMap}" th:value="${v.key}" th:text="${v.value}" th:selected="${v.key == status}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="layui-inline">
+			<button class="layui-btn layui-btn-small">查询</button>
+		</div>
+	</div>
+		<hr />
+
+	<div class="layui-conten-box">
+		<table class="layui-table" width="100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th>订单编号</th>
+					<th>创建时间</th>
+					<th>更新时间</th>
+					<th>广告编号</th>
+					<th>买方UID</th>
+					<th>买方姓名</th>
+					<th>卖方UID</th>
+					<th>卖方姓名</th>
+					<th>交易类型</th>
+					<th>交易币种</th>
+					<th>法币币种</th>
+					<th>交易价格</th>
+					<th>交易数量</th>
+					<th>总金额</th>
+					<th>付款方式</th>
+					<th>聊天记录</th>
+					<th>交易状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody th:if="${not #lists.isEmpty(orderList)}">
+				<tr th:each="list : ${orderList.list}">
+					<td>
+						<input type="checkbox" th:name="${list.id}" lay-skin="primary" />
+					</td>
+					<td th:text="${list.orderNo}"></td>
+					<td th:text="${list.createTime == null? '':#dates.format(list.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+					<td th:text="${list.updateTime == null? '':#dates.format(list.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+					<td th:text="${list.adId}"></td>
+					<td th:text="${list.side eq 'BUY' ? list.adUserId : list.userId}"></td>
+					<td th:text="${list.side eq 'BUY' ? list.adNickname : list.nickName}"></td>
+					<td th:text="${list.side eq 'BUY' ? list.userId : list.adUserId}"></td>
+					<td th:text="${list.side eq 'BUY' ? list.nickName : list.adNickname}"></td>
+					<td th:style="'color:'+${list.side eq 'BUY' ? 'green' : 'red'}" th:text="${list.side eq 'BUY' ? '购买' : '出售'}"></td>
+					<td th:text="${list.coinName}"></td>
+					<td th:text="${list.currencyName}"></td>
+					<td th:text="${list.price == null ? '':#decimal.format(list.price, 1, 10)}"></td>
+					<td th:text="${list.amount == null ? '':#decimal.format(list.amount, 1, 10)}"></td>
+					<td th:text="${list.totalAmount == null ? '':#decimal.format(list.totalAmount, 1, 10)}"></td>
+					<td >
+						<div class="layui-btn-box">
+							<button class="layui-btn layui-btn-small" lay-target="dialogInfo" lay-height="700" lay-width="700"
+								     th:attr="lay-href=${'admin/otc/userPayment?id=' + list.id }" 
+									th:text="${list.otcPayment.name}">
+							</button>
+						</div>
+					</td>
+					<td >
+						<div class="layui-btn-box">
+							<button class="layui-btn layui-btn-small" lay-target="dialogInfo" lay-height="700" lay-width="700"
+								   th:attr="lay-href=${'admin/otc/otcChatHistory?id=' + list.id}" >
+							聊天记录</button>
+						</div>
+					</td>
+					<td th:style="'color:'+${list.statusStringColor}" th:text="${list.statusString}" ></td>
+					<td >
+						<div class="layui-btn-box">
+							<button shiro:hasPermission="admin/otc/submitOtcAppeal" 
+									class="layui-btn layui-btn-small" lay-target="dialog" lay-height="700" lay-width="700"
+								   th:attr="lay-href=${'admin/otc/otcAppeal?id=' + list.id}" 
+									th:if="${list.status == 6}">
+							处理申诉</button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="layui-laypage-box" th:if="${not #lists.isEmpty(orderList)}"
+		th:attr="lay-pages=${orderList.pages}, lay-curr=${orderList.pageNum}"></div>
+</div>

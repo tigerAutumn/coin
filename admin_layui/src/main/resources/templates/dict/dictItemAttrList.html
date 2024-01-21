@@ -1,0 +1,47 @@
+<div class="layui-form" lay-href="admin/dictItemAttrList.html" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+	    <div class="layui-inline" style="display:none;">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+    	<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addDictItemAttr.html"
+				lay-href="/admin/addDictItemAttr.html" lay-target="dialog">新增</button>
+				
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/deleteDictItemAttr.html"
+					lay-href="admin/deleteDictItemAttr.html" lay-checked="Id" lay-target="ajax" lay-tips="确定要删除吗?">删除</button>
+				
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/changeDictItemAttr.html"
+				lay-href="/admin/changeDictItemAttr.html" lay-checked="Id" lay-target="dialog">修改</button>
+	</div>
+	
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>字典id</th>
+                <th>语言类别</th>
+                <th>字典名称翻译</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(dictItemAttrList)}">
+            <tr th:each="dictItemAttr : ${dictItemAttrList.data}">
+                <td>
+                    <input type="checkbox" th:name="${dictItemAttr.Id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${dictItemAttrStat.index + 1}"></td>
+                <td th:text="${dictItemAttr.dictitemid}"></td>
+                <td th:text="${dictItemAttr.langtype}"></td>
+                <td th:text="${dictItemAttr.dictname}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(dictItemAttrList)}"
+         th:attr="lay-pages=${dictItemAttrList.totalPages}, lay-curr=${dictItemAttrList.currentPage}"></div>
+</div>

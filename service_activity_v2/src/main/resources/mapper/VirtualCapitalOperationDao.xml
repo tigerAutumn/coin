@@ -1,0 +1,1148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotcoin.activity.dao.VirtualCapitalOperationDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hotcoin.activity.model.po.VirtualCapitalOperationPo" id="BaseResultMap">
+        <result property="fid" column="fid"/>
+        <result property="fuid" column="fuid"/>
+        <result property="walletCoinId" column="wallet_coin_id"/>
+        <result property="famount" column="famount"/>
+        <result property="ffees" column="ffees"/>
+        <result property="ftype" column="ftype"/>
+        <result property="fstatus" column="fstatus"/>
+        <result property="fcreatetime" column="fcreatetime"/>
+        <result property="fupdatetime" column="fupdatetime"/>
+        <result property="txTime" column="tx_time"/>
+        <result property="fwithdrawaddress" column="fwithdrawaddress"/>
+        <result property="frechargeaddress" column="frechargeaddress"/>
+        <result property="funiquenumber" column="funiquenumber"/>
+        <result property="fconfirmations" column="fconfirmations"/>
+        <result property="fhasowner" column="fhasowner"/>
+        <result property="fblocknumber" column="fblocknumber"/>
+        <result property="fbtcfees" column="fbtcfees"/>
+        <result property="fadminid" column="fadminid"/>
+        <result property="version" column="version"/>
+        <result property="fagentid" column="fagentid"/>
+        <result property="fsource" column="fsource"/>
+        <result property="fnonce" column="fnonce"/>
+        <result property="fplatform" column="fplatform"/>
+        <result property="memo" column="memo"/>
+        <result property="isFrozen" column="is_frozen"/>
+    </resultMap>
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hotcoin.activity.model.resp.VirtualCapitalOperationResp" id="RechargeResultMap">
+        <result property="fuid" column="fuid"/>
+        <result property="walletCoinId" column="wallet_coin_id"/>
+        <result property="famount" column="famount"/>
+        <result property="fstatus" column="fstatus"/>
+        <result property="ftype" column="ftype"/>
+        <result property="fcreatetime" column="fcreatetime"/>
+        <result property="ffees" column="ffees"/>
+        <result property="fbtcfees" column="fbtcfees"/>
+    </resultMap>
+
+    <!--
+          选择性插入
+        -->
+    <sql id="Base_Insert_Selective">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fid != null">
+                fid,
+            </if>
+            <if test="fuid != null">
+                fuid,
+            </if>
+            <if test="walletCoinId != null">
+                wallet_coin_id,
+            </if>
+            <if test="famount != null">
+                famount,
+            </if>
+            <if test="ffees != null">
+                ffees,
+            </if>
+            <if test="ftype != null">
+                ftype,
+            </if>
+            <if test="fstatus != null">
+                fstatus,
+            </if>
+            <if test="fcreatetime != null">
+                fcreatetime,
+            </if>
+            <if test="fupdatetime != null">
+                fupdatetime,
+            </if>
+            <if test="txTime != null">
+                tx_time,
+            </if>
+            <if test="fwithdrawaddress != null">
+                fwithdrawaddress,
+            </if>
+            <if test="frechargeaddress != null">
+                frechargeaddress,
+            </if>
+            <if test="funiquenumber != null">
+                funiquenumber,
+            </if>
+            <if test="fconfirmations != null">
+                fconfirmations,
+            </if>
+            <if test="fhasowner != null">
+                fhasowner,
+            </if>
+            <if test="fblocknumber != null">
+                fblocknumber,
+            </if>
+            <if test="fbtcfees != null">
+                fbtcfees,
+            </if>
+            <if test="fadminid != null">
+                fadminid,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="fagentid != null">
+                fagentid,
+            </if>
+            <if test="fsource != null">
+                fsource,
+            </if>
+            <if test="fnonce != null">
+                fnonce,
+            </if>
+            <if test="fplatform != null">
+                fplatform,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="isFrozen != null">
+                is_frozen
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fid != null">
+                #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid != null">
+                #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="walletCoinId != null">
+                #{walletCoinId,jdbcType=INTEGER},
+            </if>
+            <if test="famount != null">
+                #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees != null">
+                #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="ftype != null">
+                #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus != null">
+                #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="fcreatetime != null">
+                #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fupdatetime != null">
+                #{fupdatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="txTime != null">
+                #{txTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fwithdrawaddress != null">
+                #{fwithdrawaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="frechargeaddress != null">
+                #{frechargeaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="funiquenumber != null">
+                #{funiquenumber,jdbcType=VARCHAR},
+            </if>
+            <if test="fconfirmations != null">
+                #{fconfirmations,jdbcType=INTEGER},
+            </if>
+            <if test="fhasowner != null">
+                #{fhasowner,jdbcType=BIT},
+            </if>
+            <if test="fblocknumber != null">
+                #{fblocknumber,jdbcType=INTEGER},
+            </if>
+            <if test="fbtcfees != null">
+                #{fbtcfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fadminid != null">
+                #{fadminid,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="fagentid != null">
+                #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="fsource != null">
+                #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fnonce != null">
+                #{fnonce,jdbcType=INTEGER},
+            </if>
+            <if test="fplatform != null">
+                #{fplatform,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="isFrozen != null">
+                #{isFrozen,jdbcType=TINYINT UNSIGNED}
+            </if>
+        </trim>
+    </sql>
+
+    <!--
+      数据库表的基本查询列名集合
+    -->
+    <sql id="Base_Column_List">
+        fid, fuid, wallet_coin_id, famount, ffees, ftype, fstatus, fcreatetime, fupdatetime, tx_time, fwithdrawaddress,
+        frechargeaddress, funiquenumber, fconfirmations, fhasowner, fblocknumber, fbtcfees, fadminid, version, fagentid,
+        fsource, fnonce, fplatform, memo, is_frozen
+    </sql>
+    <sql id="Recharge_Column_List">
+        fuid,wallet_coin_id,ffees,fbtcfees,famount, ftype, fstatus, fcreatetime
+    </sql>
+    <!--
+        Where子句
+      -->
+    <sql id="Base_Query_Where">
+        <if test="fid != null">
+            and fid = #{fid,jdbcType=INTEGER}
+        </if>
+        <if test="fuid != null">
+            and fuid = #{fuid,jdbcType=INTEGER}
+        </if>
+        <if test="walletCoinId != null">
+            and wallet_coin_id = #{walletCoinId,jdbcType=INTEGER}
+        </if>
+        <if test="famount != null">
+            and famount = #{famount,jdbcType=DECIMAL}
+        </if>
+        <if test="ffees != null">
+            and ffees = #{ffees,jdbcType=DECIMAL}
+        </if>
+        <if test="ftype != null">
+            and ftype = #{ftype,jdbcType=INTEGER}
+        </if>
+        <if test="fstatus != null">
+            and fstatus = #{fstatus,jdbcType=INTEGER}
+        </if>
+        <if test="fcreatetime != null">
+            and fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="fupdatetime != null">
+            and fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="txTime != null">
+            and tx_time = #{txTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="fwithdrawaddress != null">
+            and fwithdrawaddress = #{fwithdrawaddress,jdbcType=VARCHAR}
+        </if>
+        <if test="frechargeaddress != null">
+            and frechargeaddress = #{frechargeaddress,jdbcType=VARCHAR}
+        </if>
+        <if test="funiquenumber != null">
+            and funiquenumber = #{funiquenumber,jdbcType=VARCHAR}
+        </if>
+        <if test="fconfirmations != null">
+            and fconfirmations = #{fconfirmations,jdbcType=INTEGER}
+        </if>
+        <if test="fhasowner != null">
+            and fhasowner = #{fhasowner,jdbcType=BIT}
+        </if>
+        <if test="fblocknumber != null">
+            and fblocknumber = #{fblocknumber,jdbcType=INTEGER}
+        </if>
+        <if test="fbtcfees != null">
+            and fbtcfees = #{fbtcfees,jdbcType=DECIMAL}
+        </if>
+        <if test="fadminid != null">
+            and fadminid = #{fadminid,jdbcType=INTEGER}
+        </if>
+        <if test="version != null">
+            and version = #{version,jdbcType=INTEGER}
+        </if>
+        <if test="fagentid != null">
+            and fagentid = #{fagentid,jdbcType=INTEGER}
+        </if>
+        <if test="fsource != null">
+            and fsource = #{fsource,jdbcType=INTEGER}
+        </if>
+        <if test="fnonce != null">
+            and fnonce = #{fnonce,jdbcType=INTEGER}
+        </if>
+        <if test="fplatform != null">
+            and fplatform = #{fplatform,jdbcType=INTEGER}
+        </if>
+        <if test="memo != null">
+            and memo = #{memo,jdbcType=VARCHAR}
+        </if>
+        <if test="isFrozen != null">
+            and is_frozen = #{isFrozen,jdbcType=TINYINT UNSIGNED}
+        </if>
+    </sql>
+
+    <sql id="Base_Part_Query_Where">
+        <if test="fuid != null">
+            and fuid = #{fuid}
+        </if>
+        <if test="walletCoinId != null">
+            and wallet_coin_id = #{walletCoinId}
+        </if>
+        <if test="famount != null">
+            and famount = #{famount}
+        </if>
+        <if test="ftype != null">
+            and ftype = #{ftype}
+        </if>
+        <if test="fstatus != null">
+            and fstatus = #{fstatus}
+        </if>
+        <if test="fcreatetime != null">
+            and fcreatetime = #{fcreatetime}
+        </if>
+        <if test="startTime != null">
+            and fupdatetime &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and fupdatetime &lt;= #{endTime}
+        </if>
+    </sql>
+
+
+    <!--
+        基本更新字段
+    -->
+    <sql id="Base_Update_Column">
+        <set>
+            <if test="fid != null">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid != null">
+                fuid = #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="walletCoinId != null">
+                wallet_coin_id = #{walletCoinId,jdbcType=INTEGER},
+            </if>
+            <if test="famount != null">
+                famount = #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees != null">
+                ffees = #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="ftype != null">
+                ftype = #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus != null">
+                fstatus = #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="fcreatetime != null">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fupdatetime != null">
+                fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="txTime != null">
+                tx_time = #{txTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fwithdrawaddress != null">
+                fwithdrawaddress = #{fwithdrawaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="frechargeaddress != null">
+                frechargeaddress = #{frechargeaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="funiquenumber != null">
+                funiquenumber = #{funiquenumber,jdbcType=VARCHAR},
+            </if>
+            <if test="fconfirmations != null">
+                fconfirmations = #{fconfirmations,jdbcType=INTEGER},
+            </if>
+            <if test="fhasowner != null">
+                fhasowner = #{fhasowner,jdbcType=BIT},
+            </if>
+            <if test="fblocknumber != null">
+                fblocknumber = #{fblocknumber,jdbcType=INTEGER},
+            </if>
+            <if test="fbtcfees != null">
+                fbtcfees = #{fbtcfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fadminid != null">
+                fadminid = #{fadminid,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER},
+            </if>
+            <if test="fagentid != null">
+                fagentid = #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="fsource != null">
+                fsource = #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fnonce != null">
+                fnonce = #{fnonce,jdbcType=INTEGER},
+            </if>
+            <if test="fplatform != null">
+                fplatform = #{fplatform,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="isFrozen != null">
+                is_frozen = #{isFrozen,jdbcType=TINYINT UNSIGNED}
+            </if>
+        </set>
+    </sql>
+
+    <!--
+        分页查询数据库表
+      -->
+    <select id="selectPaged" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from f_virtual_capital_operation
+    </select>
+
+    <!--
+      根据主键查询数据库表
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from f_virtual_capital_operation
+        where fid = #{fid,jdbcType=INTEGER}
+    </select>
+
+
+    <!--
+      根据主键删除数据库表中的记录
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete FROM f_virtual_capital_operation
+        where fid = #{fid,jdbcType=INTEGER}
+    </delete>
+
+    <!--
+      添加一条记录到数据库表中
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.VirtualCapitalOperationPo">
+        insert into f_virtual_capital_operation
+        (<include refid="Base_Column_List"/>)
+        values (
+        <if test="fid != null">
+            #{fid,jdbcType=INTEGER},
+        </if>
+        <if test="fuid != null">
+            #{fuid,jdbcType=INTEGER},
+        </if>
+        <if test="walletCoinId != null">
+            #{walletCoinId,jdbcType=INTEGER},
+        </if>
+        <if test="famount != null">
+            #{famount,jdbcType=DECIMAL},
+        </if>
+        <if test="ffees != null">
+            #{ffees,jdbcType=DECIMAL},
+        </if>
+        <if test="ftype != null">
+            #{ftype,jdbcType=INTEGER},
+        </if>
+        <if test="fstatus != null">
+            #{fstatus,jdbcType=INTEGER},
+        </if>
+        <if test="fcreatetime != null">
+            #{fcreatetime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="fupdatetime != null">
+            #{fupdatetime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="txTime != null">
+            #{txTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="fwithdrawaddress != null">
+            #{fwithdrawaddress,jdbcType=VARCHAR},
+        </if>
+        <if test="frechargeaddress != null">
+            #{frechargeaddress,jdbcType=VARCHAR},
+        </if>
+        <if test="funiquenumber != null">
+            #{funiquenumber,jdbcType=VARCHAR},
+        </if>
+        <if test="fconfirmations != null">
+            #{fconfirmations,jdbcType=INTEGER},
+        </if>
+        <if test="fhasowner != null">
+            #{fhasowner,jdbcType=BIT},
+        </if>
+        <if test="fblocknumber != null">
+            #{fblocknumber,jdbcType=INTEGER},
+        </if>
+        <if test="fbtcfees != null">
+            #{fbtcfees,jdbcType=DECIMAL},
+        </if>
+        <if test="fadminid != null">
+            #{fadminid,jdbcType=INTEGER},
+        </if>
+        <if test="version != null">
+            #{version,jdbcType=INTEGER},
+        </if>
+        <if test="fagentid != null">
+            #{fagentid,jdbcType=INTEGER},
+        </if>
+        <if test="fsource != null">
+            #{fsource,jdbcType=INTEGER},
+        </if>
+        <if test="fnonce != null">
+            #{fnonce,jdbcType=INTEGER},
+        </if>
+        <if test="fplatform != null">
+            #{fplatform,jdbcType=INTEGER},
+        </if>
+        <if test="memo != null">
+            #{memo,jdbcType=VARCHAR},
+        </if>
+        <if test="isFrozen != null">
+            #{isFrozen,jdbcType=TINYINT UNSIGNED}
+        </if>
+        )
+    </insert>
+
+    <!--
+     有选择的添加一条记录到数据库表中
+   -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.VirtualCapitalOperationPo">
+        insert into f_virtual_capital_operation
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      有选择的可忽略添加一条记录到数据库表中
+    -->
+    <insert id="insertSelectiveIgnore" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.VirtualCapitalOperationPo">
+        insert ignore into f_virtual_capital_operation
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      根据主键有选择的更新数据库表
+    -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.hotcoin.activity.model.po.VirtualCapitalOperationPo">
+        update f_virtual_capital_operation
+        <include refid="Base_Update_Column"></include>
+        where fid = #{fid,jdbcType=INTEGER}
+    </update>
+
+
+    <!--
+      根据主键更新数据库表
+    -->
+    <update id="updateByPrimaryKey" parameterType="com.hotcoin.activity.model.po.VirtualCapitalOperationPo">
+        update f_virtual_capital_operation
+        <set>
+            <if test="fid != null">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid != null">
+                fuid = #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="walletCoinId != null">
+                wallet_coin_id = #{walletCoinId,jdbcType=INTEGER},
+            </if>
+            <if test="famount != null">
+                famount = #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees != null">
+                ffees = #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="ftype != null">
+                ftype = #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus != null">
+                fstatus = #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="fcreatetime != null">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fupdatetime != null">
+                fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="txTime != null">
+                tx_time = #{txTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fwithdrawaddress != null">
+                fwithdrawaddress = #{fwithdrawaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="frechargeaddress != null">
+                frechargeaddress = #{frechargeaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="funiquenumber != null">
+                funiquenumber = #{funiquenumber,jdbcType=VARCHAR},
+            </if>
+            <if test="fconfirmations != null">
+                fconfirmations = #{fconfirmations,jdbcType=INTEGER},
+            </if>
+            <if test="fhasowner != null">
+                fhasowner = #{fhasowner,jdbcType=BIT},
+            </if>
+            <if test="fblocknumber != null">
+                fblocknumber = #{fblocknumber,jdbcType=INTEGER},
+            </if>
+            <if test="fbtcfees != null">
+                fbtcfees = #{fbtcfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fadminid != null">
+                fadminid = #{fadminid,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER},
+            </if>
+            <if test="fagentid != null">
+                fagentid = #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="fsource != null">
+                fsource = #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fnonce != null">
+                fnonce = #{fnonce,jdbcType=INTEGER},
+            </if>
+            <if test="fplatform != null">
+                fplatform = #{fplatform,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="isFrozen != null">
+                is_frozen = #{isFrozen,jdbcType=TINYINT UNSIGNED}
+            </if>
+        </set>
+        where fid = #{fid,jdbcType=INTEGER}
+    </update>
+
+    <!--
+      批量添加记录到数据库表中
+    -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into f_virtual_capital_operation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            fid, fuid, wallet_coin_id, famount, ffees, ftype, fstatus, fcreatetime, fupdatetime, tx_time, fwithdrawaddress,
+            frechargeaddress, funiquenumber, fconfirmations, fhasowner, fblocknumber, fbtcfees, fadminid, version,
+            fagentid, fsource, fnonce, fplatform, memo, is_frozen
+        </trim>
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.fid,jdbcType=INTEGER}, #{item.fuid,jdbcType=INTEGER}, #{item.walletCoinId,jdbcType=INTEGER},
+                #{item.famount,jdbcType=DECIMAL}, #{item.ffees,jdbcType=DECIMAL}, #{item.ftype,jdbcType=INTEGER},
+                #{item.fstatus,jdbcType=INTEGER}, #{item.fcreatetime,jdbcType=TIMESTAMP},
+                #{item.fupdatetime,jdbcType=TIMESTAMP}, #{item.txTime,jdbcType=TIMESTAMP},
+                #{item.fwithdrawaddress,jdbcType=VARCHAR}, #{item.frechargeaddress,jdbcType=VARCHAR},
+                #{item.funiquenumber,jdbcType=VARCHAR}, #{item.fconfirmations,jdbcType=INTEGER},
+                #{item.fhasowner,jdbcType=BIT}, #{item.fblocknumber,jdbcType=INTEGER},
+                #{item.fbtcfees,jdbcType=DECIMAL}, #{item.fadminid,jdbcType=INTEGER}, #{item.version,jdbcType=INTEGER},
+                #{item.fagentid,jdbcType=INTEGER}, #{item.fsource,jdbcType=INTEGER}, #{item.fnonce,jdbcType=INTEGER},
+                #{item.fplatform,jdbcType=INTEGER}, #{item.memo,jdbcType=VARCHAR},
+                #{item.isFrozen,jdbcType=TINYINT UNSIGNED}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--
+      根据主键批量更新数据库表中的记录
+    -->
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            update f_virtual_capital_operation
+            <set>
+                <trim suffixOverrides=",">
+                    <if test="item.fid != null">
+                        fid = #{item.fid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fuid != null">
+                        fuid = #{item.fuid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.walletCoinId != null">
+                        wallet_coin_id = #{item.walletCoinId,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.famount != null">
+                        famount = #{item.famount,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.ffees != null">
+                        ffees = #{item.ffees,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.ftype != null">
+                        ftype = #{item.ftype,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fstatus != null">
+                        fstatus = #{item.fstatus,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fcreatetime != null">
+                        fcreatetime = #{item.fcreatetime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.fupdatetime != null">
+                        fupdatetime = #{item.fupdatetime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.txTime != null">
+                        tx_time = #{item.txTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.fwithdrawaddress != null">
+                        fwithdrawaddress = #{item.fwithdrawaddress,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.frechargeaddress != null">
+                        frechargeaddress = #{item.frechargeaddress,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.funiquenumber != null">
+                        funiquenumber = #{item.funiquenumber,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.fconfirmations != null">
+                        fconfirmations = #{item.fconfirmations,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fhasowner != null">
+                        fhasowner = #{item.fhasowner,jdbcType=BIT},
+                    </if>
+                    <if test="item.fblocknumber != null">
+                        fblocknumber = #{item.fblocknumber,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fbtcfees != null">
+                        fbtcfees = #{item.fbtcfees,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.fadminid != null">
+                        fadminid = #{item.fadminid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.version != null">
+                        version = #{item.version,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fagentid != null">
+                        fagentid = #{item.fagentid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fsource != null">
+                        fsource = #{item.fsource,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fnonce != null">
+                        fnonce = #{item.fnonce,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fplatform != null">
+                        fplatform = #{item.fplatform,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.memo != null">
+                        memo = #{item.memo,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.isFrozen != null">
+                        is_frozen = #{item.isFrozen,jdbcType=TINYINT UNSIGNED}
+                    </if>
+                </trim>
+            </set>
+            <where>
+                <trim suffixOverrides=",">
+                    where fid = #{item.fid,jdbcType=INTEGER}
+                </trim>
+            </where>
+        </foreach>
+    </update>
+
+    <!--
+     使用给定的字段名定义Where子句
+   -->
+    <sql id="Identifiers_Array_Conditions">
+        <foreach collection="array" index="index" item="item" separator=" and ">
+            <if test="item == 'fid'">
+                fid = #{fid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fuid'">
+                fuid = #{fuid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'walletCoinId'">
+                wallet_coin_id = #{walletCoinId,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'famount'">
+                famount = #{famount,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'ffees'">
+                ffees = #{ffees,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'ftype'">
+                ftype = #{ftype,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fstatus'">
+                fstatus = #{fstatus,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fcreatetime'">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'fupdatetime'">
+                fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'txTime'">
+                tx_time = #{txTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'fwithdrawaddress'">
+                fwithdrawaddress = #{fwithdrawaddress,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'frechargeaddress'">
+                frechargeaddress = #{frechargeaddress,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'funiquenumber'">
+                funiquenumber = #{funiquenumber,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'fconfirmations'">
+                fconfirmations = #{fconfirmations,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fhasowner'">
+                fhasowner = #{fhasowner,jdbcType=BIT}
+            </if>
+            <if test="item == 'fblocknumber'">
+                fblocknumber = #{fblocknumber,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fbtcfees'">
+                fbtcfees = #{fbtcfees,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'fadminid'">
+                fadminid = #{fadminid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'version'">
+                version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fagentid'">
+                fagentid = #{fagentid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fsource'">
+                fsource = #{fsource,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fnonce'">
+                fnonce = #{fnonce,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fplatform'">
+                fplatform = #{fplatform,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'memo'">
+                memo = #{memo,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'isFrozen'">
+                is_frozen = #{isFrozen,jdbcType=TINYINT UNSIGNED}
+            </if>
+        </foreach>
+    </sql>
+
+    <!--
+      存在即更新否则插入
+    -->
+    <update id="upsert" parameterType="com.hotcoin.activity.model.po.VirtualCapitalOperationPo">
+        insert into f_virtual_capital_operation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            fid, fuid, wallet_coin_id, famount, ffees, ftype, fstatus, fcreatetime, fupdatetime, tx_time, fwithdrawaddress,
+            frechargeaddress, funiquenumber, fconfirmations, fhasowner, fblocknumber, fbtcfees, fadminid, version,
+            fagentid, fsource, fnonce, fplatform, memo, is_frozen
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{fid,jdbcType=INTEGER}, #{fuid,jdbcType=INTEGER}, #{walletCoinId,jdbcType=INTEGER}, #{famount,jdbcType=DECIMAL},
+            #{ffees,jdbcType=DECIMAL}, #{ftype,jdbcType=INTEGER}, #{fstatus,jdbcType=INTEGER},
+            #{fcreatetime,jdbcType=TIMESTAMP}, #{fupdatetime,jdbcType=TIMESTAMP}, #{txTime,jdbcType=TIMESTAMP},
+            #{fwithdrawaddress,jdbcType=VARCHAR}, #{frechargeaddress,jdbcType=VARCHAR},
+            #{funiquenumber,jdbcType=VARCHAR}, #{fconfirmations,jdbcType=INTEGER}, #{fhasowner,jdbcType=BIT},
+            #{fblocknumber,jdbcType=INTEGER}, #{fbtcfees,jdbcType=DECIMAL}, #{fadminid,jdbcType=INTEGER},
+            #{version,jdbcType=INTEGER}, #{fagentid,jdbcType=INTEGER}, #{fsource,jdbcType=INTEGER},
+            #{fnonce,jdbcType=INTEGER}, #{fplatform,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR},
+            #{isFrozen,jdbcType=TINYINT UNSIGNED}
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            #{fid,jdbcType=INTEGER}, #{fuid,jdbcType=INTEGER}, #{walletCoinId,jdbcType=INTEGER}, #{famount,jdbcType=DECIMAL},
+            #{ffees,jdbcType=DECIMAL}, #{ftype,jdbcType=INTEGER}, #{fstatus,jdbcType=INTEGER},
+            #{fcreatetime,jdbcType=TIMESTAMP}, #{fupdatetime,jdbcType=TIMESTAMP}, #{txTime,jdbcType=TIMESTAMP},
+            #{fwithdrawaddress,jdbcType=VARCHAR}, #{frechargeaddress,jdbcType=VARCHAR},
+            #{funiquenumber,jdbcType=VARCHAR}, #{fconfirmations,jdbcType=INTEGER}, #{fhasowner,jdbcType=BIT},
+            #{fblocknumber,jdbcType=INTEGER}, #{fbtcfees,jdbcType=DECIMAL}, #{fadminid,jdbcType=INTEGER},
+            #{version,jdbcType=INTEGER}, #{fagentid,jdbcType=INTEGER}, #{fsource,jdbcType=INTEGER},
+            #{fnonce,jdbcType=INTEGER}, #{fplatform,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR},
+            #{isFrozen,jdbcType=TINYINT UNSIGNED}
+        </trim>
+    </update>
+
+
+    <!--
+      带有空值检查的存在即更新否则插入
+    -->
+    <update id="upsertSelective" parameterType="com.hotcoin.activity.model.po.VirtualCapitalOperationPo">
+        insert into f_virtual_capital_operation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fid !=null ">
+                fid,
+            </if>
+            <if test="fuid !=null ">
+                fuid,
+            </if>
+            <if test="walletCoinId !=null ">
+                wallet_coin_id,
+            </if>
+            <if test="famount !=null ">
+                famount,
+            </if>
+            <if test="ffees !=null ">
+                ffees,
+            </if>
+            <if test="ftype !=null ">
+                ftype,
+            </if>
+            <if test="fstatus !=null ">
+                fstatus,
+            </if>
+            <if test="fcreatetime !=null ">
+                fcreatetime,
+            </if>
+            <if test="fupdatetime !=null ">
+                fupdatetime,
+            </if>
+            <if test="txTime !=null ">
+                tx_time,
+            </if>
+            <if test="fwithdrawaddress !=null ">
+                fwithdrawaddress,
+            </if>
+            <if test="frechargeaddress !=null ">
+                frechargeaddress,
+            </if>
+            <if test="funiquenumber !=null ">
+                funiquenumber,
+            </if>
+            <if test="fconfirmations !=null ">
+                fconfirmations,
+            </if>
+            <if test="fhasowner !=null ">
+                fhasowner,
+            </if>
+            <if test="fblocknumber !=null ">
+                fblocknumber,
+            </if>
+            <if test="fbtcfees !=null ">
+                fbtcfees,
+            </if>
+            <if test="fadminid !=null ">
+                fadminid,
+            </if>
+            <if test="version !=null ">
+                version,
+            </if>
+            <if test="fagentid !=null ">
+                fagentid,
+            </if>
+            <if test="fsource !=null ">
+                fsource,
+            </if>
+            <if test="fnonce !=null ">
+                fnonce,
+            </if>
+            <if test="fplatform !=null ">
+                fplatform,
+            </if>
+            <if test="memo !=null ">
+                memo,
+            </if>
+            <if test="isFrozen !=null ">
+                is_frozen
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fid !=null ">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid !=null ">
+                fuid = #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="walletCoinId !=null ">
+                wallet_coin_id = #{walletCoinId,jdbcType=INTEGER},
+            </if>
+            <if test="famount !=null ">
+                famount = #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees !=null ">
+                ffees = #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="ftype !=null ">
+                ftype = #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus !=null ">
+                fstatus = #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="fcreatetime !=null ">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fupdatetime !=null ">
+                fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="txTime !=null ">
+                tx_time = #{txTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fwithdrawaddress !=null ">
+                fwithdrawaddress = #{fwithdrawaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="frechargeaddress !=null ">
+                frechargeaddress = #{frechargeaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="funiquenumber !=null ">
+                funiquenumber = #{funiquenumber,jdbcType=VARCHAR},
+            </if>
+            <if test="fconfirmations !=null ">
+                fconfirmations = #{fconfirmations,jdbcType=INTEGER},
+            </if>
+            <if test="fhasowner !=null ">
+                fhasowner = #{fhasowner,jdbcType=BIT},
+            </if>
+            <if test="fblocknumber !=null ">
+                fblocknumber = #{fblocknumber,jdbcType=INTEGER},
+            </if>
+            <if test="fbtcfees !=null ">
+                fbtcfees = #{fbtcfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fadminid !=null ">
+                fadminid = #{fadminid,jdbcType=INTEGER},
+            </if>
+            <if test="version !=null ">
+                version = #{version,jdbcType=INTEGER},
+            </if>
+            <if test="fagentid !=null ">
+                fagentid = #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="fsource !=null ">
+                fsource = #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fnonce !=null ">
+                fnonce = #{fnonce,jdbcType=INTEGER},
+            </if>
+            <if test="fplatform !=null ">
+                fplatform = #{fplatform,jdbcType=INTEGER},
+            </if>
+            <if test="memo !=null ">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="isFrozen !=null ">
+                is_frozen = #{isFrozen,jdbcType=TINYINT UNSIGNED}
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="fid !=null ">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="fuid !=null ">
+                fuid = #{fuid,jdbcType=INTEGER},
+            </if>
+            <if test="walletCoinId !=null ">
+                wallet_coin_id = #{walletCoinId,jdbcType=INTEGER},
+            </if>
+            <if test="famount !=null ">
+                famount = #{famount,jdbcType=DECIMAL},
+            </if>
+            <if test="ffees !=null ">
+                ffees = #{ffees,jdbcType=DECIMAL},
+            </if>
+            <if test="ftype !=null ">
+                ftype = #{ftype,jdbcType=INTEGER},
+            </if>
+            <if test="fstatus !=null ">
+                fstatus = #{fstatus,jdbcType=INTEGER},
+            </if>
+            <if test="fcreatetime !=null ">
+                fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fupdatetime !=null ">
+                fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="txTime !=null ">
+                tx_time = #{txTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fwithdrawaddress !=null ">
+                fwithdrawaddress = #{fwithdrawaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="frechargeaddress !=null ">
+                frechargeaddress = #{frechargeaddress,jdbcType=VARCHAR},
+            </if>
+            <if test="funiquenumber !=null ">
+                funiquenumber = #{funiquenumber,jdbcType=VARCHAR},
+            </if>
+            <if test="fconfirmations !=null ">
+                fconfirmations = #{fconfirmations,jdbcType=INTEGER},
+            </if>
+            <if test="fhasowner !=null ">
+                fhasowner = #{fhasowner,jdbcType=BIT},
+            </if>
+            <if test="fblocknumber !=null ">
+                fblocknumber = #{fblocknumber,jdbcType=INTEGER},
+            </if>
+            <if test="fbtcfees !=null ">
+                fbtcfees = #{fbtcfees,jdbcType=DECIMAL},
+            </if>
+            <if test="fadminid !=null ">
+                fadminid = #{fadminid,jdbcType=INTEGER},
+            </if>
+            <if test="version !=null ">
+                version = #{version,jdbcType=INTEGER},
+            </if>
+            <if test="fagentid !=null ">
+                fagentid = #{fagentid,jdbcType=INTEGER},
+            </if>
+            <if test="fsource !=null ">
+                fsource = #{fsource,jdbcType=INTEGER},
+            </if>
+            <if test="fnonce !=null ">
+                fnonce = #{fnonce,jdbcType=INTEGER},
+            </if>
+            <if test="fplatform !=null ">
+                fplatform = #{fplatform,jdbcType=INTEGER},
+            </if>
+            <if test="memo !=null ">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="isFrozen !=null ">
+                is_frozen = #{isFrozen,jdbcType=TINYINT UNSIGNED}
+            </if>
+        </trim>
+    </update>
+
+    <select id="query" resultMap="BaseResultMap"
+            parameterType="com.hotcoin.activity.model.po.VirtualCapitalOperationPo">
+        select
+        <include refid="Base_Column_List"/>
+        from f_virtual_capital_operation
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+    <select id="queryRechargeRecordByDtoParam" resultMap="RechargeResultMap"
+            parameterType="com.hotcoin.activity.model.param.VirtualCapitalOperationDto">
+        select
+        <include refid="Recharge_Column_List"/>
+        from f_virtual_capital_operation
+        <where>
+            <include refid="Base_Part_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(*) from f_virtual_capital_operation
+    </select>
+
+
+    <delete id="deleteBatch">
+        delete from f_virtual_capital_operation where fid in
+        <foreach item="fid" collection="list" open="(" separator="," close=")">
+            #{fid}
+        </foreach>
+    </delete>
+
+</mapper>

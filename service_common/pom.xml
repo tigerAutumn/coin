@@ -1,0 +1,42 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>hotcoin_parent</artifactId>
+        <groupId>com.hotcoin</groupId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>service_common</artifactId>
+    <packaging>jar</packaging>
+    <name>${project.artifactId}</name>
+
+    <properties>
+        <skip_maven_deploy>false</skip_maven_deploy>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.hotcoin</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+    
+    
+      <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>release</name>
+            <url> ${deployment.releases.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>sanpshots</name>
+            <url>${deployment.snapshots.url}</url>
+        </snapshotRepository>
+    </distributionManagement>    
+</project>

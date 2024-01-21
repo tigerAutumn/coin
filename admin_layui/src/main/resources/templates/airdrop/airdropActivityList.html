@@ -1,0 +1,79 @@
+<div class="layui-form" lay-href="admin/airdropActivityList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box" style="display: none">
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small"></button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+    	<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addAirdrop"
+					lay-href="admin/addAirdrop" lay-target="dialog" lay-height="500" lay-width="800">新增</button>
+		</div>
+    	<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/enableAirdrop"
+					lay-href="airdrop/enableAirdrop" lay-checked="id" lay-target="ajax" lay-tips="确定要启用吗?">启用</button>
+		</div>
+		<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/disableAirdrop"
+					lay-href="airdrop/disableAirdrop" lay-checked="id" lay-target="ajax" lay-tips="确定要禁用吗?">禁用</button>
+		</div>
+		<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/deleteAirdrop"
+					lay-href="airdrop/deleteAirdrop" lay-checked="id" lay-target="ajax" lay-tips="确定要删除吗?">删除</button>
+		</div>
+		<div class="layui-btn-group">
+			<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/updateAirdrop"
+					lay-href="admin/updateAirdrop" lay-checked="id" lay-target="dialog" lay-height="500" lay-width="800">修改</button>
+		</div>
+	</div>
+	
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>名称</th>
+                <th>标题</th>
+                <th>持有币种</th>
+                <th>持币最低额度</th>
+                <th>空投币种</th>
+                <th>空投类型</th>
+                <th>空头数量/比例</th>
+                <th>空投时间</th>
+                <th>活动开始时间</th>
+                <th>快照时间</th>
+                <th>快照状态</th>
+                <th>开启空投</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(airdropList)}">
+            <tr th:each="airdrop : ${airdropList.data}">
+                <td>
+                    <input type="checkbox" th:name="${airdrop.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${airdrop.id}"></td>
+                <td th:text="${airdrop.name}"></td>
+                <td th:text="${airdrop.title}"></td>
+                <td th:text="${airdrop.coinName}"></td>
+                <td th:text="${airdrop.minCount}"></td>
+                <td th:text="${airdrop.airdropCoinName}"></td>
+                <td th:text="${airdrop.type == 0? '数量':'比例'}"></td>
+                <td th:text="${airdrop.countOrRate}"></td>
+                <td th:text="${#dates.format(airdrop.airdropTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(airdrop.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(airdrop.snapshotTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${airdrop.snapshotStatus == 0? '未快照':(airdrop.snapshotStatus == 1? '快照中':'已快照')}"></td>
+                <td th:text="${airdrop.isOpen == 0? '否':'是'}"></td>
+                <td th:text="${airdrop.status == 0? '已禁用':'已启用'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(airdropList)}"
+         th:attr="lay-pages=${airdropList.totalPages}, lay-curr=${airdropList.currentPage}"></div>
+</div>

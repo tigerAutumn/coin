@@ -1,0 +1,60 @@
+<div class="layui-form" lay-href="admin/dictItemList.html" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+	    <div class="layui-inline" style="display:none;">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/closeDictItem.html"
+					lay-href="admin/closeDictItem.html" lay-checked="Id" lay-target="ajax" lay-tips="确定要禁用吗?">禁用</button>
+					
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/openDictItem.html"
+					lay-href="admin/openDictItem.html" lay-checked="Id" lay-target="ajax" lay-tips="确定要启用吗?">启用</button>	
+					
+    	<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addDictItem.html"
+				lay-href="/admin/addDictItem.html" lay-target="dialog">新增</button>
+				
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/deleteDictItem.html"
+					lay-href="admin/deleteDictItem.html" lay-checked="Id" lay-target="ajax" lay-tips="确定要删除吗?">删除</button>
+				
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/changeDictItem.html"
+				lay-href="/admin/changeDictItem.html" lay-checked="Id" lay-target="dialog">修改</button>
+				
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/dictItemAttrList.html"
+						lay-href="admin/dictItemAttrList.html" lay-checked="Id" lay-target="info">操作属性</button>
+	</div>
+	
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>字典id</th>
+                <th>字典名称</th>
+                <th>字典组id</th>
+                <th>排序字段</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(dictItemList)}">
+            <tr th:each="dictItem : ${dictItemList.data}">
+                <td>
+                    <input type="checkbox" th:name="${dictItem.Id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${dictItemStat.index + 1}"></td>
+                <td th:text="${dictItem.dictId}"></td>
+                <td th:text="${dictItem.dictName}"></td>
+                <td th:text="${dictItem.groupId}"></td>
+                <td th:text="${dictItem.sortOrder}"></td>
+                <td th:text="${dictItem.status == 1? '启用':'禁用'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(dictItemList)}"
+         th:attr="lay-pages=${dictItemList.totalPages}, lay-curr=${dictItemList.currentPage}"></div>
+</div>

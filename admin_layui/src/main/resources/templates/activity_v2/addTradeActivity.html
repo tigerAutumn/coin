@@ -1,0 +1,105 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/tradeActivity/save">
+    <div class="layui-form-item">
+        <label class="layui-form-label">交易币种：</label>
+        <div class="layui-input-block">
+            <select name="tradeCoin">
+                <option th:each="coin : ${coinsList}" th:value="${coin.shortName}"
+                        th:text="${coin.shortName}" id="coin"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">涉及交易对</label>
+        <div class="layui-input-block">
+            <div class="layui-input-block" id="coinPair">
+                <input type="checkbox" th:each="coinPair : ${conPairsList }" th:text="${coinPair}"
+                       th:name="${'coinPairs['+coinPair+']'}"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">充空投币种：</label>
+        <div class="layui-input-block">
+            <select name="airDropCoin">
+                <option th:each="coin : ${coinsList}" th:value="${coin.shortName}"
+                        th:text="${coin.shortName}"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">空投数量：</label>
+            <div class="layui-input-block">
+                <input name="airDropAmount" class="layui-input" lay-verify="required"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">空投总额度：</label>
+            <div class="layui-input-block">
+                <input name="airDropTotal" class="layui-input" lay-verify="required"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">空投类型：</label>
+            <div class="layui-input-block">
+                <select name="airDropType">
+                    <option th:value="amount" th:text="数量"></option>
+                    <!--                    <option th:value="rate" th:text="比例"></option>-->
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">空投规则≥：</label>
+            <div class="layui-input-block">
+                <input name="airDropRule" class="layui-input" lay-verify="required"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">开始时间：</label>
+        <div class="layui-input-block">
+            <input name="startTime" class="layui-input" lay-verify="required"
+                   onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束时间：</label>
+        <div class="layui-input-block">
+            <input name="endTime" class="layui-input" lay-verify="required"
+                   onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+        </div>
+    </div>
+</div>
+<!--<script>-->
+<!--    var $ = layui.jquery, jQuery = layui.jquery;-->
+<!--</script>-->
+<!--<script th:inline="javascript">-->
+<!--    var conPairsList = [[${conPairsList}]];-->
+<!--    var coinChange = function (coin) {-->
+<!--        $("#coinPair").empty();-->
+<!--        var list = [];-->
+<!--        for (i = 0; i < conPairsList.length; i++) {-->
+<!--            if (conPairsList[i].split('_')[0] == coin) {-->
+<!--                list.push(conPairsList[i]);-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+
+<!--    for(var i=0;i<list.length;i++){-->
+<!--        $("#coinPair").append('<input type="checkbox"  text="'+list[i]+'" th:name=coinPairs[+"'+list[i]+'"+]/>"')-->
+<!--    }-->
+<!--</script>-->

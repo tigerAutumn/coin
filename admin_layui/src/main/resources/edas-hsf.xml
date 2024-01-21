@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:hsf="http://www.taobao.com/hsf"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.taobao.com/hsf
+       http://www.taobao.com/hsf/hsf.xsd" default-autowire="byName">
+
+    <hsf:consumer id="adminManageServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminManageService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    
+    <hsf:consumer id="shardingFEntrustHistoryConsumer" interface="com.qkwl.common.rpc.sharding.IShardingFEntrustHistoryService"
+                  version="1.0" group="sharding">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminSystemCoinTypeServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.IAdminSystemCoinTypeService"
+                  version="2.0" group="admin">
+        <hsf:asyncallMethods>
+            <hsf:method name="createVirtualCoinAddress" type="callback"
+                        listener="com.qkwl.admin.layui.listener.HSFCallbackHandler"/>
+            <hsf:method name="updateVirtualCoinByEnabled" type="callback"
+                        listener="com.qkwl.admin.layui.listener.HSFCallbackHandler"/>
+        </hsf:asyncallMethods>
+    </hsf:consumer>
+
+
+    <hsf:consumer id="adminUserServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminUserService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminUserCapitalService" interface="com.qkwl.common.rpc.admin.IAdminUserCapitalService"
+                  version="2.0" group="admin" clientTimeout="50000">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminArticleServiceProvider" interface="com.qkwl.common.rpc.admin.IAdminArticleService"
+                  version="2.0" group="admin" clientTimeout="30000">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminSettingServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminSettingService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminQuestionServiceProvider" interface="com.qkwl.common.rpc.admin.IAdminQuestionService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminRewardCodeServiceProvider" interface="com.qkwl.common.rpc.admin.IAdminRewardCodeService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+	<hsf:consumer id="adminEntrustServerConsumer" interface="com.qkwl.common.rpc.admin.IAdminEntrustServer"
+				  version="2.0" group="admin" clientTimeout="30000">
+	</hsf:consumer>
+
+    <hsf:consumer id="adminLogServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminLogService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminDayLogServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminDayLogService"
+                  version="2.0" group="admin">
+        <hsf:asyncallMethods>
+            <hsf:method name="updateDaySum" type="callback"
+                        listener="com.qkwl.admin.layui.listener.HSFCallbackHandler"/>
+            <hsf:method name="updateDayTrade" type="callback"
+                        listener="com.qkwl.admin.layui.listener.HSFCallbackHandler"/>
+        </hsf:asyncallMethods>
+    </hsf:consumer>
+
+    <hsf:consumer id="marketServiceConsumer" interface="com.qkwl.common.rpc.market.IMarketService"
+                  version="2.0" group="job">
+        <hsf:asyncallMethods>
+            <hsf:method name="restMarket" type="callback"
+                        listener="com.qkwl.admin.layui.listener.HSFCallbackHandler"/>
+            <hsf:method name="initMarket" type="callback"
+                        listener="com.qkwl.admin.layui.listener.HSFCallbackHandler"/>
+        </hsf:asyncallMethods>
+    </hsf:consumer>
+
+
+    <hsf:consumer id="redisServiceConsumer" interface="com.qkwl.common.rpc.redis.IRedisService"
+                  version="2.0" group="admin" clientTimeout="50000">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminBeautifulServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminBeautifulService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminCsQuestionServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminCsQuestionService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminStatisticsServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminStatisticsService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminUserFinancesConsumer" interface="com.qkwl.common.rpc.admin.IAdminUserFinances"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminIdentityServiceProvider" interface="com.qkwl.common.rpc.admin.IAdminIdentityService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminSystemTradeTypeServiceProvider"
+                  interface="com.qkwl.common.rpc.admin.IAdminSystemTradeTypeService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminValidateServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.validate.IAdminValidateSettingService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminUserIdentityServiceProvider" interface="com.qkwl.common.rpc.admin.IAdminUserIdentityService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminReportServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminReportService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="adminApiAuthServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminApiAuthService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="adminCommissionRecordServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.IAdminCommissionRecordService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminC2CServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminC2CService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminOtcPaymentServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminOtcPaymentService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminCommissionServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminCommissionService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminActivityServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminActivityService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminAirdropServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminAirdropService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminOtcAdvertServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminOtcAdvertService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminOtcCurrencyServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminOtcCurrencyService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminOtcServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminOtcService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="adminOtcOrderServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminOtcOrderService"
+                  version="2.0" group="admin" clientTimeout="30000">
+    </hsf:consumer>
+    <hsf:consumer id="adminStatisticConsumer" interface="com.qkwl.common.rpc.admin.IAdminStatisticService"
+                  version="2.0" group="admin" clientTimeout="50000">
+    </hsf:consumer>
+    <hsf:consumer id="adminWhiteListServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminWhiteListService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="adminOrepoolConsumer" interface="com.qkwl.common.rpc.admin.IAdminOrepoolService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="adminMatchGroupConsumer" interface="com.qkwl.common.rpc.admin.IAdminMatchGroupService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="adminIncrementalQueryServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.IAdminIncrementalQueryService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminTradeTypeRulesServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.IAdminTradeTypeRulesService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminExcelExportTaskServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.IAdminExcelExportTaskService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    
+        <hsf:consumer id="carouselServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.ICarouselService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="AdminActivityRechargeServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.activity_v2.AdminActivityRechargeService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="AdminActivityRegisterServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.activity_v2.AdminActivityRegisterService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="AdminActivityTradeServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.activity_v2.AdminActivityTradeService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="AirdropActivityDetailV2ServiceConsumer"
+                  interface="com.qkwl.common.rpc.admin.activity_v2.AirdropActivityDetailV2Service"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminSmsConfigServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminSmsConfigService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminDictServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminDictService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+
+    <hsf:consumer id="adminOtcMerchantServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminOtcMerchantService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    
+    <hsf:consumer id="adminUserExtendServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminUserExtendService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="adminSystemRiskManagementServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminSystemRiskManagementService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    
+    <hsf:consumer id="adminHistoricVersionServiceConsumer" interface="com.qkwl.common.rpc.admin.IAdminHistoricVersionService"
+                  version="2.0" group="admin">
+    </hsf:consumer>
+    <hsf:consumer id="apiKeyServiceConsumer" interface="com.qkwl.common.rpc.user.IApiKeyService"
+				   version="1.0" group="user">
+	</hsf:consumer>
+	    <hsf:consumer id="openApiServiceConsumer" interface="com.qkwl.common.rpc.user.IOpenApiService"
+				   version="1.0" group="user">
+	</hsf:consumer>
+</beans>

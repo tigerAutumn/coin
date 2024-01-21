@@ -1,0 +1,76 @@
+<div class="layui-form" lay-href="admin/otcTransferRecord" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+    	<div class="layui-inline">
+            <label class="layui-form-label">虚拟币类型</label>
+            <div class="layui-input-inline">
+                <select type="combox" name="ftype">
+                    <option th:each="v:${typeMap}" th:text="${v.value}" th:value="${v.key}" th:selected="${v.key == ftype}"></option>
+                </select>
+            </div>
+        </div>
+	    <div class="layui-inline">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+                <input name="startTime" th:value="${startTime }" class="layui-input" style="width: 200px"
+                onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input name="endTime" th:value="${endTime }" class="layui-input" style="width: 200px"
+                onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+	<div class="layui-btn-box">
+		<div class="layui-btn-box">
+    		<div style="display:inline-block;border:1px solid #DCDCDC;height:32px;line-height:32px;padding:0 30px;">汇总转出数量：</div>
+	    	<div style="display:inline-block;border:1px solid #DCDCDC;height:32px;line-height:32px;padding:0 30px;margin-left:-4px;"
+	    	th:each="transferOutAmount : ${transferOutAmountList}">
+	    		<div th:text="${#decimal.format(transferOutAmount.amount)} + ${transferOutAmount.coinName}"></div>
+	    	</div>
+		</div>
+		<div class="layui-btn-box">
+	    	<div style="display:inline-block;border:1px solid #DCDCDC;height:32px;line-height:32px;padding:0 30px;">汇总转入数量：</div>
+	    	<div style="display:inline-block;border:1px solid #DCDCDC;height:32px;line-height:32px;padding:0 30px;margin-left:-4px;"
+	    	th:each="transferInAmount : ${transferInAmountList}">
+	    		<div th:text="${#decimal.format(transferInAmount.amount)} + ${transferInAmount.coinName}"></div>
+	    	</div>
+		</div>
+    	<button class="layui-btn layui-btn-small" lay-href="admin/importOtcTransferRecord"
+    		 lay-target="export" lay-tips="确实要导出这些记录吗?">导出到Excel</button>
+	</div>
+	
+    <div class="layui-conten-box">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>UID</th>
+                <th>币种类型</th>
+                <th>划转方向</th>
+                <th>划转数量</th>
+                <th>划转时间</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(otcTransferList)}">
+            <tr th:each="otcTransfer : ${otcTransferList.data}">
+                <td th:text="${otcTransferStat.index + 1}"></td>
+                <td th:text="${otcTransfer.userId}"></td>
+                <td th:text="${otcTransfer.coinName}"></td>
+                <td th:text="${otcTransfer.transferName}"></td>
+                <td th:text="${#decimal.format(otcTransfer.amount,1,10)}"></td>
+                <td th:text="${#dates.format(otcTransfer.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(otcTransferList)}"
+         th:attr="lay-pages=${otcTransferList.totalPages}, lay-curr=${otcTransferList.currentPage}"></div>
+</div>

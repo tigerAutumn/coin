@@ -1,0 +1,91 @@
+<div class="layui-form" lay-href="admin/tradePositionStatistic" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+    	<div class="layui-inline">
+            <div class="layui-input-inline">
+                <select name="coinId">
+                	<option th:each="type : ${allCoinType }" th:value="${type.id}" th:selected="${type.id eq coinId ?true:false}"
+                	th:text="${type.shortName}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <select name="tradeId">
+                	<option th:each="type : ${allTradeType }" th:value="${type.id}" th:selected="${type.id eq tradeId ?true:false}"
+                	th:text="${type.sellShortName}+'/'+${type.buyShortName}"></option>
+                </select>
+            </div>
+        </div>
+	    <div class="layui-inline">
+	    	<label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+                <input name=startDate th:value="${startDate }" class="layui-input" style="width: 200px"
+                onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD'})"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div>
+                <div th:text="'结束时间  '+${endDate}" style="width: 200px"></div>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input name="netCountStart" th:value="${netCountStart }" class="layui-input" placeholder="净交易数量筛选以上" style="width: 150px"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input name="netCountEnd" th:value="${netCountEnd }" class="layui-input" placeholder="净交易数量筛选以下" style="width: 150px"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input name="positionStart" th:value="${positionStart }" class="layui-input" placeholder="持仓数量筛选以上" style="width: 150px"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input name="positionEnd" th:value="${positionEnd }" class="layui-input" placeholder="持仓数量筛选以下" style="width: 150px"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box" style="display: inline;">
+		<button class="layui-btn layui-btn-small" lay-href="admin/importTradePosition" lay-target="export" lay-tips="确实要导出这些记录吗?">导出</button>
+	</div>
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th style="width: 100px">序号</th>
+                <th style="width: 200px">UID</th>
+                <th style="width: 200px">手机号码</th>
+                <th style="width: 200px">邮箱号码</th>
+                <th style="width: 200px">累计买入数量</th>
+                <th style="width: 200px">累计卖出数量</th>
+                <th style="width: 200px">净交易数量</th>
+                <th style="width: 200px">持仓数量</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(userTradePositionList)}">
+            <tr th:each="userTradePosition : ${userTradePositionList.data}">
+                <td th:text="${userTradePosition.sort}" style="width: 100px"></td>
+                <td th:text="${userTradePosition.userId}" style="width: 200px"></td>
+                <td th:text="${userTradePosition.telephone}" style="width: 200px"></td>
+                <td th:text="${userTradePosition.email}" style="width: 200px"></td>
+                <td th:text="${#decimal.format(userTradePosition.buyCount,1,10)}" style="width: 200px"></td>
+                <td th:text="${#decimal.format(userTradePosition.sellCount,1,10)}" style="width:200px"></td>
+                <td th:text="${#decimal.format(userTradePosition.netCount,1,10)}" style="width: 200px"></td>
+                <td th:text="${#decimal.format(userTradePosition.position,1,10)}" style="width: 200px"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(userTradePositionList)}"
+         th:attr="lay-pages=${userTradePositionList.totalPages}, lay-curr=${userTradePositionList.currentPage}"></div>
+</div>

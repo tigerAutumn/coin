@@ -1,0 +1,82 @@
+<div class="layui-form" lay-href="/friendLink/linkList"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+	<div class="layui-form-item layui-search-box">
+		<div class="layui-inline">
+			<label class="layui-form-label">关键字[名称、URL]：</label>
+			<div class="layui-input-inline">
+				<input name="keywords" th:value="${keywords }" class="layui-input" />
+			</div>
+		</div>
+		<div class="layui-inline">
+			<button class="layui-btn layui-btn-small">查询</button>
+		</div>
+	</div>
+	<hr />
+	<div class="layui-btn-box">
+		<button class="layui-btn layui-btn-small"
+			shiro:hasPermission="admin/addLink"
+			lay-href="friendLink/goLinkJSP?url=friendLink/addLink"
+			lay-target="dialog" lay-height="380" lay-width="800">新增</button>
+
+		<button class="layui-btn layui-btn-small"
+			shiro:hasPermission="admin/updateLink"
+			lay-href="friendLink/goLinkJSP?url=friendLink/updateLink"
+			lay-checked="fid" lay-target="dialog" lay-height="380"
+			lay-width="800">修改</button>
+
+		<button class="layui-btn layui-btn-small"
+			shiro:hasPermission="admin/deleteLink"
+			lay-href="friendLink/deleteLink" lay-checked="fid" lay-target="ajax"
+			lay-tips="确定要删除吗?">删除</button>
+
+	</div>
+	<div class="layui-conten-box">
+		<table class="layui-table" width="100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th>名称(简体)</th>
+					<th>名称(繁体)</th>
+					<th>名称(英语)</th>
+					<th>名称(韩语)</th>
+					<th>类型</th>
+					<th>链接(简体)</th>
+					<th>链接(繁体)</th>
+					<th>链接(英语)</th>
+					<th>链接(韩语)</th>
+					<th>顺序</th>
+					<th>描述(简体)</th>
+					<th>描述(繁体)</th>
+					<th>描述(英语)</th>
+					<th>描述(韩语)</th>
+					<th>创建时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="link : ${linkList.data}">
+					<td><input type="checkbox" th:name="${link.fid}"
+						lay-skin="primary" /></td>
+					<td th:text="${link.zhCNName}"></td>
+					<td th:text="${link.zhTWName}"></td>
+					<td th:text="${link.enUSName}"></td>
+					<td th:text="${link.koKRName}"></td>
+					<td th:text="${link.ftype_s}"></td>
+					<td th:text="${link.zhCNFurl}"></td>
+					<td th:text="${link.zhTWFurl}"></td>
+					<td th:text="${link.enUSFurl}"></td>
+					<td th:text="${link.koKRFurl}"></td>
+					<td th:text="${link.forder}"></td>
+					<td th:text="${link.zhCNFdescription}"></td>
+					<td th:text="${link.zhTWFdescription}"></td>
+					<td th:text="${link.enUSFdescription}"></td>
+					<td th:text="${link.koKRFdescription}"></td>
+					<td
+						th:text="${link.fcreatetime == null ? '':#dates.format(link.fcreatetime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="layui-laypage-box"
+		th:attr="lay-pages=${linkList.totalPages}, lay-curr=${linkList.currentPage}"></div>
+</div>

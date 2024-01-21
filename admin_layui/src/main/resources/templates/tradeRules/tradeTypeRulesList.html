@@ -1,0 +1,59 @@
+<div class="layui-form" lay-href="admin/tradeTypeRulesList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+	    <div class="layui-inline" style="display:none;">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+    	<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addTradeTypeRules"
+				lay-href="/admin/addTradeTypeRules" lay-target="dialog">新增</button>
+				
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/changeTradeTypeRules"
+				lay-href="/admin/changeTradeTypeRules" lay-checked="id" lay-target="dialog">修改</button>
+				
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/deleteTradeTypeRules"
+					lay-href="admin/deleteTradeTypeRules" lay-checked="id" lay-target="ajax" lay-tips="确定要删除吗?">删除</button>
+					
+					<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/openTradeTypeRules"
+					lay-href="admin/openTradeTypeRules" lay-checked="id" lay-target="ajax" lay-tips="确定要开启吗?">开启</button>	
+						
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/closeTradeTypeRules"
+					lay-href="admin/closeTradeTypeRules" lay-checked="id" lay-target="ajax" lay-tips="确定要关闭吗?">关闭</button>
+	</div>
+	
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>交易对</th>
+                <th>类型</th>
+                <th>规则id</th>
+                <th>限制规则</th>
+                <th>状态</th>
+                <th>结果码</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(tradeTypeRulesList)}">
+            <tr th:each="tradeTypeRules : ${tradeTypeRulesList.data}">
+                <td>
+                    <input type="checkbox" th:name="${tradeTypeRules.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${tradeTypeRules.id}"></td>
+                <td th:text="${tradeTypeRules.sellCoinName}+ '/' +${tradeTypeRules.buyCoinName}"></td>
+                <td th:text="${tradeTypeRules.rectypeName}"></td>
+                <td th:text="${tradeTypeRules.ruleidName}"></td>
+                <td th:text="${tradeTypeRules.exp}"></td>
+                <td th:text="${tradeTypeRules.status == 1? '开启':'关闭'}"></td>
+                <td th:text="${tradeTypeRules.resultcode}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(tradeTypeRulesList)}"
+         th:attr="lay-pages=${tradeTypeRulesList.totalPages}, lay-curr=${tradeTypeRulesList.currentPage}"></div>
+</div>

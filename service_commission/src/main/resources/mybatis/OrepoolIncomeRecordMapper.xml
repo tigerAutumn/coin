@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.commission.dao.OrepoolIncomeRecordMapper" >
+ 
+  
+	<insert id="insert" parameterType="com.qkwl.common.dto.orepool.OrepoolIncomeRecord">
+	  insert into orepool_income_record (plan_id, user_id, lock_coin_id, income_coin_id, lock_volume, income, create_time)
+	  values (#{planId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{lockCoinId,jdbcType=INTEGER}, #{incomeCoinId,jdbcType=INTEGER}, #{lockVolume,jdbcType=DECIMAL}, #{income,jdbcType=DECIMAL}, NOW())
+	</insert>
+  
+ 
+</mapper>

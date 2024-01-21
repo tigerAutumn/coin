@@ -1,0 +1,55 @@
+<div class="layui-form" lay-href="admin/innovationActivityLogList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+     	<div class="layui-inline">
+            <label class="layui-form-label">币种</label>
+            <div class="layui-input-inline">
+                <select name="coinId">
+	            	<option th:each="type : ${allCoinType }" th:value="${type.id}" th:text="${type.shortName}"
+	            	th:selected="${type.id eq coinId}"></option>
+	            </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+			<label class="layui-form-label">时间</label>
+			<div class="layui-input-inline">
+				<input name="datetime" th:value="${datetime}" class="layui-input" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD'})"
+					   style="width:160px;"/>
+			</div>
+		</div>
+        
+        <div class="layui-inline" >
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>UID</th>
+                <th>币种</th>
+                <th>手机号</th>
+                <th>邮箱号码</th>
+                <th>奖励数量</th>
+                <th>委单id</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(logList)}">
+            <tr th:each="log : ${logList.list}">
+                <td th:text="${log.id}"></td>
+                <td th:text="${log.uid}"></td>
+                <td th:text="${log.coinShortName}"></td>
+                <td th:text="${log.ftelephone}"></td>
+                <td th:text="${log.femail}"></td>
+                <td th:text="${#decimal.format(log.change,1,10)}"></td>
+                <td th:text="${log.srcId}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(logList)}"
+         th:attr="lay-pages=${logList.pages}, lay-curr=${currentPage}"></div>
+</div>

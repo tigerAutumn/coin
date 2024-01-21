@@ -1,0 +1,47 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/saveTradeTypeRules">
+    <div class="layui-form-item">
+        <label class="layui-form-label">交易对：</label>
+        <div class="layui-input-inline">
+            <select name="tradeid">
+            	<option th:each="type : ${allTradeType }" th:value="${type.id}" th:text="${type.sellShortName}+ '/' +${type.buyShortName}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型：</label>
+        <div class="layui-input-inline">
+            <select name="rectype">
+            	<option th:each="rectype : ${allRectype }" th:value="${rectype.id}" th:text="${rectype.name}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">规则id：</label>
+        <div class="layui-input-inline">
+            <select name="ruleid">
+            	<option th:each="ruleid : ${allRuleid }" th:value="${ruleid.id}" th:text="${ruleid.name}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">限制规则：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="exp" lay-verify="required" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态：</label>
+        <div class="layui-input-block">
+        	<select type="combox" name="status">
+				<option value="0" >关闭</option>
+				<option value="1" >开启</option>
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">结果码：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="resultcode" lay-verify="required" />
+        </div>
+    </div>
+</div>

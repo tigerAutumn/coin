@@ -1,0 +1,67 @@
+<div class="layui-form" lay-href="admin/orepoolRecordList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户UID：</label>
+            <div class="layui-input-inline">
+                <input name="userId" th:value="${userId }" class="layui-input"/>
+            </div>
+        </div>
+    	<div class="layui-inline">
+            <label class="layui-form-label">锁仓币种</label>
+            <div class="layui-input-inline">
+                <select name="lockCoinId">
+                	<option th:each="type : ${allCoinType }" th:value="${type.id}" th:selected="${type.id eq lockCoinId ?true:false}"
+                	th:text="${type.shortName}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+    	<button class="layui-btn layui-btn-small" lay-href="admin/importOrepoolRecord"
+    		 lay-target="export" lay-tips="确实要导出这些记录吗?">导出到Excel</button>
+	</div>
+    
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>锁仓项目</th>
+                <th>用户UID</th>
+                <th>锁仓币种</th>
+                <th>奖励币种</th>
+				<th>锁仓类型</th>
+                <th>锁仓数量</th>
+                <th>锁仓时长</th>
+                <th>收益/释放周期</th>
+                <th>已收益/释放数量</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(orepoolRecordList)}">
+            <tr th:each="orepoolRecord : ${orepoolRecordList.data}">
+                <td>
+                    <input type="checkbox" th:name="${orepoolRecord.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${orepoolRecord.id}"></td>
+                <td th:text="${orepoolRecord.name}"></td>
+                <td th:text="${orepoolRecord.userId}"></td>
+                <td th:text="${orepoolRecord.lockCoinName}"></td>
+                <td th:text="${orepoolRecord.incomeCoinName}"></td>
+                <td th:text="${orepoolRecord.type == 1? '定期锁仓':(orepoolRecord.type == 2? '活期锁仓':'创新区活期锁仓')}"></td>
+                <td th:text="${#decimal.format(orepoolRecord.lockVolume)}"></td>
+                <td th:text="${orepoolRecord.lockPeriod}"></td>
+                <td th:text="${orepoolRecord.incomePeriod}"></td>
+                <td th:text="${#decimal.format(orepoolRecord.profit)}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(orepoolRecordList)}"
+         th:attr="lay-pages=${orepoolRecordList.totalPages}, lay-curr=${orepoolRecordList.currentPage}"></div>
+</div>

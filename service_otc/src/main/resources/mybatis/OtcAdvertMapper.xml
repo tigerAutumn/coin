@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qkwl.service.otc.dao.OtcAdvertMapper">
+	
+	<select id="countAdvertListByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select
+        	count(a.id)
+        from 
+        	otc_advert a, f_user u, otc_user_ext e, system_coin_type t, otc_currency c 
+        where a.is_frozen = 0
+        	and a.status = 1
+        	and a.user_id = u.fid
+        	and u.fid = e.user_id
+        	and a.coin_id = t.id
+        	and a.currency_id = c.id
+        	and a.visiable_volume != 0
+        <if test="side != null">
+            and a.side = #{side}
+        </if>
+        <if test="currencyId != null">
+            and a.currency_id = #{currencyId}
+        </if>
+        <if test="bankinfoType != null">
+            and 
+            (a.bankinfo_first_id = #{bankinfoType}
+            or a.bankinfo_second_id = #{bankinfoType}
+            or a.bankinfo_third_id = #{bankinfoType})
+        </if>
+        <if test="amount != null">
+            and a.min_amount &lt;= #{amount}
+            and a.max_amount &gt;= #{amount}
+        </if>
+        <if test="coinId != null">
+            and a.coin_id = #{coinId}
+        </if>
+    </select>
+
+	<select id="getAdvertPageList" resultType="com.qkwl.common.dto.otc.OtcAdvert" parameterType="java.util.Map">
+        select
+        	a.*, u.fnickname nickname, 
+        	u.photo photo, e.cmp_orders cmpOrders, CONCAT(ROUND((e.good_evaluation/(e.good_evaluation+e.bad_evaluation)*100),2),'%') applauseRate,
+        	e.otc_user_type otcUserType, t.short_name coinName, c.currency_code currencyName
+        from 
+        	otc_advert a, f_user u, otc_user_ext e, system_coin_type t, otc_currency c 
+        where a.is_frozen = 0
+        	and a.status = 1
+        	and a.user_id = u.fid
+        	and u.fid = e.user_id
+        	and a.coin_id = t.id
+        	and a.currency_id = c.id
+        	and a.visiable_volume != 0
+        <if test="side != null">
+            and a.side = #{side}
+        </if>
+        <if test="currencyId != null">
+            and a.currency_id = #{currencyId}
+        </if>
+        <if test="bankinfoType != null">
+            and 
+            (a.bankinfo_first_id = #{bankinfoType}
+            or a.bankinfo_second_id = #{bankinfoType}
+            or a.bankinfo_third_id = #{bankinfoType})
+        </if>
+        <if test="amount != null">
+            and a.min_amount &lt;= #{amount}
+            and a.max_amount &gt;= #{amount}
+        </if>
+        <if test="coinId != null">
+            and a.coin_id = #{coinId}
+        </if>
+        order by 
+	        case 
+				when a.price_type=2 then a.fixed_price
+				when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+				when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+			end
+		<if test="side == 'BUY'">
+            DESC
+        </if>
+		,
+        a.update_time,
+        e.otc_user_type desc
+        limit #{offset},#{limit}
+    </select>
+    
+    <select id="getOverdueAds" resultType="com.qkwl.common.dto.otc.OtcAdvert">
+    	select * from otc_advert where NOW() > overdue_time and status != 3
+    </select>
+    
+    <select id="getFixedAds" resultType="com.qkwl.common.dto.otc.OtcAdvert">
+    	select * from otc_advert 
+    	where price_type = 2 and status = 1
+			and min_amount > fixed_price * visiable_volume
+    </select>
+    
+    <select id="getFloatAds" resultType="com.qkwl.common.dto.otc.OtcAdvert" parameterType="java.util.Map">
+    	select * from otc_advert 
+    	where price_type = 1 and status = 1
+    		and	coin_id = #{coinId} and currency_id = #{currencyId}
+				and 
+				case 
+					when float_market = 1 then min_amount > #{averagePrice} * price_rate * visiable_volume
+					when float_market = 2 then min_amount > #{binancePrice} * price_rate * visiable_volume
+					when float_market = 3 then min_amount > #{hotcoinPrice} * price_rate * visiable_volume
+				end
+    </select>
+    
+    <select id="getProcessingOrders" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    	select count(id) from otc_order where ad_id = #{advertId} and status in (1,2,6)
+    </select>
+    
+    <select id="selectAdvertPrice" resultType="com.qkwl.common.dto.otc.OtcAdvertPrice" parameterType="java.util.Map">
+    	SELECT  SUM(t2.minFixedSellPrice) minFixedSellPrice,SUM(t2.maxFixedBuyPrice) maxFixedBuyPrice,
+		SUM(t2.minAverageSellRate) minAverageSellRate,SUM(t2.minHotcoinSellRate) minHotcoinSellRate,
+		SUM(t2.maxAverageBuyRate) maxAverageBuyRate,SUM(t2.maxHotcoinBuyRate) maxHotcoinBuyRate
+		 FROM(   
+		    SELECT SUM(IF(t1.price_type=2 AND t1.side='SELL' AND t1.float_market=0, price, 0)) AS minFixedSellPrice  ,
+		           SUM(IF(t1.price_type=2 AND t1.side='BUY' AND t1.float_market=0,price, 0)) AS maxFixedBuyPrice  ,
+		           SUM(IF(t1.price_type=1 AND t1.side='SELL' AND t1.float_market=1,price, 0)) AS minAverageSellRate  ,
+		           SUM(IF(t1.price_type=1 AND t1.side='SELL' AND t1.float_market=2,price, 0)) AS minHotcoinSellRate  ,
+		           SUM(IF(t1.price_type=1 AND t1.side='BUY' AND t1.float_market=1,price, 0)) AS maxAverageBuyRate  ,
+		           SUM(IF(t1.price_type=1 AND t1.side='BUY' AND t1.float_market=2,price, 0)) AS maxHotcoinBuyRate
+		    FROM (
+		      SELECT price_type,side,float_market, MIN(price_rate) AS price FROM otc_advert WHERE STATUS = 1 AND price_type = 1 AND coin_id = #{coinId} AND currency_id = #{currencyId} AND side = 'SELL'  GROUP BY float_market
+		      UNION    
+		      SELECT price_type,side,float_market,MAX(price_rate) AS price FROM otc_advert WHERE STATUS = 1 AND price_type = 1 AND coin_id = #{coinId} AND currency_id = #{currencyId} AND side = 'BUY' GROUP BY float_market
+		      UNION 
+		      SELECT price_type,side,0 AS float_market, MIN(fixed_price) AS price FROM otc_advert WHERE STATUS = 1 AND price_type = 2 AND coin_id = #{coinId} AND currency_id = #{currencyId} AND side = 'SELL'
+		      UNION 
+		      SELECT price_type,side,0 AS float_market,MAX(fixed_price) AS price FROM otc_advert WHERE STATUS = 1 AND price_type = 2  AND coin_id = #{coinId} AND currency_id = #{currencyId} AND side = 'BUY'
+		      ) t1 GROUP BY t1.price_type,t1.side,t1.float_market
+		      ) t2
+    </select>
+    
+    <select id="getAllPaymentList" resultType="com.qkwl.common.dto.otc.OtcPayment" parameterType="java.lang.Integer">
+    select 
+    	p.id, p.picture, p.chinese_name 
+    from 
+    	f_user_bankinfo b, otc_payment p
+    where b.fuid = #{uid} 
+    	and b.is_default = 1
+    	and b.ftype = p.id
+    </select>
+    
+	<select id="selectMerchantAdvert" resultType="com.qkwl.common.dto.otc.OtcAdvert" parameterType="java.util.Map">
+		select
+        	a.*, t.short_name coinName, t.web_logo coinIcon, c.currency_code currencyName
+        from 
+        	otc_advert a, system_coin_type t, otc_currency c 
+        where  a.coin_id = t.id
+        	and a.currency_id = c.id
+        	and a.user_id = #{userId}
+        	and a.is_frozen = 0
+        <if test="side != null">
+            and a.side = #{side}
+        </if>
+        order by a.create_time desc
+    </select>
+    
+    <select id="selectOtherMerchantAdvert" resultType="com.qkwl.common.dto.otc.OtcAdvert" parameterType="java.util.Map">
+		select
+        	a.*, t.short_name coinName, t.web_logo coinIcon, c.currency_code currencyName
+        from 
+        	otc_advert a, system_coin_type t, otc_currency c 
+        where  a.coin_id = t.id
+        	and a.currency_id = c.id
+        	and a.user_id = #{userId}
+        	and a.is_frozen = 0
+        	and a.status = 1
+        <if test="side != null">
+            and a.side = #{side}
+        </if>
+        order by a.create_time desc
+    </select>
+    
+    <select id="countMyAdvertByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select
+        	count(a.id)
+        from 
+        	otc_advert a, system_coin_type t, otc_currency c 
+        where  a.coin_id = t.id
+        	and a.currency_id = c.id
+        	and a.user_id = #{userId}
+        	and a.is_frozen = 0
+        <if test="side != null">
+            and a.side = #{side}
+        </if>
+        <if test="currencyId != null">
+            and a.currency_id = #{currencyId}
+        </if>
+        <if test="coinId != null">
+            and a.coin_id = #{coinId}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+    </select>
+
+
+	<select id="getMyAdvert" resultType="com.qkwl.common.dto.otc.OtcAdvert" parameterType="java.util.Map">
+        select 
+			a.*, t.short_name coinName, c.currency_code currencyName 
+        from 
+        	otc_advert a, system_coin_type t, otc_currency c 
+        where a.user_id = #{userId}
+        	and a.coin_id = t.id
+        	and a.currency_id = c.id
+        	and a.is_frozen = 0
+        <if test="side != null">
+            and a.side = #{side}
+        </if>
+        <if test="currencyId != null">
+            and a.currency_id = #{currencyId}
+        </if>
+        <if test="coinId != null">
+            and a.coin_id = #{coinId}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+        order by a.create_time desc
+        limit #{offset},#{limit}
+    </select>
+    
+    
+    <select id="selectAdvertById" resultType="com.qkwl.common.dto.otc.OtcAdvert" parameterType="java.lang.Integer">
+        select a.*, (a.price_rate - 1) premiumRate, t.short_name coinName, t.web_logo coinIcon, 
+        c.currency_code currencyName, c.chinese_name currencyChineseName
+        from otc_advert a, system_coin_type t, otc_currency c 
+         where a.id = #{id}
+         	and a.coin_id = t.id
+        	and a.currency_id = c.id
+    </select>
+	
+	<select id="selectAdvertByIdLock" resultType="com.qkwl.common.dto.otc.OtcAdvert" parameterType="java.lang.Integer">
+        select * 
+        from otc_advert where id = #{id} for update
+    </select>
+    
+   <update id="updateOtcAdvert" parameterType="com.qkwl.common.dto.otc.OtcAdvert" >
+    update otc_advert 
+	<set >
+      <if test="userId != null" >
+        user_id = #{userId},
+      </if>
+      <if test="status != null" >
+    	status = #{status},
+      </if>
+      <if test="isFrozen != null" >
+    	is_frozen = #{isFrozen},
+      </if>
+      <if test="side != null" >
+        side = #{side},
+      </if>
+      <if test="coinId != null" >
+        coin_id = #{coinId},
+      </if>
+      <if test="currencyId != null" >
+        currency_id = #{currencyId},
+      </if>
+      <if test="priceType != null" >
+        price_type = #{priceType},
+      </if>
+      <if test="floatMarket != null" >
+        float_market = #{floatMarket},
+      </if>
+      <if test="priceRate != null" >
+        price_rate = #{priceRate},
+      </if>
+      <if test="acceptablePrice != null" >
+        acceptable_price = #{acceptablePrice},
+      </if>
+      <if test="fixedPrice != null" >
+        fixed_price = #{fixedPrice},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume},
+      </if>
+      <if test="visiableVolume != null" >
+        visiable_volume = #{visiableVolume},
+      </if>
+      <if test="tradingVolume != null" >
+        trading_volume = #{tradingVolume},
+      </if>
+      <if test="frozenVolume != null" >
+        frozen_volume = #{frozenVolume},
+      </if>
+      <if test="feeRate != null" >
+        fee_rate = #{feeRate},
+      </if>
+      <if test="bankinfoFirstId != null" >
+        bankinfo_first_id = #{bankinfoFirstId},
+      </if>
+      <if test="bankinfoSecondId != null" >
+        bankinfo_second_id = #{bankinfoSecondId},
+      </if>
+      <if test="bankinfoThirdId != null" >
+        bankinfo_third_id = #{bankinfoThirdId},
+      </if>
+      <if test="minAmount != null" >
+        min_amount = #{minAmount},
+      </if>
+      <if test="maxAmount != null" >
+        max_amount = #{maxAmount},
+      </if>
+      <if test="maxPaytime != null" >
+        max_paytime = #{maxPaytime},
+      </if>
+      <if test="description != null" >
+        description = #{description},
+      </if>
+      <if test="note != null" >
+        note = #{note},
+      </if>
+      <if test="greetings != null" >
+        greetings = #{greetings},
+      </if>
+      <if test="tag != null" >
+        tag = #{tag},
+      </if>
+      <if test="maxProcessing != null" >
+        max_processing = #{maxProcessing},
+      </if>
+      <if test="successCount != null" >
+        success_count = #{successCount},
+      </if>
+      <if test="overdueTime != null" >
+        overdue_time = #{overdueTime},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where 
+    	id = #{id,jdbcType=INTEGER}
+   </update>
+   
+   <insert id="insertOtcAdvert" parameterType="com.qkwl.common.dto.otc.OtcAdvert" useGeneratedKeys="true" keyProperty="id">
+    insert into otc_advert
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isFrozen != null" >
+        is_frozen,
+      </if>
+      <if test="side != null" >
+        side,
+      </if>
+      <if test="coinId != null" >
+        coin_id,
+      </if>
+      <if test="currencyId != null" >
+        currency_id,
+      </if>
+      <if test="priceType != null" >
+        price_type,
+      </if>
+      <if test="floatMarket != null" >
+        float_market,
+      </if>
+      <if test="priceRate != null" >
+        price_rate,
+      </if>
+      <if test="acceptablePrice != null" >
+        acceptable_price,
+      </if>
+      <if test="fixedPrice != null" >
+        fixed_price,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="visiableVolume != null" >
+        visiable_volume,
+      </if>
+      <if test="tradingVolume != null" >
+        trading_volume,
+      </if>
+      <if test="frozenVolume != null" >
+        frozen_volume,
+      </if>
+      <if test="feeRate != null" >
+        fee_rate,
+      </if>
+      <if test="bankinfoFirstId != null" >
+        bankinfo_first_id,
+      </if>
+      <if test="bankinfoSecondId != null" >
+        bankinfo_second_id,
+      </if>
+      <if test="bankinfoThirdId != null" >
+        bankinfo_third_id,
+      </if>
+      <if test="minAmount != null" >
+        min_amount,
+      </if>
+      <if test="maxAmount != null" >
+        max_amount,
+      </if>
+      <if test="maxPaytime != null" >
+        max_paytime,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="greetings != null" >
+        greetings,
+      </if>
+      <if test="tag != null" >
+        tag,
+      </if>
+      <if test="maxProcessing != null" >
+        max_processing,
+      </if>
+      <if test="successCount != null" >
+        success_count,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="overdueTime != null" >
+        overdue_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="isFrozen != null" >
+        #{isFrozen},
+      </if>
+      <if test="side != null" >
+        #{side},
+      </if>
+      <if test="coinId != null" >
+        #{coinId},
+      </if>
+      <if test="currencyId != null" >
+        #{currencyId},
+      </if>
+      <if test="priceType != null" >
+        #{priceType},
+      </if>
+      <if test="floatMarket != null" >
+        #{floatMarket},
+      </if>
+      <if test="priceRate != null" >
+        #{priceRate},
+      </if>
+      <if test="acceptablePrice != null" >
+        #{acceptablePrice},
+      </if>
+      <if test="fixedPrice != null" >
+        #{fixedPrice},
+      </if>
+      <if test="volume != null" >
+        #{volume},
+      </if>
+      <if test="visiableVolume != null" >
+        #{visiableVolume},
+      </if>
+      <if test="tradingVolume != null" >
+        #{tradingVolume},
+      </if>
+      <if test="frozenVolume != null" >
+        #{frozenVolume},
+      </if>
+      <if test="feeRate != null" >
+        #{feeRate},
+      </if>
+      <if test="bankinfoFirstId != null" >
+        #{bankinfoFirstId},
+      </if>
+      <if test="bankinfoSecondId != null" >
+        #{bankinfoSecondId},
+      </if>
+      <if test="bankinfoThirdId != null" >
+        #{bankinfoThirdId},
+      </if>
+      <if test="minAmount != null" >
+        #{minAmount},
+      </if>
+      <if test="maxAmount != null" >
+        #{maxAmount},
+      </if>
+      <if test="maxPaytime != null" >
+        #{maxPaytime},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="note != null" >
+        #{note},
+      </if>
+      <if test="greetings != null" >
+        #{greetings},
+      </if>
+      <if test="tag != null" >
+        #{tag},
+      </if>
+      <if test="maxProcessing != null" >
+        #{maxProcessing},
+      </if>
+      <if test="successCount != null" >
+        #{successCount},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+      <if test="overdueTime != null" >
+        #{overdueTime},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime},
+      </if>
+    </trim>
+  </insert>
+   
+   <select id="getCoinName" resultType="java.lang.String" parameterType="java.lang.Integer">
+   		select short_name from system_coin_type where id = #{coinId}
+   </select>
+   
+   <select id="getCurrencyName" resultType="java.lang.String" parameterType="java.lang.Integer">
+   		select currency_code from otc_currency where id = #{currencyId}
+   </select>
+   
+   <select id="getOrderVolume" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+   		select ifnull(sum(o.ad_fee + o.amount), 0) from otc_advert a, otc_order o 
+   		where a.id = o.ad_id 
+   			and o.create_time >= a.update_time
+   			and a.id = #{advertId} 
+   			and o.status in (1,2,3,6)
+   </select>
+   
+   <select id="countProcessingAdvert" resultType="java.lang.Integer" parameterType="com.qkwl.common.dto.otc.OtcAdvert">
+        select count(id) from otc_advert
+        	where user_id = #{userId} and coin_id = #{coinId} and side = #{side} and status = 1
+    </select>
+    
+    <select id="countAdvertByUid" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+   		select count(id) from otc_advert where user_id = #{userId}
+   </select>
+   
+   <select id="getBestAdvertList" resultType="com.qkwl.common.dto.otc.OtcAdvert" parameterType="java.util.Map">
+        select
+        	a.*, 1 as payment, t.short_name coinName, c.currency_code currencyName
+        from 
+        	otc_advert a, otc_user_ext e, system_coin_type t, otc_currency c 
+        where a.is_frozen = 0
+        	and a.status = 1
+        	and a.user_id = e.user_id
+        	and a.coin_id = t.id
+        	and a.currency_id = c.id
+        <if test="type == 1">
+        	and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*a.visiable_volume &gt;= #{amount}
+            and #{amount} &gt;= a.min_amount
+            and #{amount} &lt;= a.max_amount
+		</if>
+		<if test="type == 2">
+			and a.visiable_volume &gt;= #{amount}
+			and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*#{amount} &gt;= a.min_amount
+            and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*#{amount} &lt;= a.max_amount
+		</if>
+            and a.side = #{side} 
+            and a.coin_id = #{coinId}
+            and 
+            (a.bankinfo_first_id = 1
+            or a.bankinfo_second_id = 1
+            or a.bankinfo_third_id = 1)
+        order by 
+	        case 
+				when a.price_type=2 then a.fixed_price
+				when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+				when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+			end
+		<if test="side == 'BUY'">
+            DESC
+        </if>
+		,
+        a.update_time,
+        e.otc_user_type desc
+        limit 1
+        union all 
+        (select
+        	a.*, 2 as payment, t.short_name coinName, c.currency_code currencyName
+        from 
+        	otc_advert a, otc_user_ext e, system_coin_type t, otc_currency c 
+        where a.is_frozen = 0
+        	and a.status = 1
+        	and a.user_id = e.user_id
+        	and a.coin_id = t.id
+        	and a.currency_id = c.id
+        <if test="type == 1">
+        	and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*a.visiable_volume &gt;= #{amount}
+            and #{amount} &gt;= a.min_amount
+            and #{amount} &lt;= a.max_amount
+		</if>
+		<if test="type == 2">
+			and a.visiable_volume &gt;= #{amount}
+			and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*#{amount} &gt;= a.min_amount
+            and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*#{amount} &lt;= a.max_amount
+		</if>
+            and a.side = #{side} 
+            and a.coin_id = #{coinId}
+            and 
+            (a.bankinfo_first_id = 2
+            or a.bankinfo_second_id = 2
+            or a.bankinfo_third_id = 2)
+        order by 
+	        case 
+				when a.price_type=2 then a.fixed_price
+				when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+				when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+			end
+		<if test="side == 'BUY'">
+            DESC
+        </if>
+		,
+        a.update_time,
+        e.otc_user_type desc
+        limit 1)
+        union all 
+        (select
+        	a.*, 3 as payment, t.short_name coinName, c.currency_code currencyName
+        from 
+        	otc_advert a, otc_user_ext e, system_coin_type t, otc_currency c 
+        where a.is_frozen = 0
+        	and a.status = 1
+        	and a.user_id = e.user_id
+        	and a.coin_id = t.id
+        	and a.currency_id = c.id
+        	<if test="type == 1">
+        	and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*a.visiable_volume &gt;= #{amount}
+            and #{amount} &gt;= a.min_amount
+            and #{amount} &lt;= a.max_amount
+		</if>
+		<if test="type == 2">
+			and a.visiable_volume &gt;= #{amount}
+			and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*#{amount} &gt;= a.min_amount
+            and (case 
+					when a.price_type=2 then a.fixed_price
+					when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+					when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+				end)*#{amount} &lt;= a.max_amount
+		</if>
+            and a.side = #{side} 
+            and a.coin_id = #{coinId}
+            and 
+            (a.bankinfo_first_id = 3
+            or a.bankinfo_second_id = 3
+            or a.bankinfo_third_id = 3)
+        order by 
+	        case 
+				when a.price_type=2 then a.fixed_price
+				when a.price_type=1 and a.float_market = 1 then a.price_rate * #{averagePrice}
+				when a.price_type=1 and a.float_market = 2 then a.price_rate * #{hotcoinPrice}
+			end
+		<if test="side == 'BUY'">
+            DESC
+        </if>
+		,
+        a.update_time,
+        e.otc_user_type desc
+        limit 1)
+    </select>
+    
+    <select id="getAdvertFrozen" resultType="java.math.BigDecimal">
+    	select ifnull(sum(volume*(1+fee_rate)), 0)
+    	from otc_advert 
+    	where user_id = #{userId}
+    		and coin_id = #{coinId}
+    		and side = "SELL"
+    		and status = 1
+    </select>
+    
+    <select id="getOrderConsumption" resultType="java.math.BigDecimal">
+    	select ifnull(sum(o.ad_fee + o.amount), 0) from otc_advert a, otc_order o 
+   		where a.user_id = #{userId}
+   			and a.coin_id = #{coinId}
+   			and a.side = "SELL"
+   			and a.status = 1 
+   			and a.id = o.ad_id 
+   			and o.create_time >= a.update_time
+   			and o.status in (1,2,3,6);
+    </select>
+    
+    <select id="getOrderFrozen" resultType="java.math.BigDecimal">
+   		select ifnull(sum(
+   		case when o.ad_user_id = #{userId} then (o.ad_fee + o.amount)
+   			 when o.user_id = #{userId} then o.amount
+   		end), 0)
+   		from otc_order o, otc_advert a
+   		where o.seller_id = #{userId}
+   			and a.coin_id = #{coinId}
+   			and o.ad_id = a.id
+   			and o.status in (1,2,6)
+   </select>
+</mapper>

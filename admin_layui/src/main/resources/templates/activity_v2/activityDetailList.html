@@ -1,0 +1,80 @@
+<div class="layui-form" lay-href="/admin/activityDetailList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box" >
+        <div class="layui-inline" style="display: none">
+            <label class="layui-form-label">活动币种</label>
+            <div class="layui-input-inline">
+                <input name="activityCoin" th:if="${not #lists.isEmpty(activityDetailList)}"th:value="${activityDetailList.get(0).getActivityCoin()}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline" style="display: none">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-inline">
+                <input name="type" th:if="${not #lists.isEmpty(activityDetailList)}"th:value="${activityDetailList.get(0).getActivityType()}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline" style="display: none">
+            <label class="layui-form-label">空投币种</label>
+            <div class="layui-input-inline">
+                <input name="airDropCoin" th:if="${not #lists.isEmpty(activityDetailList)}"th:value="${activityDetailList.get(0).getAirDropCoin()}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline" style="display: none">
+            <label class="layui-form-label">空投类型</label>
+            <div class="layui-input-inline">
+                <input name="airDropType" th:if="${not #lists.isEmpty(activityDetailList)}"th:value="${activityDetailList.get(0).getTypeDetail()}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline" style="display: none">
+            <label class="layui-form-label">空投规则</label>
+            <div class="layui-input-inline">
+                <input name="airDropRule" th:if="${not #lists.isEmpty(activityDetailList)}"th:value="${activityDetailList.get(0).getRule()}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline" style="display: none">
+            <label class="layui-form-label">空投时间</label>
+            <div class="layui-input-inline">
+                <input name="airDropTime" th:if="${not #lists.isEmpty(activityDetailList)}"th:value="${activityDetailList.get(0).getAirDropTime().getTime()}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">用户UID</label>
+            <div class="layui-input-inline">
+                <input name="userId" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+
+    <div class="layui-conten-box">
+        <table class="layui-table" width="100%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>用户UID</th>
+                <th>空投币种</th>
+                <th>空投数量</th>
+                <th>空投时间</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(activityDetailList)}">
+            <tr th:each="item : ${activityDetailList}">
+                <td>
+                    <input type="checkbox" th:name="${item.userId}" lay-skin="primary"/>
+                </td>
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.userId}"></td>
+                <td th:text="${item.airDropCoin}"></td>
+                <td th:text="${item.airDropTotal}"></td>
+                <td th:text="${#dates.format(item.airDropTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${item.status == 1? '已发放':(item.status==0? '未发放':'发放失败')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:attr="lay-pages=${pages}, lay-curr=${currentPage}"></div>
+</div>

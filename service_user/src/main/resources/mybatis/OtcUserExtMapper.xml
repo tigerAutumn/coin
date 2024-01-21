@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.user.dao.OtcUserExtMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.otc.OtcUserExt" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="otc_user_type" property="otcUserType" jdbcType="INTEGER" />
+    <result column="succ_amt" property="succAmt" jdbcType="DECIMAL" />
+    <result column="cmp_orders" property="cmpOrders" jdbcType="INTEGER" />
+    <result column="good_evaluation" property="goodEvaluation" jdbcType="INTEGER" />
+    <result column="bad_evaluation" property="badEvaluation" jdbcType="INTEGER" />
+    <result column="win_appeal" property="winAppeal" jdbcType="INTEGER" />
+    <result column="sum_appeal" property="sumAppeal" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, otc_user_type, succ_amt, cmp_orders, good_evaluation, bad_evaluation, 
+    win_appeal, sum_appeal, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from otc_user_ext
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from otc_user_ext
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.otc.OtcUserExt" >
+    insert into otc_user_ext (id, user_id, otc_user_type, 
+      succ_amt, cmp_orders, good_evaluation, 
+      bad_evaluation, win_appeal, sum_appeal, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{otcUserType,jdbcType=INTEGER}, 
+      #{succAmt,jdbcType=DECIMAL}, #{cmpOrders,jdbcType=INTEGER}, #{goodEvaluation,jdbcType=INTEGER}, 
+      #{badEvaluation,jdbcType=INTEGER}, #{winAppeal,jdbcType=INTEGER}, #{sumAppeal,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.otc.OtcUserExt" >
+    insert into otc_user_ext
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="otcUserType != null" >
+        otc_user_type,
+      </if>
+      <if test="succAmt != null" >
+        succ_amt,
+      </if>
+      <if test="cmpOrders != null" >
+        cmp_orders,
+      </if>
+      <if test="goodEvaluation != null" >
+        good_evaluation,
+      </if>
+      <if test="badEvaluation != null" >
+        bad_evaluation,
+      </if>
+      <if test="winAppeal != null" >
+        win_appeal,
+      </if>
+      <if test="sumAppeal != null" >
+        sum_appeal,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="otcUserType != null" >
+        #{otcUserType,jdbcType=INTEGER},
+      </if>
+      <if test="succAmt != null" >
+        #{succAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="cmpOrders != null" >
+        #{cmpOrders,jdbcType=INTEGER},
+      </if>
+      <if test="goodEvaluation != null" >
+        #{goodEvaluation,jdbcType=INTEGER},
+      </if>
+      <if test="badEvaluation != null" >
+        #{badEvaluation,jdbcType=INTEGER},
+      </if>
+      <if test="winAppeal != null" >
+        #{winAppeal,jdbcType=INTEGER},
+      </if>
+      <if test="sumAppeal != null" >
+        #{sumAppeal,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.otc.OtcUserExt" >
+    update otc_user_ext
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="otcUserType != null" >
+        otc_user_type = #{otcUserType,jdbcType=INTEGER},
+      </if>
+      <if test="succAmt != null" >
+        succ_amt = #{succAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="cmpOrders != null" >
+        cmp_orders = #{cmpOrders,jdbcType=INTEGER},
+      </if>
+      <if test="goodEvaluation != null" >
+        good_evaluation = #{goodEvaluation,jdbcType=INTEGER},
+      </if>
+      <if test="badEvaluation != null" >
+        bad_evaluation = #{badEvaluation,jdbcType=INTEGER},
+      </if>
+      <if test="winAppeal != null" >
+        win_appeal = #{winAppeal,jdbcType=INTEGER},
+      </if>
+      <if test="sumAppeal != null" >
+        sum_appeal = #{sumAppeal,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.otc.OtcUserExt" >
+    update otc_user_ext
+    set user_id = #{userId,jdbcType=INTEGER},
+      otc_user_type = #{otcUserType,jdbcType=INTEGER},
+      succ_amt = #{succAmt,jdbcType=DECIMAL},
+      cmp_orders = #{cmpOrders,jdbcType=INTEGER},
+      good_evaluation = #{goodEvaluation,jdbcType=INTEGER},
+      bad_evaluation = #{badEvaluation,jdbcType=INTEGER},
+      win_appeal = #{winAppeal,jdbcType=INTEGER},
+      sum_appeal = #{sumAppeal,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

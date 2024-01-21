@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.qkwl.service.admin.bc.dao.ExcelExportTaskMapper">
+ <resultMap id="BaseResultMap" type="com.qkwl.common.dto.excel.ExcelExportTask">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="excel_file_name" jdbcType="VARCHAR" property="excelFileName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, operator, table_name, status, excel_file_name, create_time, update_time
+  </sql>
+ 
+  <insert id="insert" parameterType="com.qkwl.common.dto.excel.ExcelExportTask">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into excel_export_task (operator, table_name, status, 
+      excel_file_name, create_time, update_time
+      )
+    values (#{operator,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{excelFileName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.excel.ExcelExportTask">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into excel_export_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="tableName != null">
+        table_name,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="excelFileName != null">
+        excel_file_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="excelFileName != null">
+        #{excelFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  
+  
+  
+  
+  <select id="findAll" resultMap="BaseResultMap">
+  select <include refid="Base_Column_List" /> 
+  from excel_export_task
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap">
+ select <include refid="Base_Column_List" /> from excel_export_task where id=#{0}
+  </select>
+  
+  <update id="updateByIdSelective" parameterType="com.qkwl.common.dto.excel.ExcelExportTask">
+    update excel_export_task
+    <set>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        table_name = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="excelFileName != null">
+        excel_file_name = #{excelFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id=#{id,jdbcType=BIGINT}
+  </update>
+  
+  
+      <select id="countExcelExportTaskParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(id)   from excel_export_task where operator=#{operator} and create_time>DATE_SUB(now(),INTERVAL 30 day)
+	</select>
+	
+	<select id="selectExcelExportTaskList" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select * from excel_export_task where operator=#{operator} and create_time>DATE_SUB(now(),INTERVAL 30 day)
+		    <if test="orderField != null">
+      order by ${orderField} ${orderDirection}
+    </if>
+    limit #{offset},#{limit}
+	</select>
+  
+  
+  <delete id="truncate">
+  truncate table excel_export_task
+  </delete>
+  
+</mapper>

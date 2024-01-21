@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.HistoricVersionMapper" >
+  <select id="selectByPrimaryKey" resultType="HistoricVersion" parameterType="java.lang.Integer" >
+    select *
+    from historic_version
+    where id = #{id}
+  </select>
+  
+  <select id="selectLimitTen" resultType="HistoricVersion" parameterType="java.lang.Integer" >
+    select *
+    from historic_version order by create_time desc limit 10;
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from historic_version
+    where id = #{id}
+  </delete>
+  
+  <insert id="insert" parameterType="com.qkwl.common.dto.system.HistoricVersion" >
+    insert into historic_version (id, version, create_time, android_url, ios_url)
+    values (#{id}, #{version}, #{createTime}, #{androidUrl}, #{iosUrl})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.system.HistoricVersion" >
+    insert into historic_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="androidUrl != null" >
+        android_url,
+      </if>
+      <if test="iosUrl != null" >
+        ios_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+      <if test="androidUrl != null" >
+        #{androidUrl},
+      </if>
+      <if test="iosUrl != null" >
+        #{iosUrl},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.system.HistoricVersion" >
+    update historic_version
+    <set >
+      <if test="version != null" >
+        version = #{version},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="androidUrl != null" >
+        android_url = #{androidUrl},
+      </if>
+      <if test="iosUrl != null" >
+        ios_url = #{iosUrl},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.system.HistoricVersion" >
+    update historic_version
+    set version = #{version},
+      create_time = #{createTime},
+      android_url = #{androidUrl},
+      ios_url = #{iosUrl}
+    where id = #{id}
+  </update>
+  
+  <select id="countHistoricVersionList" resultType="java.lang.Integer">
+        select count(id)
+        from historic_version
+  </select>
+    
+    <select id="getHistoricVersionPageList" resultType="HistoricVersion" parameterType="java.util.Map">
+        select *
+        from historic_version
+        <if test="orderField != null">
+            order by ${orderField} ${orderDirection}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+</mapper>

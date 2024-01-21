@@ -1,0 +1,73 @@
+<div class="layui-form" lay-href="/userApi/list" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+     <div class="layui-inline">
+            <label class="layui-form-label">状态</label>
+             <div class="layui-input-inline">
+                <select name="status">
+                    <option  th:value="0" th:text="全部"  th:selected="${'0' == status}"></option>
+                    <option  th:value="1" th:text="正常"  th:selected="${'1' == status}"></option>
+                    <option  th:value="2" th:text="禁用"  th:selected="${'2' == status}"></option>
+                    <option  th:value="3" th:text="过期"  th:selected="${'3' == status}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">用户UID</label>
+            <div class="layui-input-inline">
+                <input name="uid" th:value="${uid}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="/userApi/enable"
+                lay-href="userApi/enable"
+                lay-checked="id" lay-target="ajax" lay-height="670" lay-width="800">启用</button>
+       <button class="layui-btn layui-btn-small" shiro:hasPermission="/userApi/disable"
+                lay-href="userApi/disable"
+                lay-checked="id" lay-target="ajax" lay-height="670" lay-width="800">禁用</button>
+          <button class="layui-btn layui-btn-small" shiro:hasPermission="/userApi/update"
+                    lay-href="/userApi/go?url=userApi/update" lay-checked="id" lay-target="dialog"
+                    lay-width="850" lay-height="600">修改
+            </button>
+    </div>
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>UID</th>
+                <th>API Key</th>
+                <th>权限</th>
+                 <th>费率</th>
+                <th>绑定IP地址</th>
+                <th>剩余有效期(天)</th>
+                <th>API备注</th>
+                <th>创建时间</th>
+                <th>状态</th>
+                 </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(pageData.list)}">
+            <tr th:each="e : ${pageData.list}">
+                <td>
+                    <input type="checkbox" th:name="${e.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${e.uid}"></td>
+                <td th:text="${e.accessKey}"></td>
+                <td th:text="${e.typesStr}"></td>
+                 <td th:text="${e.rate}"></td>
+                <td th:text="${e.ip}"></td>
+                <td th:text="${e.remainPeriod}"></td>
+                <td th:text="${e.remark}"></td>
+                <td th:text="${#dates.format(e.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${e.statusStr}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:attr="lay-pages=${pageData.totalPage}, lay-curr=${pageData.pageNum}"></div>
+</div>

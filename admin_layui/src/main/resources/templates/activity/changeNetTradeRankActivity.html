@@ -1,0 +1,42 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/updateNetTradeRankActivity">
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称：</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="id" th:value="${activity.id}" />
+            <input class="layui-input" name="name" lay-verify="required" th:value="${activity.name}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">活动开始时间：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="startTime" lay-verify="required" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+             th:value="${#dates.format(activity.startTime, 'yyyy-MM-dd HH:mm:ss')}"/>
+        </div>
+    </div>
+	<div class="layui-form-item">
+        <label class="layui-form-label">活动结束时间：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="endTime" lay-verify="required" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+            th:value="${#dates.format(activity.endTime, 'yyyy-MM-dd HH:mm:ss')}"/>
+        </div>
+    </div>
+	<div class="layui-form-item">
+        <label class="layui-form-label">活动快照时间：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="snapshotTime" lay-verify="required" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+            th:value="${#dates.format(activity.snapshotTime, 'yyyy-MM-dd HH:mm:ss')}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">净交易量规则：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="minNetTrade" lay-verify="required" th:value="${activity.minNetTrade}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">持仓规则：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="minPosition" lay-verify="required" th:value="${activity.minPosition}" />
+        </div>
+    </div>
+</div>

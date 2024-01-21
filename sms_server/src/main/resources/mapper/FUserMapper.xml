@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hotcoin.sms.dao.FUserMapper">
+
+    <sql id="userColumns">
+        fid, floginname, fnickname, floginpassword, ftradepassword, ftelephone,
+        femail, frealname, fidentityno, fidentitytype, fgoogleauthenticator, fgoogleurl,
+        fstatus, fhasrealvalidate, fhasrealvalidatetime, fistelephonebind, fismailbind, fgooglebind,
+        fupdatetime, fareacode, version, fintrouid, finvalidateintrocount, fiscny,
+        fiscoin, fbirth, flastlogintime, fregistertime, fleverlock, fqqopenid, funionid, fagentid, fshowid
+    </sql>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.hotcoin.sms.model.FUser">
+        select
+        <include refid="userColumns"/>
+        from f_user where fid = #{fid,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByftelephone" parameterType="java.lang.String" resultType="com.hotcoin.sms.model.FUser">
+        select
+        <include refid="userColumns"/>
+        from f_user where ftelephone = #{ftelephone,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

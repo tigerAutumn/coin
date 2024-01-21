@@ -1,0 +1,62 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form" lay-href="openApi/update">
+    <div class="layui-form-item">
+        <label class="layui-form-label">url</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="id" th:value="${openApi.id}"/>
+            <input class="layui-input" name="url" lay-verify="required" th:value="${openApi.url}"/>
+        </div>
+    </div>
+   <div class="layui-form-item">
+    <label class="layui-form-label">权限</label>
+    <div class="layui-input-block">
+      <input type="checkbox" class="qx"  name="qx"  value="1" title="只读"  th:checked="${#strings.contains(openApi.types,'1')}" lay-filter="qx" disabled="disabled">
+      <input type="checkbox" class="qx" name="qx" value="2" title="允许交易"  th:checked="${#strings.contains(openApi.types,'2')}" lay-filter="qx">
+      <input type="checkbox" class="qx" name="qx"  value="3" title="允许提现" th:checked="${#strings.contains(openApi.types,'3')}" lay-filter="qx">
+      <input type="hidden" id="types" name="types" th:value="${openApi.types}">
+    </div>
+  </div>
+  
+    <div class="layui-form-item">
+    <label class="layui-form-label">状态</label>
+    <div class="layui-input-block">
+      <input type="radio" name="status" value="1" title="正常" th:checked="${#strings.contains(openApi.status,'1')}">
+      <input type="radio" name="status" value="2" title="禁用" th:checked="${#strings.contains(openApi.status,'2')}">
+    </div>
+  </div>
+  
+   <div class="layui-form-item">
+    <label class="layui-form-label">是否需要签名验证</label>
+    <div class="layui-input-block">
+      <input type="radio" name="ifSignVerify" value="1" title="是" th:checked="${openApi.ifSignVerify}">
+      <input type="radio" name="ifSignVerify" value="0" title="否" th:checked="${!openApi.ifSignVerify}">
+    </div>
+  </div>
+  
+   <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">描述</label>
+    <div class="layui-input-block">
+      <textarea name="description" placeholder="请输入内容" class="layui-textarea" th:text="${openApi.description}"></textarea>
+    </div>
+  </div>
+</div>
+
+
+<script th:inline="javascript">
+var $ = layui.jquery, form = layui.form();
+var qx=[[${openApi.types}]].split(",");
+form.on('checkbox(qx)', function(data){
+	  if(data.elem.checked==true){
+		  qx.push(data.value);
+	  }else{
+		  delValInArr(data.value,qx)
+	  }
+	  qx.sort();
+	  console.log(qx.join(","));
+	  $("#types").val(qx.join(","));
+	});
+	
+function delValInArr(value,array){
+    var pos=$.inArray(value,array);
+    array.splice(pos,1);
+}
+</script>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.coin.mapper.OrepoolRecordMapper" >
+
+    <select id="getInnovationRecord" resultType="OrepoolRecord" parameterType="com.qkwl.common.dto.orepool.OrepoolRecord">
+        select r.*
+        from orepool_record r, orepool_plan p
+        where r.plan_id = p.id
+        	and p.type = 3 and r.status = 4
+        <if test="userId != null">
+            and r.user_id = #{userId}
+        </if>
+        <if test="lockCoinId != null">
+            and r.lock_coin_id = #{lockCoinId}
+        </if>
+    </select>
+    
+    <update id="update" parameterType="OrepoolRecord" >
+    update orepool_record 
+	<set >
+      <if test="planId != null" >
+        plan_id = #{planId},
+      </if>
+      <if test="userId != null" >
+    	user_id = #{userId},
+      </if>
+      <if test="lockCoinId != null" >
+        lock_coin_id = #{lockCoinId},
+      </if>
+      <if test="incomeCoinId != null" >
+        income_coin_id = #{incomeCoinId},
+      </if>
+      <if test="lockVolume != null" >
+        lock_volume = #{lockVolume},
+      </if>
+      <if test="status != null" >
+    	status = #{status},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where 
+    	id = #{id,jdbcType=INTEGER}
+   </update>
+</mapper>

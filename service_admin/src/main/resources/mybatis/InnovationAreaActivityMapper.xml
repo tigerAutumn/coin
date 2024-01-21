@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.InnovationAreaActivityMapper" >
+
+  <sql id="Base_Column_List" >
+    id, coin_id,  rate,balance ,amount, start_time, end_time, status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultType="InnovationAreaActivity" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from innovation_area_activity
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="InnovationAreaActivity" >
+    insert into innovation_area_activity (id, coin_id, 
+      rate,  amount, balance, 
+      start_time, end_time, status, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{coinId,jdbcType=INTEGER}, 
+      #{rate,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      NOW())
+  </insert>
+  <insert id="insertSelective" parameterType="InnovationAreaActivity" >
+    insert into innovation_area_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="coinId != null" >
+        coin_id,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="coinId != null" >
+        #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+       <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        NOW(),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="InnovationAreaActivity" >
+    update innovation_area_activity
+    <set >
+      <if test="coinId != null" >
+        coin_id = #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="InnovationAreaActivity" >
+    update innovation_area_activity
+    set coin_id = #{coinId,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="listInnovationActivity" resultType="InnovationAreaActivity" parameterType="java.util.HashMap" >
+    select 
+    innovation_area_activity.*,system_coin_type.short_name as coinShortName
+    from innovation_area_activity left join system_coin_type on innovation_area_activity.coin_id = system_coin_type.id
+    order by create_time desc
+  </select>
+</mapper>

@@ -1,0 +1,110 @@
+<div class="layui-form" lay-href="admin/coinTypeList" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+	<div class="layui-form-item layui-search-box">
+		<div class="layui-inline">
+			<label class="layui-form-label">关键词[名称、简称、描述]</label>
+			<div class="layui-input-inline">
+				<input name="keywords" th:value="${keywords }" class="layui-input" />
+			</div>
+		</div>
+		<div class="layui-inline">
+			<button class="layui-btn layui-btn-small">查询</button>
+		</div>
+	</div>
+	<hr />
+	<div class="layui-btn-box">
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addCoinType"
+				lay-href="/admin/goCoinTypeJSP?url=coin/addCoinType" lay-target="dialog">新增</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/updateCoinType"
+				lay-href="/admin/goCoinTypeJSP?url=coin/updateCoinType" lay-checked="coinId" lay-target="dialog">修改</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/updateCoinStatus?status=1"
+				lay-href="/admin/updateCoinStatus?status=1" lay-checked="coinId" lay-target="ajax" lay-tips="确定要启用吗?">启用</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/updateCoinStatus?status=2"
+				lay-href="/admin/updateCoinStatus?status=2" lay-checked="coinId" lay-target="ajax" lay-tips="确定要禁用吗?">禁用</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/updateCoinFees"
+				lay-href="/admin/goCoinTypeJSP?url=coin/updateCoinFees" lay-checked="coinId" lay-target="dialog" lay-width="700">修改币种设置</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/testWallet"
+				lay-href="/admin/testWallet" lay-checked="fid" lay-target="ajax">测试钱包</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/createAddress"
+				lay-href="/admin/goCoinTypeJSP?url=coin/createAddress" lay-checked="coinId" lay-target="dialog" lay-height="300" lay-width="600">生成钱包地址</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/generateCoinAccount"
+				lay-href="/admin/generateCoinAccount" lay-checked="coinId" lay-target="ajax" lay-height="300" lay-width="600">生成币种帐户</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/coinSwitch"
+				lay-href="/admin/goCoinInfoJSP?url=coin/coinSwitch"  lay-target="dialog" lay-height="300" lay-width="600">币币切换</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/unfreezeInnovateArea"
+				lay-href="/admin/unfreezeInnovateArea" lay-checked="coinId" lay-target="ajax" lay-tips="确定要解冻吗?">创新区解冻</button>
+	</div>
+	<div class="layui-conten-box">
+		<table class="layui-table" width="100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th>主键ID</th>
+					<th>序号</th>
+					<th>名称</th>
+					<th>简称</th>
+					<th>类型</th>
+					<th>状态</th>
+					<th>钱包类型</th>
+					<th>显示平台</th>
+					<th>是否提现</th>
+					<th>是否充值</th>
+					<th>风控伐值</th>
+					<th>最小充值</th>
+					<th>使用地址标签</th>
+					<th>是否PUSH</th>
+					<th>是否理财</th>
+					<th>是否开放otc</th>
+					<th>平台地址互转是否收提币手续费</th>
+					<th>是否上线创新区</th>
+					<th>冻结释放比例</th>
+					<th>单日释放上限比例</th>
+					<th>WEB站LOGO</th>
+					<th>APP站LOGO</th>
+					<th>资产ID</th>
+					<th>符号</th>
+					<th>网络手续费</th>
+					<th>充值确认数</th>
+					<th data-order-field="gmt_modified">修改时间</th>
+					<th>币种帐户生成情况</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="list : ${page.data}">
+					<td>
+						<input type="checkbox" th:name="${list.id}" lay-skin="primary" />
+					</td>
+					<td th:text="${list.id}"></td>
+					<td th:text="${list.sortId}"></td>
+					<td th:text="${list.name}"></td>
+					<td th:text="${list.shortName}"></td>
+					<td th:text="${list.typeName}"></td>
+					<td th:text="${list.statusName}"></td>
+					<td th:text="${list.coinTypeName}"></td>
+					<td th:text="${platformMap[list.platformId]}"></td>
+					<td th:text="${list.isWithdraw}"></td>
+					<td th:text="${list.isRecharge}"></td>
+					<td th:text="${list.riskNum}"></td>
+					<td th:text="${list.rechargeMinLimit}"></td>
+					<td th:text="${list.isUseMemo}"></td>
+					<td th:text="${list.isPush}"></td>
+					<td th:text="${list.isFinances}"></td>
+					<td th:text="${list.OpenOtc}"></td>
+					<td th:text="${list.isPlatformTransferFee}"></td>
+					<td th:text="${list.isInnovateAreaCoin}"></td>
+					<td th:text="${list.releaseLockingRatio}"></td>
+					<td th:text="${list.dayReleaseRatio}"></td>
+					<td><img style="height: 20px;height: 20px;" th:alt="${list.shortName}" th:src="${list.webLogo}" /></td>
+					<td><img style="width: 20px;height: 20px;" th:alt="${list.shortName}" th:src="${list.appLogo}" /></td>
+					<td th:text="${list.assetId}"></td>
+					<td th:text="${list.symbol}"></td>
+					<td th:text="${#decimal.format(list.networkFee, 1, 10)}"></td>
+					<td th:text="${#decimal.format(list.confirmations, 1, 10)}"></td>
+					<td th:text="${list.gmtModified == null ? '':#dates.format(list.gmtModified, 'yyyy-MM-dd HH:mm:ss')}"></td>
+					<td th:text="${list.createCoinAcountInfo}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="layui-laypage-box" th:attr="lay-pages=${page.totalPages}, lay-curr=${page.currentPage}"></div>
+</div>

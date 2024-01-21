@@ -1,0 +1,13 @@
+<div  class="layui-form layui-form-pane" xmlns:th="http://www.thymeleaf.org" lay-href="admin/deleteNonce">
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">类型：</label>
+			<div class="layui-input-inline">
+				<select type="combox" name="type">
+					<option th:each="v : ${typeMap}" th:value="${v.key}" th:text="${v.value}"></option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+</div>

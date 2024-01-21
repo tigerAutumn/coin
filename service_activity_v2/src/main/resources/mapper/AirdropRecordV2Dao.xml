@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotcoin.activity.dao.AirdropRecordV2Dao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hotcoin.activity.model.po.AirdropRecordV2Po" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="activityType" column="activity_type"/>
+        <result property="activityCoin" column="activity_coin"/>
+        <result property="linkCoinAmount" column="link_coin_amount"/>
+        <result property="linkCoinVolume" column="link_coin_volume"/>
+        <result property="linkPair" column="link_pair"/>
+        <result property="activityAmountSum" column="activity_amount_sum"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!--
+          选择性插入
+        -->
+    <sql id="Base_Insert_Selective">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="activityType != null">
+                activity_type,
+            </if>
+            <if test="activityCoin != null">
+                activity_coin,
+            </if>
+            <if test="linkCoinAmount != null">
+                link_coin_amount,
+            </if>
+            <if test="linkCoinVolume != null">
+                link_coin_volume,
+            </if>
+            <if test="linkPair != null">
+                link_pair,
+            </if>
+            <if test="activityAmountSum != null">
+                activity_amount_sum,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="activityType != null">
+                #{activityType,jdbcType=VARCHAR},
+            </if>
+            <if test="activityCoin != null">
+                #{activityCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinAmount != null">
+                #{linkCoinAmount,jdbcType=DOUBLE},
+            </if>
+            <if test="linkCoinVolume != null">
+                #{linkCoinVolume,jdbcType=DOUBLE},
+            </if>
+            <if test="linkPair != null">
+                #{linkPair,jdbcType=VARCHAR},
+            </if>
+            <if test="activityAmountSum != null">
+                #{activityAmountSum,jdbcType=DOUBLE},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+
+    <!--
+      数据库表的基本查询列名集合
+    -->
+    <sql id="Base_Column_List">
+        id, user_id, activity_type, activity_coin, link_coin_amount, link_coin_volume, link_pair, activity_amount_sum,
+        status, create_time
+    </sql>
+
+    <!--
+        Where子句
+      -->
+    <sql id="Base_Query_Where">
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=INTEGER}
+        </if>
+        <if test="activityType != null">
+            and activity_type = #{activityType,jdbcType=VARCHAR}
+        </if>
+        <if test="activityCoin != null">
+            and activity_coin = #{activityCoin,jdbcType=VARCHAR}
+        </if>
+        <if test="linkCoinAmount != null">
+            and link_coin_amount = #{linkCoinAmount,jdbcType=DOUBLE}
+        </if>
+        <if test="linkCoinVolume != null">
+            and link_coin_volume = #{linkCoinVolume,jdbcType=DOUBLE}
+        </if>
+        <if test="linkPair != null">
+            and link_pair = #{linkPair,jdbcType=VARCHAR}
+        </if>
+        <if test="activityAmountSum != null">
+            and activity_amount_sum = #{activityAmountSum,jdbcType=DOUBLE}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <!--
+        基本更新字段
+    -->
+    <sql id="Base_Update_Column">
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="activityType != null">
+                activity_type = #{activityType,jdbcType=VARCHAR},
+            </if>
+            <if test="activityCoin != null">
+                activity_coin = #{activityCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinAmount != null">
+                link_coin_amount = #{linkCoinAmount,jdbcType=DOUBLE},
+            </if>
+            <if test="linkCoinVolume != null">
+                link_coin_volume = #{linkCoinVolume,jdbcType=DOUBLE},
+            </if>
+            <if test="linkPair != null">
+                link_pair = #{linkPair,jdbcType=VARCHAR},
+            </if>
+            <if test="activityAmountSum != null">
+                activity_amount_sum = #{activityAmountSum,jdbcType=DOUBLE},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+    </sql>
+
+    <!--
+        分页查询数据库表
+      -->
+    <select id="selectPaged" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from airdrop_record_v2
+    </select>
+
+    <!--
+      根据主键查询数据库表
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from airdrop_record_v2
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <!--
+      根据主键删除数据库表中的记录
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete FROM airdrop_record_v2
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--
+      添加一条记录到数据库表中
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.AirdropRecordV2Po">
+        insert into airdrop_record_v2
+        (<include refid="Base_Column_List"/>)
+        values (
+        <if test="id != null">
+            #{id,jdbcType=INTEGER},
+        </if>
+        <if test="userId != null">
+            #{userId,jdbcType=INTEGER},
+        </if>
+        <if test="activityType != null">
+            #{activityType,jdbcType=VARCHAR},
+        </if>
+        <if test="activityCoin != null">
+            #{activityCoin,jdbcType=VARCHAR},
+        </if>
+        <if test="linkCoinAmount != null">
+            #{linkCoinAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="linkCoinVolume != null">
+            #{linkCoinVolume,jdbcType=DOUBLE},
+        </if>
+        <if test="linkPair != null">
+            #{linkPair,jdbcType=VARCHAR},
+        </if>
+        <if test="activityAmountSum != null">
+            #{activityAmountSum,jdbcType=DOUBLE},
+        </if>
+        <if test="status != null">
+            #{status,jdbcType=INTEGER},
+        </if>
+        <if test="createTime != null">
+            #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        )
+    </insert>
+
+    <!--
+     有选择的添加一条记录到数据库表中
+   -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.AirdropRecordV2Po">
+        insert into airdrop_record_v2
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      有选择的可忽略添加一条记录到数据库表中
+    -->
+    <insert id="insertSelectiveIgnore" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.AirdropRecordV2Po">
+        insert ignore into airdrop_record_v2
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      根据主键有选择的更新数据库表
+    -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.hotcoin.activity.model.po.AirdropRecordV2Po">
+        update airdrop_record_v2
+        <include refid="Base_Update_Column"></include>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <!--
+      根据主键更新数据库表
+    -->
+    <update id="updateByPrimaryKey" parameterType="com.hotcoin.activity.model.po.AirdropRecordV2Po">
+        update airdrop_record_v2
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="activityType != null">
+                activity_type = #{activityType,jdbcType=VARCHAR},
+            </if>
+            <if test="activityCoin != null">
+                activity_coin = #{activityCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinAmount != null">
+                link_coin_amount = #{linkCoinAmount,jdbcType=DOUBLE},
+            </if>
+            <if test="linkCoinVolume != null">
+                link_coin_volume = #{linkCoinVolume,jdbcType=DOUBLE},
+            </if>
+            <if test="linkPair != null">
+                link_pair = #{linkPair,jdbcType=VARCHAR},
+            </if>
+            <if test="activityAmountSum != null">
+                activity_amount_sum = #{activityAmountSum,jdbcType=DOUBLE},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--
+      批量添加记录到数据库表中
+    -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into airdrop_record_v2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, user_id, activity_type, activity_coin, link_coin_amount, link_coin_volume, link_pair,
+            activity_amount_sum, status, create_time
+        </trim>
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.id,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER}, #{item.activityType,jdbcType=VARCHAR},
+                #{item.activityCoin,jdbcType=VARCHAR}, #{item.linkCoinAmount,jdbcType=DOUBLE},
+                #{item.linkCoinVolume,jdbcType=DOUBLE}, #{item.linkPair,jdbcType=VARCHAR},
+                #{item.activityAmountSum,jdbcType=DOUBLE}, #{item.status,jdbcType=INTEGER},
+                #{item.createTime,jdbcType=TIMESTAMP}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--
+      根据主键批量更新数据库表中的记录
+    -->
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            update airdrop_record_v2
+            <set>
+                <trim suffixOverrides=",">
+                    <if test="item.id != null">
+                        id = #{item.id,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.userId != null">
+                        user_id = #{item.userId,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.activityType != null">
+                        activity_type = #{item.activityType,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.activityCoin != null">
+                        activity_coin = #{item.activityCoin,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.linkCoinAmount != null">
+                        link_coin_amount = #{item.linkCoinAmount,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.linkCoinVolume != null">
+                        link_coin_volume = #{item.linkCoinVolume,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.linkPair != null">
+                        link_pair = #{item.linkPair,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.activityAmountSum != null">
+                        activity_amount_sum = #{item.activityAmountSum,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.status != null">
+                        status = #{item.status,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.createTime != null">
+                        create_time = #{item.createTime,jdbcType=TIMESTAMP}
+                    </if>
+                </trim>
+            </set>
+            <where>
+                <trim suffixOverrides=",">
+                    where id = #{item.id,jdbcType=INTEGER}
+                </trim>
+            </where>
+        </foreach>
+    </update>
+
+    <!--
+     使用给定的字段名定义Where子句
+   -->
+    <sql id="Identifiers_Array_Conditions">
+        <foreach collection="array" index="index" item="item" separator=" and ">
+            <if test="item == 'id'">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'userId'">
+                user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'activityType'">
+                activity_type = #{activityType,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'activityCoin'">
+                activity_coin = #{activityCoin,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'linkCoinAmount'">
+                link_coin_amount = #{linkCoinAmount,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'linkCoinVolume'">
+                link_coin_volume = #{linkCoinVolume,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'linkPair'">
+                link_pair = #{linkPair,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'activityAmountSum'">
+                activity_amount_sum = #{activityAmountSum,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'status'">
+                status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'createTime'">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </foreach>
+    </sql>
+
+    <!--
+      存在即更新否则插入
+    -->
+    <update id="upsert" parameterType="com.hotcoin.activity.model.po.AirdropRecordV2Po">
+        insert into airdrop_record_v2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, user_id, activity_type, activity_coin, link_coin_amount, link_coin_volume, link_pair,
+            activity_amount_sum, status, create_time
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{activityType,jdbcType=VARCHAR},
+            #{activityCoin,jdbcType=VARCHAR}, #{linkCoinAmount,jdbcType=DOUBLE}, #{linkCoinVolume,jdbcType=DOUBLE},
+            #{linkPair,jdbcType=VARCHAR}, #{activityAmountSum,jdbcType=DOUBLE}, #{status,jdbcType=INTEGER},
+            #{createTime,jdbcType=TIMESTAMP}
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{activityType,jdbcType=VARCHAR},
+            #{activityCoin,jdbcType=VARCHAR}, #{linkCoinAmount,jdbcType=DOUBLE}, #{linkCoinVolume,jdbcType=DOUBLE},
+            #{linkPair,jdbcType=VARCHAR}, #{activityAmountSum,jdbcType=DOUBLE}, #{status,jdbcType=INTEGER},
+            #{createTime,jdbcType=TIMESTAMP}
+        </trim>
+    </update>
+
+
+    <!--
+      带有空值检查的存在即更新否则插入
+    -->
+    <update id="upsertSelective" parameterType="com.hotcoin.activity.model.po.AirdropRecordV2Po">
+        insert into airdrop_record_v2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id,
+            </if>
+            <if test="userId !=null ">
+                user_id,
+            </if>
+            <if test="activityType !=null ">
+                activity_type,
+            </if>
+            <if test="activityCoin !=null ">
+                activity_coin,
+            </if>
+            <if test="linkCoinAmount !=null ">
+                link_coin_amount,
+            </if>
+            <if test="linkCoinVolume !=null ">
+                link_coin_volume,
+            </if>
+            <if test="linkPair !=null ">
+                link_pair,
+            </if>
+            <if test="activityAmountSum !=null ">
+                activity_amount_sum,
+            </if>
+            <if test="status !=null ">
+                status,
+            </if>
+            <if test="createTime !=null ">
+                create_time
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId !=null ">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="activityType !=null ">
+                activity_type = #{activityType,jdbcType=VARCHAR},
+            </if>
+            <if test="activityCoin !=null ">
+                activity_coin = #{activityCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinAmount !=null ">
+                link_coin_amount = #{linkCoinAmount,jdbcType=DOUBLE},
+            </if>
+            <if test="linkCoinVolume !=null ">
+                link_coin_volume = #{linkCoinVolume,jdbcType=DOUBLE},
+            </if>
+            <if test="linkPair !=null ">
+                link_pair = #{linkPair,jdbcType=VARCHAR},
+            </if>
+            <if test="activityAmountSum !=null ">
+                activity_amount_sum = #{activityAmountSum,jdbcType=DOUBLE},
+            </if>
+            <if test="status !=null ">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime !=null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId !=null ">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="activityType !=null ">
+                activity_type = #{activityType,jdbcType=VARCHAR},
+            </if>
+            <if test="activityCoin !=null ">
+                activity_coin = #{activityCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinAmount !=null ">
+                link_coin_amount = #{linkCoinAmount,jdbcType=DOUBLE},
+            </if>
+            <if test="linkCoinVolume !=null ">
+                link_coin_volume = #{linkCoinVolume,jdbcType=DOUBLE},
+            </if>
+            <if test="linkPair !=null ">
+                link_pair = #{linkPair,jdbcType=VARCHAR},
+            </if>
+            <if test="activityAmountSum !=null ">
+                activity_amount_sum = #{activityAmountSum,jdbcType=DOUBLE},
+            </if>
+            <if test="status !=null ">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime !=null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </update>
+
+    <select id="query" resultMap="BaseResultMap" parameterType="com.hotcoin.activity.model.po.AirdropRecordV2Po">
+        select
+        <include refid="Base_Column_List"/>
+        from airdrop_record_v2
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(*) from airdrop_record_v2
+    </select>
+
+
+    <delete id="deleteBatch">
+        delete from airdrop_record_v2 where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

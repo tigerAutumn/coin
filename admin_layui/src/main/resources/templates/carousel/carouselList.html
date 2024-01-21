@@ -1,0 +1,65 @@
+<div class="layui-form" lay-href="/carousel/list" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+        <div class="layui-inline">
+            <label class="layui-form-label">名字 ：</label>
+            <div class="layui-input-inline">
+                <input name="name" th:value="${req.name}" class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-inline">
+			<label class="layui-form-label">语言</label>
+			<div class="layui-input-inline">
+				<select type="combox" name="lang">
+					<option th:each="v : ${localeMap}" th:value="${v.key}" th:text="${v.value}" th:selected="${v.key == req.lang}"></option>
+				</select>
+			</div>
+		</div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr />
+    <div class="layui-btn-box">
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="carousel/saveCarousel"
+                lay-href="carousel/goCarouselJSP?url=carousel/addCarousel"
+                lay-target="dialog" lay-height="670" lay-width="800">新增</button>
+
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="carousel/updateCarousel"
+                lay-href="carousel/goCarouselJSP?url=carousel/updateCarousel"
+                lay-checked="id" lay-target="dialog" lay-height="670" lay-width="800">修改</button>
+                
+         <button class="layui-btn layui-btn-small" shiro:hasPermission="carousel/deleteCarousel"
+                lay-href="carousel/deleteCarousel"
+                lay-checked="id" lay-target="ajax" lay-height="670" lay-width="800">删除</button>
+    </div>
+    <div class="layui-conten-box">
+        <table class="layui-table" width="100%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>名字</th>
+                <th>URL</th>
+                <th>跳转URL</th>
+                <th>语言</th>
+                 <th>排序</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="e : ${page.list}">
+                <td>
+                    <input type="checkbox" th:name="${e.id}" lay-skin="primary" />
+                </td>
+                <td th:text="${e.name}"></td>
+                <td th:text="${e.url}"></td>
+                <td th:text="${e.targetUrl}"></td>
+                <td th:text="${e.lang}"></td>
+                <td th:text="${e.priority}"></td>
+                <td th:text="${e.description}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:attr="lay-pages=${page.pages}, lay-curr=${page.pageNum}"></div>
+</div>

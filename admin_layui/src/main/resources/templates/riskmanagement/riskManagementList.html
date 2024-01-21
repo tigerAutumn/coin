@@ -1,0 +1,80 @@
+<div class="layui-form" lay-href="admin/riskManagementList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+        <div class="layui-inline">
+            <label class="layui-form-label">充值币种</label>
+            <div class="layui-input-inline">
+                <select name="rechargeCoin">
+                    <option value="">全部</option>
+                    <option value="GAVC">GAVC</option>
+                    <option value="USDT">USDT</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户UID：</label>
+            <div class="layui-input-inline">
+                <input name="userId" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+
+    <div class="layui-btn-box">
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addRiskManagement"
+                lay-href="/admin/addRiskManagement" lay-target="dialog">新增
+        </button>
+
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/closeout"
+                lay-href="/admin/riskManagement/closeout" lay-checked="id" lay-target="ajax" lay-tips="确定要平仓吗?">平仓
+        </button>
+
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/deleteRiskManagement"
+                lay-href="/admin/deleteRiskManagement" lay-checked="id" lay-target="ajax" lay-tips="确定要删除吗?">删除
+        </button>
+    </div>
+    <div class="layui-conten-box">
+        <table class="layui-table" width="100%">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>用户UID</th>
+                <th>手机号</th>
+                <th>邮箱</th>
+                <th>充值币种</th>
+                <th>充值金额</th>
+                <th>借贷倍数</th>
+                <th>本金预警线</th>
+                <th>本金平仓线</th>
+                <th>账户实时总资金</th>
+                <th>充值时间</th>
+                <th>状态变更时间</th>
+                <th>当前状态</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(riskManagementList)}">
+            <tr th:each="item : ${riskManagementList}">
+                <td>
+                    <input type="checkbox" th:name="${item.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${item.userId}"></td>
+                <td th:text="${item.telephone}"></td>
+                <td th:text="${item.email}"></td>
+                <td th:text="${item.rechargeCoin}"></td>
+                <td th:text="${item.rechargeFunds}"></td>
+                <td th:text="${item.debitTimes}"></td>
+                <td th:text="${item.capitalWarningLine}+'%'"></td>
+                <td th:text="${item.capitalCloseoutLine}+'%'"></td>
+                <td th:text="${item.accountRealFunds}"></td>
+                <td th:text="${#dates.format(item.rechargeTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(item.updateStatusTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${item.userStatus == 1? '已发放':(item.userStatus==2? '已预警':'已平仓')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:attr="lay-pages=${pages}, lay-curr=${currentPage}"></div>
+</div>

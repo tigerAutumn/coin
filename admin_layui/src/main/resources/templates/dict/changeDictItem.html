@@ -1,0 +1,27 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/updateDictItem.html">
+	<div class="layui-form-item">
+        <label class="layui-form-label">字典id：</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="Id" th:value="${dictItem.Id}" />
+        	<input class="layui-input" name="dictId" lay-verify="required" th:value="${dictItem.dictId}" />
+        </div>
+    </div>
+	<div class="layui-form-item">
+        <label class="layui-form-label">字典名称：</label>
+        <div class="layui-input-block">
+        	<input class="layui-input" name="dictName" lay-verify="required" th:value="${dictItem.dictName}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">字典组id：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="groupId" lay-verify="required" th:value="${dictItem.groupId}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序字段：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="sortOrder" lay-verify="required" th:value="${dictItem.sortOrder}" />
+        </div>
+    </div>
+</div>

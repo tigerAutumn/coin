@@ -1,0 +1,29 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/updateMatchGroup">
+	<div class="layui-form-item">
+        <label class="layui-form-label">交易对组名：</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="id" th:value="${matchGroup.id}" />
+            <input class="layui-input" name="groupName" lay-verify="required" th:value="${matchGroup.groupName}" />
+        </div>
+    </div>
+	<div class="layui-form-item">
+        <label class="layui-form-label">交易对id：</label>
+        <div class="layui-input-block">
+        	<input type="checkbox" th:each="type : ${allTradeType }" th:name="${'allTradeType['+type.id+']'}" lay-skin="primary"
+                       th:title="${type.id}+ '、' +${type.sellShortName}+ '/' +${type.buyShortName}" th:if="${type.buyShortName == 'GAVC'}" 
+                       th:checked="${#strings.contains(','+matchGroup.tradeIds+',',','+type.id+',')}"/>
+            <hr/>
+            <input type="checkbox" th:each="type : ${allTradeType }" th:name="${'allTradeType['+type.id+']'}" lay-skin="primary"
+                       th:title="${type.id}+ '、' +${type.sellShortName}+ '/' +${type.buyShortName}" th:if="${type.buyShortName == 'BTC'}" 
+                       th:checked="${#strings.contains(','+matchGroup.tradeIds+',',','+type.id+',')}"/>
+            <hr/>
+            <input type="checkbox" th:each="type : ${allTradeType }" th:name="${'allTradeType['+type.id+']'}" lay-skin="primary"
+                       th:title="${type.id}+ '、' +${type.sellShortName}+ '/' +${type.buyShortName}" th:if="${type.buyShortName == 'ETH'}" 
+                       th:checked="${#strings.contains(','+matchGroup.tradeIds+',',','+type.id+',')}"/>
+            <hr/>
+            <input type="checkbox" th:each="type : ${allTradeType }" th:name="${'allTradeType['+type.id+']'}" lay-skin="primary"
+                       th:title="${type.id}+ '、' +${type.sellShortName}+ '/' +${type.buyShortName}" th:if="${type.buyShortName == 'USDT'}" 
+                       th:checked="${#strings.contains(','+matchGroup.tradeIds+',',','+type.id+',')}"/>
+        </div>
+    </div>
+</div>

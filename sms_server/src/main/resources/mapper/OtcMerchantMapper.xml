@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hotcoin.sms.dao.OtcMerchantMapper">
+	
+    <select id="selectByUid" resultType="com.hotcoin.sms.model.OtcMerchant" parameterType="java.lang.Long">
+        select uid, name, phone, email,language, emergency_name,emergency_phone, relationship, address,
+          image, video, status, deposit, apply_time from otc_merchant
+         where uid = #{uid}
+    </select>
+
+</mapper>

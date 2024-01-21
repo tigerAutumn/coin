@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.AirdropMapper">
+
+	<select id="countAirdropListByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(id)
+        from airdrop_activity
+    </select>
+    
+    <select id="getAirdropPageList" resultType="Airdrop" parameterType="java.util.Map">
+        select a.*, b.short_name coinName, c.short_name airdropCoinName
+        from airdrop_activity a,system_coin_type b,system_coin_type c where a.coin_id = b.id and a.airdrop_coin_id = c.id
+        <if test="orderField != null">
+            order by ${orderField} ${orderDirection}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+    
+    <insert id="insert" parameterType="Airdrop" >
+    insert into airdrop_activity (name, title, 
+       coin_id, min_count, 
+      airdrop_coin_id, type, count_or_rate, airdrop_time, start_time, 
+      snapshot_time, snapshot_status, is_open, 
+      status)
+    values (#{name}, #{title}, 
+       #{coinId}, #{minCount}, 
+      #{airdropCoinId}, #{type}, #{countOrRate}, #{airdropTime},
+      #{startTime}, #{snapshotTime}, #{snapshotStatus}, 
+      #{isOpen}, #{status})
+  </insert>
+    
+    <select id="selectAirdropById" resultType="Airdrop" parameterType="java.lang.Integer">
+        select *
+        from airdrop_activity where id = #{id}
+    </select>
+    
+    <update id="updateAirdrop" parameterType="Airdrop">
+    update airdrop_activity
+    set 
+    	name = #{name}, title = #{title}, 
+       coin_id = #{coinId}, min_count = #{minCount}, airdrop_coin_id = #{airdropCoinId},
+       type = #{type}, count_or_rate = #{countOrRate}, airdrop_time = #{airdropTime}, start_time = #{startTime}, 
+      snapshot_time = #{snapshotTime}, snapshot_status = #{snapshotStatus}, is_open = #{isOpen}, status = #{status}
+    where id = #{id}
+  </update>
+  
+  <delete id="deleteAirdrop" parameterType="Airdrop">
+    DELETE FROM airdrop_activity WHERE id = #{id}
+  </delete>
+  
+  <select id="selectAllAirdrop" resultType="Airdrop">
+        select * from airdrop_activity where status = 1 and snapshot_status = 0 
+        and DATE_FORMAT(snapshot_time, "%Y-%m-%d %H:%i") = DATE_FORMAT(NOW(), "%Y-%m-%d %H:%i")
+  </select>
+</mapper>

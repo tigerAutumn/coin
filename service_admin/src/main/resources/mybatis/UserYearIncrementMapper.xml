@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.UserYearIncrementMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.statistic.UserYearIncrement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="coin_id" property="coinId" jdbcType="INTEGER" />
+    <result column="trade_cost" property="tradeCost" jdbcType="DECIMAL" />
+    <result column="trade_income" property="tradeIncome" jdbcType="DECIMAL" />
+    <result column="trade_fee" property="tradeFee" jdbcType="DECIMAL" />
+    <result column="freezing_of_innovation_zone" property="freezingOfInnovationZone" jdbcType="DECIMAL" />
+    <result column="dividend_of_innovation_zone" property="dividendOfInnovationZone" jdbcType="DECIMAL" />
+    <result column="reward_of_innovation_zone" property="rewardOfInnovationZone" jdbcType="DECIMAL" />
+    <result column="orepool_lock" property="orepoolLock" jdbcType="DECIMAL" />
+    <result column="orepool_unlock" property="orepoolUnlock" jdbcType="DECIMAL" />
+    <result column="orepool_income" property="orepoolIncome" jdbcType="DECIMAL" />
+    <result column="statistics_time" property="statisticsTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, coin_id, trade_cost, trade_income, trade_fee, freezing_of_innovation_zone, 
+    dividend_of_innovation_zone, reward_of_innovation_zone, orepool_lock, orepool_unlock, 
+    orepool_income, statistics_time, create_time
+  </sql>
+  
+  <select id="selectByUserCoinDate" resultMap="BaseResultMap" >
+    select 
+    	id
+    from user_year_increment
+    where 1 = 1
+	<if test="userId != null" >
+       and user_id =  #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="coinId != null" >
+       and coin_id =  #{coinId,jdbcType=INTEGER}
+    </if>
+    <if test="statisticsTime != null" >
+       and statistics_time =  #{statisticsTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+  
+  <select id="selectLastDateByUser" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_year_increment
+    where user_id = #{userId,jdbcType=INTEGER}
+    order by statistics_time desc 
+    limit 1
+  </select>
+  
+  <select id="selectSumByUserAndDate" resultMap="BaseResultMap">
+    select 
+    user_id
+    , coin_id
+    , ifnull(sum(trade_cost),0) as trade_cost
+    , ifnull(sum(trade_income),0) as trade_income
+    , ifnull(sum(trade_fee),0) as trade_fee
+    , ifnull(sum(freezing_of_innovation_zone),0) as freezing_of_innovation_zone
+    , ifnull(sum(dividend_of_innovation_zone),0) as dividend_of_innovation_zone
+    , ifnull(sum(reward_of_innovation_zone),0) as reward_of_innovation_zone
+    , ifnull(sum(orepool_lock),0) as orepool_lock
+    , ifnull(sum(orepool_unlock),0) as orepool_unlock
+    , ifnull(sum(orepool_income),0) as orepool_income
+    from user_year_increment
+    where user_id = #{userId,jdbcType=INTEGER}
+     <if test="start != null" >
+        <![CDATA[and statistics_time >= #{start,jdbcType=TIMESTAMP}]]>
+     </if>
+     <if test="end != null" >
+        <![CDATA[and statistics_time < #{end,jdbcType=TIMESTAMP}]]>
+     </if>
+     group by coin_id
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_year_increment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_year_increment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.statistic.UserYearIncrement" >
+    insert into user_year_increment (id, user_id, coin_id, 
+      trade_cost, trade_income, trade_fee, 
+      freezing_of_innovation_zone, dividend_of_innovation_zone, 
+      reward_of_innovation_zone, orepool_lock, orepool_unlock, 
+      orepool_income, statistics_time, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, 
+      #{tradeCost,jdbcType=DECIMAL}, #{tradeIncome,jdbcType=DECIMAL}, #{tradeFee,jdbcType=DECIMAL}, 
+      #{freezingOfInnovationZone,jdbcType=DECIMAL}, #{dividendOfInnovationZone,jdbcType=DECIMAL}, 
+      #{rewardOfInnovationZone,jdbcType=DECIMAL}, #{orepoolLock,jdbcType=DECIMAL}, #{orepoolUnlock,jdbcType=DECIMAL}, 
+      #{orepoolIncome,jdbcType=DECIMAL}, #{statisticsTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.statistic.UserYearIncrement" >
+    insert into user_year_increment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="coinId != null" >
+        coin_id,
+      </if>
+      <if test="tradeCost != null" >
+        trade_cost,
+      </if>
+      <if test="tradeIncome != null" >
+        trade_income,
+      </if>
+      <if test="tradeFee != null" >
+        trade_fee,
+      </if>
+      <if test="freezingOfInnovationZone != null" >
+        freezing_of_innovation_zone,
+      </if>
+      <if test="dividendOfInnovationZone != null" >
+        dividend_of_innovation_zone,
+      </if>
+      <if test="rewardOfInnovationZone != null" >
+        reward_of_innovation_zone,
+      </if>
+      <if test="orepoolLock != null" >
+        orepool_lock,
+      </if>
+      <if test="orepoolUnlock != null" >
+        orepool_unlock,
+      </if>
+      <if test="orepoolIncome != null" >
+        orepool_income,
+      </if>
+      <if test="statisticsTime != null" >
+        statistics_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null" >
+        #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="tradeCost != null" >
+        #{tradeCost,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeIncome != null" >
+        #{tradeIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeFee != null" >
+        #{tradeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="freezingOfInnovationZone != null" >
+        #{freezingOfInnovationZone,jdbcType=DECIMAL},
+      </if>
+      <if test="dividendOfInnovationZone != null" >
+        #{dividendOfInnovationZone,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardOfInnovationZone != null" >
+        #{rewardOfInnovationZone,jdbcType=DECIMAL},
+      </if>
+      <if test="orepoolLock != null" >
+        #{orepoolLock,jdbcType=DECIMAL},
+      </if>
+      <if test="orepoolUnlock != null" >
+        #{orepoolUnlock,jdbcType=DECIMAL},
+      </if>
+      <if test="orepoolIncome != null" >
+        #{orepoolIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="statisticsTime != null" >
+        #{statisticsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.statistic.UserYearIncrement" >
+    update user_year_increment
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null" >
+        coin_id = #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="tradeCost != null" >
+        trade_cost = #{tradeCost,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeIncome != null" >
+        trade_income = #{tradeIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="tradeFee != null" >
+        trade_fee = #{tradeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="freezingOfInnovationZone != null" >
+        freezing_of_innovation_zone = #{freezingOfInnovationZone,jdbcType=DECIMAL},
+      </if>
+      <if test="dividendOfInnovationZone != null" >
+        dividend_of_innovation_zone = #{dividendOfInnovationZone,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardOfInnovationZone != null" >
+        reward_of_innovation_zone = #{rewardOfInnovationZone,jdbcType=DECIMAL},
+      </if>
+      <if test="orepoolLock != null" >
+        orepool_lock = #{orepoolLock,jdbcType=DECIMAL},
+      </if>
+      <if test="orepoolUnlock != null" >
+        orepool_unlock = #{orepoolUnlock,jdbcType=DECIMAL},
+      </if>
+      <if test="orepoolIncome != null" >
+        orepool_income = #{orepoolIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="statisticsTime != null" >
+        statistics_time = #{statisticsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.statistic.UserYearIncrement" >
+    update user_year_increment
+    set user_id = #{userId,jdbcType=INTEGER},
+      coin_id = #{coinId,jdbcType=INTEGER},
+      trade_cost = #{tradeCost,jdbcType=DECIMAL},
+      trade_income = #{tradeIncome,jdbcType=DECIMAL},
+      trade_fee = #{tradeFee,jdbcType=DECIMAL},
+      freezing_of_innovation_zone = #{freezingOfInnovationZone,jdbcType=DECIMAL},
+      dividend_of_innovation_zone = #{dividendOfInnovationZone,jdbcType=DECIMAL},
+      reward_of_innovation_zone = #{rewardOfInnovationZone,jdbcType=DECIMAL},
+      orepool_lock = #{orepoolLock,jdbcType=DECIMAL},
+      orepool_unlock = #{orepoolUnlock,jdbcType=DECIMAL},
+      orepool_income = #{orepoolIncome,jdbcType=DECIMAL},
+      statistics_time = #{statisticsTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

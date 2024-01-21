@@ -1,0 +1,29 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/saveOtcCurrency">
+    <div class="layui-form-item">
+        <label class="layui-form-label">中文名称：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="chineseName" lay-verify="required" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">英文简称：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="englishName" lay-verify="required" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">货币代码：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="currencyCode" lay-verify="required" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态：</label>
+        <div class="layui-input-block">
+        	<select type="combox" name="status">
+				<option value="0" >关闭</option>
+				<option value="1" >开启</option>
+			</select>
+        </div>
+    </div>
+</div>

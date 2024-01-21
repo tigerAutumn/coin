@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace为对应对应Mapper接口，且SQL的id属性值必须与Mapper接口中的方法同名 -->
+<mapper namespace="com.qkwl.service.admin.bc.dao.ChatMessageMapper">
+    <cache eviction="FIFO" flushInterval="50" size="512" readOnly="true"></cache>
+    <!-- 
+    <typeAliases>
+        <typeAlias alias="ChatMessage" type="com.hotcoin.webchat..entity.ChatMessage" />
+    </typeAliases>
+    -->
+    <resultMap type="com.qkwl.common.dto.chat.ChatMessage" id="ChatMessageMap">
+		<id column="MSG_ID" jdbcType="BIGINT" property="msgId" />
+		<result column="SENDER" jdbcType="BIGINT" property="sender" />
+		<result column="SENDER_FNICKNAME" jdbcType="VARCHAR" property="senderFnickname" />
+		<result column="RECEIVER" jdbcType="VARCHAR" property="receiver" />
+		<result column="RECEIVER_FNICKNAME" jdbcType="VARCHAR" property="receiverFnickname" />
+		<result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+		<result column="MESSAGE" jdbcType="VARCHAR" property="message" />
+		<result column="MSG_TYPE" jdbcType="VARCHAR" property="msgType" />
+		<result column="EXTENDS_JSON" jdbcType="VARCHAR" property="extendsJson" />
+		<result column="SEND_STATE" jdbcType="INTEGER" property="sendState" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime" />
+		<result column="SEND_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" property="sendTime" />
+		<result column="SEND_TYPE" jdbcType="INTEGER" property="sendType" />
+	</resultMap>
+	<sql id="ChatMessage_Column_List">
+				 chatMessage.MSG_ID,
+				 chatMessage.SENDER,
+				 chatMessage.SENDER_FNICKNAME,
+				 chatMessage.RECEIVER,
+				 chatMessage.RECEIVER_FNICKNAME,
+				 chatMessage.ORDER_ID,
+				 chatMessage.MESSAGE,
+				 chatMessage.MSG_TYPE,
+				 chatMessage.EXTENDS_JSON,
+				 chatMessage.SEND_STATE,
+				 chatMessage.CREATE_TIME,
+				 chatMessage.SEND_TIME,
+				 chatMessage.SEND_TYPE
+	</sql>
+	
+	<select id="get" resultMap="ChatMessageMap">
+	    SELECT 
+	        <include refid="ChatMessage_Column_List"/>
+	    FROM chat_message chatMessage
+	    WHERE chatMessage.MSG_ID=#{msgId}
+	</select>
+
+	<sql id="DynamicSelectChatMessageValue">
+	    <where>
+		     <trim suffix="" suffixOverrides="AND">
+			  	     <if test="msgId != null and msgId != '' ">
+						 AND MSG_ID= #{msgId}
+					 </if>
+			  	     <if test="sender != null and sender != '' ">
+						 AND SENDER= #{sender}
+					 </if>
+					 <if test="senderFnickname != null and senderFnickname != '' ">
+						 AND SENDER_FNICKNAME= #{senderFnickname}
+					 </if>
+					 <if test="receiver != null and receiver != '' ">
+						 AND RECEIVER= #{receiver}
+					 </if>
+					 <if test="receiverFnickname != null and receiverFnickname != '' ">
+						 AND RECEIVER_FNICKNAME= #{receiverFnickname}
+					 </if>
+			  	     <if test="orderId != null and orderId != '' ">
+						 AND ORDER_ID= #{orderId}
+					 </if>
+			  	     <if test="message != null and message != '' ">
+						 AND MESSAGE= #{message}
+					 </if>
+					 <if test="msgType != null and msgType != '' ">
+						 AND MSG_TYPE= #{msgType}
+					 </if>
+			  	     <if test="extendsJson != null and extendsJson != '' ">
+						 AND EXTENDS_JSON= #{extendsJson}
+					 </if>
+			  	     <if test="sendState != null and sendState != '' ">
+						 AND SEND_STATE= #{sendState}
+					 </if>
+					 <if test="createTime != null">
+						 AND CREATE_TIME= #{createTime}
+					 </if>
+					 <if test="sendTime != null">
+						 AND SEND_TIME= #{sendTime}
+					 </if>
+			  	     <if test="sendType != null and sendType != '' ">
+						 AND SEND_TYPE= #{sendType}
+					 </if>
+		     </trim>
+		 </where>
+	</sql>
+	<select id="selectList" parameterType="com.qkwl.common.dto.chat.ChatMessage" resultMap="ChatMessageMap">
+	    SELECT 
+	        <include refid="ChatMessage_Column_List"/>
+	    FROM chat_message chatMessage
+	    <include refid="DynamicSelectChatMessageValue" />
+		order by chatMessage.SEND_TIME 
+	</select>
+	
+    <sql id="UserChatMessageColume">
+		<trim suffix="" suffixOverrides=",">
+			  	<if test="msgId != null and msgId != '' ">
+					MSG_ID,
+				</if>
+				<if test="sender != null and sender != '' ">
+					SENDER,
+				</if>
+				<if test="senderFnickname != null and senderFnickname != '' ">
+					SENDER_FNICKNAME,
+				</if>
+				<if test="receiver != null and receiver != '' ">
+					RECEIVER,
+				</if>
+				<if test="receiverFnickname != null and receiverFnickname != '' ">
+					RECEIVER_FNICKNAME,
+				</if>
+			  	<if test="orderId != null and orderId != '' ">
+					ORDER_ID,
+				</if>
+			  	<if test="message != null and message != '' ">
+					MESSAGE,
+				</if>
+				<if test="msgType != null and msgType != '' ">
+					MSG_TYPE,
+				</if>
+			  	<if test="extendsJson != null and extendsJson != '' ">
+					EXTENDS_JSON,
+				</if>
+			  	<if test="sendState != null and sendState != '' ">
+					SEND_STATE,
+				</if>
+			  	<if test="createTime != null ">
+					CREATE_TIME,
+				</if>
+			  	<if test="sendTime != null ">
+					SEND_TIME,
+				</if>
+			  	<if test="sendType != null and sendType != '' ">
+					SEND_TYPE,
+				</if>
+		</trim>
+	</sql>
+	<sql id="UserChatMessageValue">
+		<trim suffix="" suffixOverrides=",">
+			<if test="msgId != null and msgId != '' ">
+			 #{msgId},
+			</if>
+			<if test="sender != null and sender != '' ">
+			#{sender},
+			</if>
+			<if test="senderFnickname != null and senderFnickname != '' ">
+			#{senderFnickname},
+			</if>
+			<if test="receiver != null and receiver != '' ">
+			#{receiver},
+			</if>
+			<if test="receiverFnickname != null and receiverFnickname != '' ">
+			#{receiverFnickname},
+			</if>
+			<if test="orderId != null and orderId != '' ">
+			 #{orderId},
+			</if>
+			<if test="message != null and message != '' ">
+			 #{message},
+			</if>
+			<if test="msgType != null and msgType != '' ">
+				#{msgType},
+			</if>
+			<if test="extendsJson != null and extendsJson != '' ">
+			 #{extendsJson},
+			</if>
+			<if test="sendState != null and sendState != '' ">
+			 #{sendState},
+			</if>
+			<if test="createTime != null">
+			 #{createTime},
+			</if>
+			<if test="sendTime != null">
+			 #{sendTime},
+			</if>
+			<if test="sendType != null and sendType != '' ">
+			 #{sendType},
+			</if>
+		</trim>
+	</sql>
+	
+	<insert id="insert" parameterType="com.qkwl.common.dto.chat.ChatMessage">
+		INSERT INTO chat_message(
+		<include refid="UserChatMessageColume" />
+		) values (
+		<include refid="UserChatMessageValue" />
+		)
+	</insert> 
+	
+	<sql id="DynamicUpdateChatMessageValue">
+		<trim suffix="" suffixOverrides=",">
+				<if test="sender != null and sender != '' ">
+					SENDER= #{sender},
+				</if>
+				<if test="senderFnickname != null and senderFnickname != '' ">
+					SENDER_FNICKNAME= #{senderFnickname},
+				</if>
+				<if test="receiver != null and receiver != '' ">
+					RECEIVER= #{receiver},
+				</if>
+				<if test="receiverFnickname != null and receiverFnickname != '' ">
+					RECEIVER_FNICKNAME= #{receiverFnickname},
+				</if>
+				<if test="orderId != null and orderId != '' ">
+					 ORDER_ID= #{orderId},
+				 </if>				  
+			     <if test="message != null and message != '' ">
+					 MESSAGE= #{message},
+				 </if>
+				<if test="msgType != null and msgType != '' ">
+					MSG_TYPE= #{msgType},
+				</if>
+				<if test="extendsJson != null and extendsJson != '' ">
+					 EXTENDS_JSON= #{extendsJson},
+				 </if>				  
+			     <if test="sendState != null and sendState != '' ">
+					 SEND_STATE= #{sendState},
+				 </if>				  
+		  	     <if test="createTime != null">
+					 CREATE_TIME=#{createTime},
+				 </if>		  	
+		  	     <if test="sendTime != null ">
+					 SEND_TIME= #{sendTime},
+				 </if>		  	
+			     <if test="sendType != null and sendType != '' ">
+					 SEND_TYPE= #{sendType}
+				 </if>				  
+		</trim>
+	</sql>
+
+	<select id="selectUnReadCount" resultType="java.lang.Integer">
+		select count(*) from chat_message WHERE ORDER_ID= #{orderId} AND RECEIVER= #{recv} AND SEND_STATE= 1;
+	</select>
+
+	<update id="update" parameterType="com.qkwl.common.dto.chat.ChatMessage">
+        UPDATE chat_message SET
+        <include refid="DynamicUpdateChatMessageValue" />       
+        WHERE MSG_ID=#{msgId}
+    </update>
+
+	<update id="updateSendState">
+		UPDATE chat_message SET SEND_STATE = 2
+		WHERE ORDER_ID= #{orderId} AND RECEIVER= #{recv}
+		<if test="createTime != null">
+			AND  CREATE_TIME &lt; #{createTime};
+		</if>
+	</update>
+</mapper>

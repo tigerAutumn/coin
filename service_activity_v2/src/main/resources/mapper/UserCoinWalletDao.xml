@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotcoin.activity.dao.UserCoinWalletDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hotcoin.activity.model.po.UserCoinWalletPo" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="coinId" column="coin_id"/>
+        <result property="total" column="total"/>
+        <result property="frozen" column="frozen"/>
+        <result property="borrow" column="borrow"/>
+        <result property="ico" column="ico"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="version" column="version"/>
+        <result property="depositFrozen" column="deposit_frozen"/>
+        <result property="depositFrozenTotal" column="deposit_frozen_total"/>
+    </resultMap>
+
+    <!--
+          选择性插入
+        -->
+    <sql id="Base_Insert_Selective">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="coinId != null">
+                coin_id,
+            </if>
+            <if test="total != null">
+                total,
+            </if>
+            <if test="frozen != null">
+                frozen,
+            </if>
+            <if test="borrow != null">
+                borrow,
+            </if>
+            <if test="ico != null">
+                ico,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="depositFrozen != null">
+                deposit_frozen,
+            </if>
+            <if test="depositFrozenTotal != null">
+                deposit_frozen_total
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="total != null">
+                #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="frozen != null">
+                #{frozen,jdbcType=DECIMAL},
+            </if>
+            <if test="borrow != null">
+                #{borrow,jdbcType=DECIMAL},
+            </if>
+            <if test="ico != null">
+                #{ico,jdbcType=DECIMAL},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="depositFrozen != null">
+                #{depositFrozen,jdbcType=DECIMAL},
+            </if>
+            <if test="depositFrozenTotal != null">
+                #{depositFrozenTotal,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+
+    <!--
+      数据库表的基本查询列名集合
+    -->
+    <sql id="Base_Column_List">
+        id, uid, coin_id, total, frozen, borrow, ico, gmt_create, gmt_modified, version, deposit_frozen,
+        deposit_frozen_total
+    </sql>
+
+    <!--
+        Where子句
+      -->
+    <sql id="Base_Query_Where">
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="uid != null">
+            and uid = #{uid,jdbcType=INTEGER}
+        </if>
+        <if test="coinId != null">
+            and coin_id = #{coinId,jdbcType=INTEGER}
+        </if>
+        <if test="total != null">
+            and total = #{total,jdbcType=DECIMAL}
+        </if>
+        <if test="frozen != null">
+            and frozen = #{frozen,jdbcType=DECIMAL}
+        </if>
+        <if test="borrow != null">
+            and borrow = #{borrow,jdbcType=DECIMAL}
+        </if>
+        <if test="ico != null">
+            and ico = #{ico,jdbcType=DECIMAL}
+        </if>
+        <if test="gmtCreate != null">
+            and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="gmtModified != null">
+            and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+        <if test="depositFrozen != null">
+            and deposit_frozen = #{depositFrozen,jdbcType=DECIMAL}
+        </if>
+        <if test="depositFrozenTotal != null">
+            and deposit_frozen_total = #{depositFrozenTotal,jdbcType=DECIMAL}
+        </if>
+    </sql>
+
+    <update id="update" parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+    update user_coin_wallet
+    set total = #{total,jdbcType=DECIMAL},
+      deposit_frozen = #{depositFrozen,jdbcType=DECIMAL},
+      deposit_frozen_total = #{depositFrozenTotal,jdbcType=DECIMAL},
+      version = if( version+1> 9999999999999999,0, version+1),
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER} and version = #{version,jdbcType=BIGINT}
+  </update>
+    <!--
+        基本更新字段
+    -->
+    <sql id="Base_Update_Column">
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                coin_id = #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="total != null">
+                total = #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="frozen != null">
+                frozen = #{frozen,jdbcType=DECIMAL},
+            </if>
+            <if test="borrow != null">
+                borrow = #{borrow,jdbcType=DECIMAL},
+            </if>
+            <if test="ico != null">
+                ico = #{ico,jdbcType=DECIMAL},
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="depositFrozen != null">
+                deposit_frozen = #{depositFrozen,jdbcType=DECIMAL},
+            </if>
+            <if test="depositFrozenTotal != null">
+                deposit_frozen_total = #{depositFrozenTotal,jdbcType=DECIMAL}
+            </if>
+        </set>
+    </sql>
+
+    <!--
+        分页查询数据库表
+      -->
+    <select id="selectPaged" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_coin_wallet
+    </select>
+
+    <!--
+      根据主键查询数据库表
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_coin_wallet
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <!--
+      根据主键删除数据库表中的记录
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete FROM user_coin_wallet
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--
+      添加一条记录到数据库表中
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+        insert into user_coin_wallet
+        (<include refid="Base_Column_List"/>)
+        values (
+        <if test="id != null">
+            #{id,jdbcType=INTEGER},
+        </if>
+        <if test="uid != null">
+            #{uid,jdbcType=INTEGER},
+        </if>
+        <if test="coinId != null">
+            #{coinId,jdbcType=INTEGER},
+        </if>
+        <if test="total != null">
+            #{total,jdbcType=DECIMAL},
+        </if>
+        <if test="frozen != null">
+            #{frozen,jdbcType=DECIMAL},
+        </if>
+        <if test="borrow != null">
+            #{borrow,jdbcType=DECIMAL},
+        </if>
+        <if test="ico != null">
+            #{ico,jdbcType=DECIMAL},
+        </if>
+        <if test="gmtCreate != null">
+            #{gmtCreate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="gmtModified != null">
+            #{gmtModified,jdbcType=TIMESTAMP},
+        </if>
+        <if test="version != null">
+            #{version,jdbcType=BIGINT},
+        </if>
+        <if test="depositFrozen != null">
+            #{depositFrozen,jdbcType=DECIMAL},
+        </if>
+        <if test="depositFrozenTotal != null">
+            #{depositFrozenTotal,jdbcType=DECIMAL}
+        </if>
+        )
+    </insert>
+
+    <!--
+     有选择的添加一条记录到数据库表中
+   -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+        insert into user_coin_wallet
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      有选择的可忽略添加一条记录到数据库表中
+    -->
+    <insert id="insertSelectiveIgnore" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+        insert ignore into user_coin_wallet
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      根据主键有选择的更新数据库表
+    -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+        update user_coin_wallet
+        <include refid="Base_Update_Column"></include>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <!--
+      根据主键更新数据库表
+    -->
+    <update id="updateByPrimaryKey" parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+        update user_coin_wallet
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                coin_id = #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="total != null">
+                total = #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="frozen != null">
+                frozen = #{frozen,jdbcType=DECIMAL},
+            </if>
+            <if test="borrow != null">
+                borrow = #{borrow,jdbcType=DECIMAL},
+            </if>
+            <if test="ico != null">
+                ico = #{ico,jdbcType=DECIMAL},
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="depositFrozen != null">
+                deposit_frozen = #{depositFrozen,jdbcType=DECIMAL},
+            </if>
+            <if test="depositFrozenTotal != null">
+                deposit_frozen_total = #{depositFrozenTotal,jdbcType=DECIMAL}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--
+      批量添加记录到数据库表中
+    -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into user_coin_wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, uid, coin_id, total, frozen, borrow, ico, gmt_create, gmt_modified, version, deposit_frozen,
+            deposit_frozen_total
+        </trim>
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.id,jdbcType=INTEGER}, #{item.uid,jdbcType=INTEGER}, #{item.coinId,jdbcType=INTEGER},
+                #{item.total,jdbcType=DECIMAL}, #{item.frozen,jdbcType=DECIMAL}, #{item.borrow,jdbcType=DECIMAL},
+                #{item.ico,jdbcType=DECIMAL}, #{item.gmtCreate,jdbcType=TIMESTAMP},
+                #{item.gmtModified,jdbcType=TIMESTAMP}, #{item.version,jdbcType=BIGINT},
+                #{item.depositFrozen,jdbcType=DECIMAL}, #{item.depositFrozenTotal,jdbcType=DECIMAL}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--
+      根据主键批量更新数据库表中的记录
+    -->
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            update user_coin_wallet
+            <set>
+                <trim suffixOverrides=",">
+                    <if test="item.id != null">
+                        id = #{item.id,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.uid != null">
+                        uid = #{item.uid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.coinId != null">
+                        coin_id = #{item.coinId,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.total != null">
+                        total = #{item.total,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.frozen != null">
+                        frozen = #{item.frozen,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.borrow != null">
+                        borrow = #{item.borrow,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.ico != null">
+                        ico = #{item.ico,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.gmtCreate != null">
+                        gmt_create = #{item.gmtCreate,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.gmtModified != null">
+                        gmt_modified = #{item.gmtModified,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.version != null">
+                        version = #{item.version,jdbcType=BIGINT},
+                    </if>
+                    <if test="item.depositFrozen != null">
+                        deposit_frozen = #{item.depositFrozen,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.depositFrozenTotal != null">
+                        deposit_frozen_total = #{item.depositFrozenTotal,jdbcType=DECIMAL}
+                    </if>
+                </trim>
+            </set>
+            <where>
+                <trim suffixOverrides=",">
+                    where id = #{item.id,jdbcType=INTEGER}
+                </trim>
+            </where>
+        </foreach>
+    </update>
+
+    <!--
+     使用给定的字段名定义Where子句
+   -->
+    <sql id="Identifiers_Array_Conditions">
+        <foreach collection="array" index="index" item="item" separator=" and ">
+            <if test="item == 'id'">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'uid'">
+                uid = #{uid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'coinId'">
+                coin_id = #{coinId,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'total'">
+                total = #{total,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'frozen'">
+                frozen = #{frozen,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'borrow'">
+                borrow = #{borrow,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'ico'">
+                ico = #{ico,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'gmtCreate'">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'gmtModified'">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'version'">
+                version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="item == 'depositFrozen'">
+                deposit_frozen = #{depositFrozen,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'depositFrozenTotal'">
+                deposit_frozen_total = #{depositFrozenTotal,jdbcType=DECIMAL}
+            </if>
+        </foreach>
+    </sql>
+
+    <!--
+      存在即更新否则插入
+    -->
+    <update id="upsert" parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+        insert into user_coin_wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, uid, coin_id, total, frozen, borrow, ico, gmt_create, gmt_modified, version, deposit_frozen,
+            deposit_frozen_total
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, #{total,jdbcType=DECIMAL},
+            #{frozen,jdbcType=DECIMAL}, #{borrow,jdbcType=DECIMAL}, #{ico,jdbcType=DECIMAL},
+            #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT},
+            #{depositFrozen,jdbcType=DECIMAL}, #{depositFrozenTotal,jdbcType=DECIMAL}
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, #{total,jdbcType=DECIMAL},
+            #{frozen,jdbcType=DECIMAL}, #{borrow,jdbcType=DECIMAL}, #{ico,jdbcType=DECIMAL},
+            #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT},
+            #{depositFrozen,jdbcType=DECIMAL}, #{depositFrozenTotal,jdbcType=DECIMAL}
+        </trim>
+    </update>
+
+
+    <!--
+      带有空值检查的存在即更新否则插入
+    -->
+    <update id="upsertSelective" parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+        insert into user_coin_wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id,
+            </if>
+            <if test="uid !=null ">
+                uid,
+            </if>
+            <if test="coinId !=null ">
+                coin_id,
+            </if>
+            <if test="total !=null ">
+                total,
+            </if>
+            <if test="frozen !=null ">
+                frozen,
+            </if>
+            <if test="borrow !=null ">
+                borrow,
+            </if>
+            <if test="ico !=null ">
+                ico,
+            </if>
+            <if test="gmtCreate !=null ">
+                gmt_create,
+            </if>
+            <if test="gmtModified !=null ">
+                gmt_modified,
+            </if>
+            <if test="version !=null ">
+                version,
+            </if>
+            <if test="depositFrozen !=null ">
+                deposit_frozen,
+            </if>
+            <if test="depositFrozenTotal !=null ">
+                deposit_frozen_total
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid !=null ">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId !=null ">
+                coin_id = #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="total !=null ">
+                total = #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="frozen !=null ">
+                frozen = #{frozen,jdbcType=DECIMAL},
+            </if>
+            <if test="borrow !=null ">
+                borrow = #{borrow,jdbcType=DECIMAL},
+            </if>
+            <if test="ico !=null ">
+                ico = #{ico,jdbcType=DECIMAL},
+            </if>
+            <if test="gmtCreate !=null ">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified !=null ">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version !=null ">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="depositFrozen !=null ">
+                deposit_frozen = #{depositFrozen,jdbcType=DECIMAL},
+            </if>
+            <if test="depositFrozenTotal !=null ">
+                deposit_frozen_total = #{depositFrozenTotal,jdbcType=DECIMAL}
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid !=null ">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId !=null ">
+                coin_id = #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="total !=null ">
+                total = #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="frozen !=null ">
+                frozen = #{frozen,jdbcType=DECIMAL},
+            </if>
+            <if test="borrow !=null ">
+                borrow = #{borrow,jdbcType=DECIMAL},
+            </if>
+            <if test="ico !=null ">
+                ico = #{ico,jdbcType=DECIMAL},
+            </if>
+            <if test="gmtCreate !=null ">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified !=null ">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version !=null ">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="depositFrozen !=null ">
+                deposit_frozen = #{depositFrozen,jdbcType=DECIMAL},
+            </if>
+            <if test="depositFrozenTotal !=null ">
+                deposit_frozen_total = #{depositFrozenTotal,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </update>
+
+    <select id="query" resultMap="BaseResultMap" parameterType="com.hotcoin.activity.model.po.UserCoinWalletPo">
+        select
+        <include refid="Base_Column_List"/>
+        from user_coin_wallet
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(*) from user_coin_wallet
+    </select>
+
+
+    <delete id="deleteBatch">
+        delete from user_coin_wallet where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

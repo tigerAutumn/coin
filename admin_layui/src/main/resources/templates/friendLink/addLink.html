@@ -1,0 +1,88 @@
+<div class="layui-form layui-form-pane" lay-href="friendLink/saveLink" xmlns:th="http://www.thymeleaf.org">
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称(简体)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="zhCNName" lay-verify="required"/>
+        </div>
+    </div>
+       <div class="layui-form-item">
+        <label class="layui-form-label">名称(繁体)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="zhTWName" lay-verify="required"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">名称(英语)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="enUSName" lay-verify="required"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">名称(韩语)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="koKRName" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型：</label>
+        <div class="layui-input-block">
+            <select type="combox" name="ftype">
+                <option th:each="v : ${linkTypeMap}" th:value="${v.key}" th:text="${v.value}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">链接地址（简体）：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="zhCNFurl" lay-verify="required"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">链接地址（繁体）：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="zhTWFurl" lay-verify="required"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">链接地址（英语）：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="enUSFurl" lay-verify="required"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">链接地址（韩语）：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="koKRFurl" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">描述(简体)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="zhCNFdescription" lay-verify="required"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">描述(繁体)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="zhTWFdescription" lay-verify="required"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">描述(英语)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="enUSFdescription" lay-verify="required"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">描述(韩语)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="koKRFdescription" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">顺序：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="forder" lay-verify="required digits"/>
+        </div>
+    </div>
+</div>

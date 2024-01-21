@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.commission.dao.OrepoolRecordMapper">
+	<select id="getRecordList" parameterType="java.util.Map" resultType="OrepoolRecord">
+		select p.income_rate, p.lock_period, p.end_time countTime,
+				(p.income_rate * p.lock_period * r.lock_volume)/365 profit, t.short_name coinName, t.web_logo coinIcon 
+				, r.id, r.lock_volume, r.status, r.create_time createTime, r.update_time updateTime 
+			from orepool_record r, orepool_plan p, system_coin_type t
+			where 
+				r.plan_id = p.id
+				and r.lock_coin_id = t.id
+				and r.user_id = #{userId}
+				and p.type = #{type}
+			order by r.create_time desc
+	</select>
+	
+	<select id="getPersonCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*) from orepool_record where plan_id = #{planId}
+	</select>
+	
+	<select id="getRecord" parameterType="java.util.Map" resultType="OrepoolRecord">
+		select * from orepool_record where plan_id = #{planId} and user_id = #{userId}
+	</select>
+	
+	<select id="getRecordById" parameterType="java.lang.Integer" resultType="OrepoolRecord">
+		select * from orepool_record where id = #{id}
+	</select>
+	
+	<select id="getRecordByPlanId" parameterType="java.lang.Integer" resultType="OrepoolRecord">
+		select r.*, t.short_name coinName from orepool_record r, system_coin_type t
+		where r.lock_coin_id = t.id
+			and r.plan_id = #{planId}
+	</select>
+	
+	<select id="getCurrentRecord" resultType="OrepoolRecord">
+		select r.*, t.short_name coinName 
+		from orepool_record r, orepool_plan p, system_coin_type t
+		where r.lock_coin_id = t.id
+			and r.plan_id = p.id
+			and p.type = 2
+	</select>
+	
+	<select id="getInnovationRecord" resultType="OrepoolRecord">
+		select r.*, t.short_name coinName 
+		from orepool_record r, orepool_plan p, system_coin_type t
+		where r.lock_coin_id = t.id
+			and r.plan_id = p.id
+			and p.type = 3
+	</select>
+	
+	<update id="update" parameterType="OrepoolRecord" >
+    update orepool_record 
+	<set >
+      <if test="planId != null" >
+        plan_id = #{planId},
+      </if>
+      <if test="userId != null" >
+    	user_id = #{userId},
+      </if>
+      <if test="lockCoinId != null" >
+        lock_coin_id = #{lockCoinId},
+      </if>
+      <if test="incomeCoinId != null" >
+        income_coin_id = #{incomeCoinId},
+      </if>
+      <if test="lockVolume != null" >
+        lock_volume = #{lockVolume},
+      </if>
+      <if test="status != null" >
+    	status = #{status},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where 
+    	id = #{id,jdbcType=INTEGER}
+   </update>
+   
+   <insert id="insert" parameterType="OrepoolRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into orepool_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="planId != null" >
+        plan_id,
+      </if>
+      <if test="userId != null" >
+    	user_id,
+      </if>
+      <if test="lockCoinId != null" >
+        lock_coin_id,
+      </if>
+      <if test="incomeCoinId != null" >
+        income_coin_id,
+      </if>
+      <if test="lockVolume != null" >
+        lock_volume,
+      </if>
+      <if test="status != null" >
+    	status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="planId != null" >
+        #{planId},
+      </if>
+      <if test="userId != null" >
+    	#{userId},
+      </if>
+      <if test="lockCoinId != null" >
+        #{lockCoinId},
+      </if>
+      <if test="incomeCoinId != null" >
+        #{incomeCoinId},
+      </if>
+      <if test="lockVolume != null" >
+        #{lockVolume},
+      </if>
+      <if test="status != null" >
+    	#{status},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime},
+      </if>
+    </trim>
+  </insert>
+</mapper>

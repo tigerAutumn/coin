@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.capital.dao.UserWalletBalanceLogMapper" >
+  
+  <select id="selectList" resultType="UserWalletBalanceLog" parameterType="java.util.Map">
+	select user_wallet_balance_log.*,system_coin_type.short_name as coinShortName,system_coin_type.web_logo as coinIcon
+	from user_wallet_balance_log left join system_coin_type on user_wallet_balance_log.coin_id = system_coin_type.id
+	where 1=1
+	<if test="uid != null">
+		and uid = #{uid}
+	</if>
+	<if test="coinId != null">
+		and coin_id = #{coinId}
+	</if>
+	<if test="srcType != null">
+		and src_type = #{srcType}
+	</if>
+	<if test="direction != null">
+		and direction = #{direction}
+	</if>
+	<if test="coinName != null and coinName != ''">
+		and (system_coin_type.short_name like concat('%',#{coinName},'%') or
+					system_coin_type.name like concat('%',#{coinName},'%'))
+	</if>
+	<if test="start != null">
+		<![CDATA[and createtime >= #{start,jdbcType=VARCHAR}]]>
+	</if>
+	<if test="end != null">
+		<![CDATA[and createtime <= #{end,jdbcType=VARCHAR}]]>
+	</if>
+	order by createtime desc
+  </select>
+  
+  <insert id="insert" parameterType="com.qkwl.common.dto.wallet.UserWalletBalanceLog" >
+    insert into user_wallet_balance_log (id, uid, coin_id, 
+      field_id, `change`, src_id, 
+      src_type, direction, createtime, 
+      createdatestamp)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, 
+      #{fieldId,jdbcType=VARCHAR}, #{change,jdbcType=DECIMAL}, #{srcId,jdbcType=INTEGER}, 
+      #{srcType,jdbcType=INTEGER}, #{direction,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createdatestamp,jdbcType=BIGINT})
+  </insert>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<properties
+		url="file:///${mybatis.generator.jdbc}/jdbc.properties" />
+	<context id="context" targetRuntime="MyBatis3">
+		<!-- 抑制警告 -->
+
+		<property name="suppressTypeWarnings" value="true" />
+
+		<property name="autoDelimitKeywords" value="true"/>  
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+
+		<plugin
+			type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$" />
+			<property name="replaceString" value="Criteria" />
+		</plugin>
+		<!-- generate entity时，生成hashcode和equals方法 -->
+		<!-- <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" 
+			/> -->
+		<!-- generate entity时，生成serialVersionUID -->
+		<!--<plugin type="org.mybatis.generator.plugins.SerializablePlugin" /> -->
+		<!-- 这个插件只会增加字符串字段映射到一个JDBC字符的方法 -->
+		<plugin
+			type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
+		<!-- genenat entity时,生成toString -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+
+		<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<property name="suppressDate" value="false" />
+		</commentGenerator>
+
+
+		<jdbcConnection driverClass="${jdbc.driver}"
+			connectionURL="${jdbc.url}" userId="${jdbc.username}"
+			password="${jdbc.password}">
+		</jdbcConnection>
+
+		<javaTypeResolver
+			type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- generate Model -->
+		<javaModelGenerator
+			targetPackage="${model.package}"
+			targetProject="${project.build.directory}/../src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+			<property name="isMergeable" value="false" />
+			<property name="rootClass"
+				value="com.hotcoin.jinpinggateway.util.BaseModel" />
+		</javaModelGenerator>
+
+		<!-- generate xml -->
+		<sqlMapGenerator targetPackage="${xml.package}"
+			targetProject="${project.build.directory}/../src/main/resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- generate Mapper -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="${mapper.package}"
+			targetProject="${project.build.directory}/../src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!-- catalog CDATA #IMPLIED schema CDATA #IMPLIED tableName CDATA #REQUIRED 
+			alias CDATA #IMPLIED domainObjectName CDATA #IMPLIED enableInsert CDATA #IMPLIED 
+			enableSelectByPrimaryKey CDATA #IMPLIED enableUpdateByPrimaryKey CDATA #IMPLIED 
+			enableDeleteByPrimaryKey CDATA #IMPLIED enableCountByExample CDATA #IMPLIED 
+			enableUpdateByExample CDATA #IMPLIED enableDeleteByExample CDATA #IMPLIED 
+			enableSelectByExample CDATA #IMPLIED selectByExampleQueryId CDATA #IMPLIED 
+			selectByPrimaryKeyQueryId CDATA #IMPLIED modelType CDATA #IMPLIED escapeWildcards 
+			CDATA #IMPLIED delimitIdentifiers CDATA #IMPLIED delimitAllColumns CDATA 
+			#IMPLIED -->
+		 <table schema="" tableName="open_api" domainObjectName="OpenApiEntity"
+                modelType="flat" mapperName="base.OpenApiBaseMapper"
+                enableSelectByPrimaryKey="true" enableSelectByExample="true"
+                enableDeleteByPrimaryKey="true" enableDeleteByExample="true"
+                enableUpdateByPrimaryKey="true" enableUpdateByExample="true"
+                enableCountByExample="true" enableInsert="true">
+                <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+         </table>
+         <table schema="" tableName="api_key" domainObjectName="ApiKeyEntity"
+                modelType="flat" mapperName="base.ApiKeyBaseMapper"
+                enableSelectByPrimaryKey="true" enableSelectByExample="true"
+                enableDeleteByPrimaryKey="true" enableDeleteByExample="true"
+                enableUpdateByPrimaryKey="true" enableUpdateByExample="true"
+                enableCountByExample="true" enableInsert="true">
+                <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+         </table>
+   
+
+
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.NetTradeRankStatisticMapper">
+
+	<select id="countByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(id)
+        from net_trade_rank_statistic where activity_id = #{activityId} and position >= #{minPosition}
+    </select>
+
+    <select id="getPageList" resultType="NetTradeRankStatistic" parameterType="java.util.Map">
+        select * from net_trade_rank_statistic where activity_id = #{activityId} and position >= #{minPosition}
+        limit #{offset},#{limit}
+    </select>
+    
+    <select id="countRank" resultType="NetTradeRankStatistic" parameterType="com.qkwl.common.dto.activity.NetTradeRankActivity">
+       select userId, buyCount, sellCount, (buyCount-sellCount) netCount, total position
+		  from(
+			select l.fuid userId, SUM(IF(l.fentrusttype= 1, l.fcount, 0)) sellCount, sum(IF(l.fentrusttype= 0, l.fcount-l.ffee, 0)) buyCount
+		  		from `f_entrust_log` l
+		 		where l.ftradeid= #{tradeId} 
+		   			and l.fcreatetime >= #{startTime}
+		   			and l.fcreatetime &lt;= #{endTime} 
+		 		group by l.fuid
+				having(buyCount - sellCount) >= #{minNetTrade}
+			) s1, `user_coin_wallet` w, `system_trade_type` t
+		 where s1.userId = w.uid
+		   and t.id = #{tradeId} 
+		   and t.sell_coin_id = w.coin_id
+    </select>
+    
+    <insert id="snapshot" parameterType="java.util.Map">
+        INSERT INTO net_trade_rank_statistic (
+        activity_id,
+        user_id,
+        telephone,
+        email,
+        buy_count,
+        sell_count,
+        net_count,
+        position,
+        create_time)
+        VALUES (
+        #{activityId},
+        #{userId},
+		#{telephone},
+		#{email},
+		#{buyCount},
+		#{sellCount},
+		#{netCount},
+		#{position},
+		NOW())
+    </insert>
+</mapper>

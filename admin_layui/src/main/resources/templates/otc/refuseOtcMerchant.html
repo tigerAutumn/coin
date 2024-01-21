@@ -1,0 +1,9 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/saveRefuseOtcMerchant">
+    <div class="layui-form-item">
+        <label class="layui-form-label">拒绝理由：</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="id" th:value="${merchantId}" />
+            <textarea class="layui-textarea layui-hide" name="reason" lay-verify="content"></textarea>
+        </div>
+    </div>
+</div>

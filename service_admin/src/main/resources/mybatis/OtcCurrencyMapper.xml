@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.OtcCurrencyMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.otc.OtcCurrency" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="chinese_name" property="chineseName" jdbcType="VARCHAR" />
+    <result column="english_name" property="englishName" jdbcType="VARCHAR" />
+    <result column="currency_code" property="currencyCode" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, chinese_name, english_name, currency_code, status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from otc_currency
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from otc_currency
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from otc_currency
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.otc.OtcCurrency" >
+    insert into otc_currency (id, chinese_name,  
+      english_name, currency_code, status, create_time)
+    values (#{id,jdbcType=INTEGER}, #{chineseName,jdbcType=VARCHAR}, #{currencyCode,jdbcType=VARCHAR},
+      #{englishName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.otc.OtcCurrency" >
+    insert into otc_currency
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="chineseName != null" >
+        chinese_name,
+      </if>
+      <if test="englishName != null" >
+        english_name,
+      </if>
+      <if test="currencyCode != null" >
+        currency_code,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="chineseName != null" >
+        #{chineseName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyCode != null" >
+        #{currencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.otc.OtcCurrency" >
+    update otc_currency
+    <set >
+      <if test="chineseName != null" >
+        chinese_name = #{chineseName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        english_name = #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyCode != null" >
+        currency_code = #{currencyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.otc.OtcCurrency" >
+    update otc_currency
+    set chinese_name = #{chineseName,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
+      currency_code = #{currencyCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="countOtcCurrencyListByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(id)
+        from otc_currency
+    </select>
+    
+    <select id="getOtcCurrencyPageList" resultType="OtcCurrency" parameterType="java.util.Map">
+        select *
+        from otc_currency
+        <if test="orderField != null">
+            order by ${orderField} ${orderDirection}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+</mapper>

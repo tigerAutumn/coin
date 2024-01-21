@@ -1,0 +1,41 @@
+<div class="layui-form" lay-href="admin/smsConfigList.html" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+	<div class="layui-form-item layui-search-box">
+	    <div class="layui-inline" style="display:none;">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+	<hr/>
+	<div class="layui-btn-box">
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/transferSmsConfig.html"
+				lay-href="/admin/transferSmsConfig.html" lay-checked="smsClazz" lay-target="ajax" lay-tips="确定要切换吗?">切换</button>
+	</div>
+	<div class="layui-conten-box">
+		<table class="layui-table" width="100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th>短信服务</th>
+					<th>状态</th>
+					<th>类型</th>
+					<th>优先级</th>
+					<th>描述</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="list : ${smsConfigList}">
+					<td>
+						<input type="checkbox" th:name="${list.smsClazz}" lay-skin="primary" />
+					</td>
+					<td th:text="${list.smsClazz}"></td>
+					<td th:text="${list.isActivity == 1? '开启':'关闭'}"></td>
+					<td th:text="${list.action}"></td>
+					<td th:text="${list.priority}"></td>
+					<td th:text="${list.description}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</div>

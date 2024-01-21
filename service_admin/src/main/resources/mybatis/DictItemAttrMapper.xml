@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.DictItemAttrMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.dict.DictItemAttr" >
+    <id column="Id" property="Id" jdbcType="INTEGER" />
+    <id column="dictitemid" property="dictitemid" jdbcType="VARCHAR" />
+    <result column="langtype" property="langtype" jdbcType="VARCHAR" />
+    <result column="dictname" property="dictname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, dictitemid, langtype, dictname
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dict_item_attr
+    where Id = #{Id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dict_item_attr
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dict_item_attr
+    where Id = #{Id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.dict.DictItemAttr" >
+    insert into dict_item_attr (dictitemid, langtype, dictname)
+    values (#{dictitemid,jdbcType=VARCHAR}, #{langtype,jdbcType=VARCHAR}, #{dictname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.dict.DictItemAttr" >
+    insert into dict_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dictitemid != null" >
+        dictitemid,
+      </if>
+      <if test="langtype != null" >
+        langtype,
+      </if>
+      <if test="dictname != null" >
+        dictname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dictitemid != null" >
+        #{dictitemid,jdbcType=VARCHAR},
+      </if>
+      <if test="langtype != null" >
+        #{langtype,jdbcType=VARCHAR},
+      </if>
+      <if test="dictname != null" >
+        #{dictname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.dict.DictItemAttr" >
+    update dict_item_attr
+    <set >
+      <if test="dictitemid != null" >
+        dictitemid = #{dictitemid,jdbcType=VARCHAR},
+      </if>
+      <if test="langtype != null" >
+        langtype = #{langtype,jdbcType=VARCHAR},
+      </if>
+      <if test="dictname != null" >
+        dictname = #{dictname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{Id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.dict.DictItemAttr" >
+    update dict_item_attr
+    set dictitemid = #{dictitemid,jdbcType=VARCHAR},
+      langtype = #{langtype,jdbcType=VARCHAR},
+      dictname = #{dictname,jdbcType=VARCHAR}
+    where Id = #{Id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="countDictItemAttrListByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(Id)
+        from dict_item_attr
+    </select>
+    
+    <select id="getDictItemAttrPageList" resultType="com.qkwl.common.dto.dict.DictItemAttr" parameterType="java.util.Map">
+        select *
+        from dict_item_attr
+        limit #{offset},#{limit}
+    </select>
+</mapper>

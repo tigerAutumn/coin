@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qkwl.service.otc.dao.OtcMerchantMapper">
+	
+    <select id="selectByUid" resultType="com.qkwl.common.dto.otc.OtcMerchant" parameterType="java.lang.Integer">
+        select * from otc_merchant
+         where uid = #{uid}
+    </select>
+	
+   <insert id="insert" parameterType="com.qkwl.common.dto.otc.OtcMerchant" >
+    insert into otc_merchant (uid, name, 
+      phone, email, emergency_name, 
+      emergency_phone, relationship, address, 
+      image, video, status, deposit,language, apply_time
+      )
+    values (#{uid}, #{name}, 
+      #{phone}, #{email}, #{emergencyName}, 
+      #{emergencyPhone}, #{relationship}, #{address}, 
+      #{image}, #{video}, #{status}, #{deposit}, #{language}, #{applyTime}
+      )
+  </insert>
+   
+   <update id="update" parameterType="com.qkwl.common.dto.otc.OtcMerchant" >
+   update otc_merchant 
+   	set name = #{name}, phone = #{phone},
+   		email = #{email}, emergency_name = #{emergencyName},
+   		emergency_phone = #{emergencyPhone}, relationship = #{relationship},
+   		address = #{address}, image = #{image}, video = #{video},
+   		status = #{status}, deposit = #{deposit}, language = #{language}, apply_time = #{applyTime}
+   	where uid = #{uid}
+   </update>
+   
+   <select id="getDeposit" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+        select deposit from otc_merchant
+         where uid = #{uid}
+         	and status in (1,2,3)
+    </select>
+</mapper>

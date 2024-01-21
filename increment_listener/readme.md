@@ -1,0 +1,25 @@
+## 打包发布
+### 1.打包使用命令
+mvn assembly:assembly -Pdev
+
+### 2.发布先将jar包上传到hadoop
+hdfs dfs -put increment_listener-0.0.1-SNAPSHOT-dev-jar-with-dependencies.jar /
+
+### 3.spark提交任务
+进入spark目录执行 bin/spark-submit --master spark://host:7077 --deploy-mode cluster --supervise --class com.hotcoin.increment.App hdfs:///increment_listener-0.0.1-SNAPSHOT-dev-jar-with-dependencies.jar
+
+## 项目
+### 1.该服务接收来自 service_activity 的kafka消息，根据消息的时间定位到天表的数据，再做修改
+### 2.hbase数据结构
+#### 1.年表
+##### 表名为 increment:year ,row使用uid，family为f加年份，如 f2017，qualifier使用币种id，另外还有一个total的family，用于统计所有年份数据的总和。通过用户id年份和币种可以定位到某一用户某一年的交易统计（get 'increment:year','10000','f2017：1' ，就可得到数据 {"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}）
+<table style="width:1000px"><tr><td></td><td  colspan=3 >f2017</td><td  colspan=3 >f2018</td><td>......</td><td colspan=3 >total</td></tr><tr><td rowspan=2 >10000</td><td>1</td><td>2</td><td>......</td><td>1</td><td>2</td><td>......</td><td>......</td><td>1</td><td>2</td><td>......</td></tr><tr ><td style="word-wrap:break-word;word-break:break-all;" width="100px" >{"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td>......</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td>......</td><td>......</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":1,"tradeCost":2,"tradeFee":0.2,"tradeIncome":2,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":2,"tradeFee":0.2,"tradeIncome":2,"userId":10000}</td><td>......</td></tr></table>
+
+#### 2.月表
+##### 表名为 increment:month加年份，如：increment:month_2017 ,row使用uid，family为f加月份，如 f1，qualifier使用币种id，另外还有一个total的family，用于统计所有月数据的总和。通过用户id和币种可以定位到某一用户某一月的交易统计（get 'increment:month_2019','10000','f1：1' ，就可得到数据 {"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}）
+<table style="width:1000px"><tr><td></td><td  colspan=3 >f1</td><td  colspan=3 >f2</td><td>......</td><td colspan=3 >total</td></tr><tr><td rowspan=2 >10000</td><td>1</td><td>2</td><td>......</td><td>1</td><td>2</td><td>......</td><td>......</td><td>1</td><td>2</td><td>......</td></tr><tr ><td style="word-wrap:break-word;word-break:break-all;" width="100px" >{"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td>......</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td>......</td><td>......</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":1,"tradeCost":2,"tradeFee":0.2,"tradeIncome":2,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":2,"tradeFee":0.2,"tradeIncome":2,"userId":10000}</td><td>......</td></tr></table>
+
+
+#### 3.天表
+##### 表名为 increment:day加年份和月份，如：increment:day_2019_5 ,row使用uid，family为f加天，如 f1，qualifier使用币种id，另外还有一个total的family，用于统计整个月天数据的总和。通过用户id和币种可以定位到某一用户某一天的交易统计（get 'increment:day_2019_5','10000','f1：1' ，就可得到数据 {"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}）
+<table style="width:1000px"><tr><td></td><td  colspan=3 >f1</td><td  colspan=3 >f2</td><td>......</td><td colspan=3 >total</td></tr><tr><td rowspan=2 >10000</td><td>1</td><td>2</td><td>......</td><td>1</td><td>2</td><td>......</td><td>......</td><td>1</td><td>2</td><td>......</td></tr><tr ><td style="word-wrap:break-word;word-break:break-all;" width="100px" >{"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td>......</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":1,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":1,"tradeFee":0.1,"tradeIncome":1,"userId":10000}</td><td>......</td><td>......</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":1,"tradeCost":2,"tradeFee":0.2,"tradeIncome":2,"userId":10000}</td><td style="word-wrap:break-word;word-break:break-all;" width="100px">{"coinId":2,"tradeCost":2,"tradeFee":0.2,"tradeIncome":2,"userId":10000}</td><td>......</td></tr></table>

@@ -1,0 +1,25 @@
+<div class="layui-form" lay-href="admin/otc/otcChatHistory" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+	<div class="layui-conten-box">
+		<table class="layui-table" width="100%">
+            <thead>
+            <tr>
+				<th>广告主</th>
+                <th>消息内容</th>
+                <th>客户</th>
+            </tr>
+            </thead>
+            <tbody>
+			<tr th:each="list : ${chatHistory}">
+				<td th:if="${list.msgType eq 'img' or list.msgType eq 'text' or list.msgType eq 'system'}"><p th:text="${list.sender == order.adUserId ? list.sender:''}" ></p></td>
+                <td th:if="${list.msgType eq 'img' or list.msgType eq 'text' or list.msgType eq 'system'}"><p th:text="${list.sendTime == null? '':#dates.format(list.sendTime, 'yyyy-MM-dd HH:mm:ss')}"></p>  <img th:if="${list.msgType eq 'img'}"  th:src="${list.message}" style="width:500px" /> <p th:if="${list.msgType ne 'img'}" th:text="${(list.msgType eq 'system'?'系统消息：':'') + list.message}" ></p></td>
+                <td th:if="${list.msgType eq 'img' or list.msgType eq 'text' or list.msgType eq 'system'}"><p th:text="${list.sender == order.adUserId ? '': list.sender}" ></p></td>
+            </tr>
+            </tbody>
+        </table>
+	</div>
+
+</div>
+    <script>
+        var $ = layui.jquery, jQuery = layui.jquery;
+    </script>

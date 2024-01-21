@@ -1,0 +1,60 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/riskManagement/save">
+    <div class="layui-form-item">
+        <label class="layui-form-label">充值用户：</label>
+        <div class="layui-input-block">
+            <input name="userId" placeholder="用户id" class="layui-input" lay-verify="required"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">交易币种：</label>
+        <select name="rechargeCoin">
+            <option value="GAVC">GAVC</option>
+            <option value="USDT">USDT</option>
+        </select>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">充值数量：</label>
+            <div class="layui-input-block">
+                <input name="rechargeFunds" placeholder="用户充值本金数量" class="layui-input" lay-verify="required"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">放大倍数：</label>
+            <div class="layui-input-block">
+                <select name="debitTimes">
+                    <option value="1">1倍</option>
+                    <option value="2">2倍</option>
+                    <option value="3">3倍</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">本金预警线：</label>
+            <div class="layui-input-block">
+                <input name="capitalWarningLine" placeholder="请输入用户剩余本金百分比,请输入数字不需要带百分号" class="layui-input"
+                       lay-verify="required"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">平仓预警线：</label>
+            <div class="layui-input-block">
+                <input name="capitalCloseoutLine" placeholder="请输入用户剩余本金百分比,请输入数字不需要带百分号" class="layui-input"
+                       lay-verify="required"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,27 @@
+<div class="layui-form" lay-href="admin/otcAdvertList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+            	<th>支付名称</th>
+                <th>姓名</th>
+                <th>开户行</th>
+                <th>银行账户</th>
+                <th>开户支行地址</th>
+                <th>二维码</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(bankinfoList)}">
+            <tr th:each="bankinfo : ${bankinfoList}">
+                <td th:text="${bankinfo.paymentName}"></td>
+                <td th:text="${bankinfo.frealname}"></td>
+                <td th:text="${bankinfo.fname}"></td>
+                <td th:text="${bankinfo.fbanknumber}"></td>
+                <td th:text="${bankinfo.faddress}"></td>
+                <td><img style="width: 150px;height: 150px;" th:src="${bankinfo.qrcodeImg}" /></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

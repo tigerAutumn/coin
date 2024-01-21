@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.FUserBankinfoMapper">
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.capital.FUserBankinfoDTO" >
+    <id column="fid" property="fid" jdbcType="INTEGER" />
+    <result column="fuid" property="fuid" jdbcType="INTEGER" />
+    <result column="fname" property="fname" jdbcType="VARCHAR" />
+    <result column="fbanknumber" property="fbanknumber" jdbcType="VARCHAR" />
+    <result column="fbanktype" property="fbanktype" jdbcType="INTEGER" />
+    <result column="fcreatetime" property="fcreatetime" jdbcType="TIMESTAMP" />
+    <result column="fstatus" property="fstatus" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="init" property="init" jdbcType="BIT" />
+    <result column="faddress" property="faddress" jdbcType="VARCHAR" />
+    <result column="frealname" property="frealname" jdbcType="VARCHAR" />
+    <result column="fprov" property="fprov" jdbcType="VARCHAR" />
+    <result column="fcity" property="fcity" jdbcType="VARCHAR" />
+    <result column="ftype" property="ftype" jdbcType="INTEGER" />
+    <result column="fdist" property="fdist" jdbcType="VARCHAR" />
+    <result column="payment_name_code" property="paymentNameCode" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="qrcode_img" property="qrcodeImg" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+        f_user_bankinfo.fid, 
+    	f_user_bankinfo.fuid, 
+    	f_user_bankinfo.fname, 
+    	f_user_bankinfo.fbanknumber, 
+   	 	f_user_bankinfo.fbanktype, 
+   	 	f_user_bankinfo.fcreatetime, 
+   	 	f_user_bankinfo.fstatus, 
+    	f_user_bankinfo.version, 
+    	f_user_bankinfo.init, 
+    	f_user_bankinfo.faddress, 
+    	f_user_bankinfo.frealname, 
+    	f_user_bankinfo.fprov, 
+    	f_user_bankinfo.fcity, 
+    	f_user_bankinfo.ftype, 
+    	f_user_bankinfo.fdist,
+    	f_user_bankinfo.is_default,
+    	f_user_bankinfo.logo,
+    	f_user_bankinfo.qrcode_img
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from f_user_bankinfo
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByUserAndType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,otc_payment.name_code as payment_name_code
+    from f_user_bankinfo
+    inner join otc_payment on f_user_bankinfo.ftype = otc_payment.id
+    where 1=1
+    <if test="status != null">
+			and f_user_bankinfo.fstatus = #{status,jdbcType=INTEGER}
+	</if>
+	<if test="userId != null">
+			and f_user_bankinfo.fuid = #{userId,jdbcType=INTEGER}
+	</if>
+	<if test="type != null">
+			and f_user_bankinfo.ftype = #{type,jdbcType=INTEGER}
+	</if>
+	<if test="isDefault != null">
+			and f_user_bankinfo.is_default = #{isDefault,jdbcType=BIT}
+	</if>
+  </select>
+
+  
+</mapper>

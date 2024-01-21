@@ -1,0 +1,10 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/saveIntrouids">
+    <div class="layui-form-item">
+        <label class="layui-form-label">下级uid：</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="fid" th:value="${fid}" />
+            <textarea class="layui-textarea" placeholder="以/分隔，例如：10001/10002" name="introuids" lay-verify="required" />
+        </div>
+    </div>
+    
+</div>

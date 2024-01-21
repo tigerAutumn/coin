@@ -1,0 +1,102 @@
+<div class="layui-form" lay-href="admin/otcAdvertList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+    	<div class="layui-inline">
+            <label class="layui-form-label">输入搜索：</label>
+            <div class="layui-input-inline">
+                <input name="id" th:value="${id }" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">币种：</label>
+            <div class="layui-input-inline">
+                <input name="coinName" th:value="${coinName }" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">商户UID：</label>
+            <div class="layui-input-inline">
+                <input name="userId" th:value="${userId }" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">广告类型：</label>
+            <div class="layui-input-inline">
+                <select name="side">
+                    <option value="ALL">全部</option>
+                    <option value="BUY" th:selected="${side eq 'BUY' ?true:false}">购买</option>
+                    <option value="SELL" th:selected="${side eq 'SELL' ?true:false}">出售</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">广告状态：</label>
+            <div class="layui-input-inline">
+                <select name="status">
+                    <option value="0">全部</option>
+                    <option value="1" th:selected="${status eq 1 ?true:false}">已上架</option>
+                    <option value="2" th:selected="${status eq 2 ?true:false}">已下架</option>
+                    <option value="3" th:selected="${status eq 3 ?true:false}">已过期</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询结果</button>
+        </div>
+    </div>
+    
+    <div class="layui-btn-box">
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/frozenOtcAdvert"
+				lay-href="/admin/frozenOtcAdvert" lay-checked="id" lay-target="ajax" lay-tips="确定要冻结吗?">冻结</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/unfrozenOtcAdvert"
+				lay-href="/admin/unfrozenOtcAdvert" lay-checked="id" lay-target="ajax" lay-tips="确定要解冻吗?">解冻</button>
+	</div>
+	
+    <hr/>
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>广告编号</th>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                <th>商户UID</th>
+                <th>广告类型</th>
+                <th>广告币种</th>
+                <th>广告价格</th>
+                <th>广告数量</th>
+                <th>收款信息</th>
+                <th>广告状态</th>
+                <th>是否冻结</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(otcAdvertList)}">
+            <tr th:each="otcAdvert : ${otcAdvertList.data}">
+                <td>
+                    <input type="checkbox" th:name="${otcAdvert.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${otcAdvert.id}"></td>
+                <td th:text="${#dates.format(otcAdvert.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(otcAdvert.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${otcAdvert.userId}"></td>
+                <td th:text="${otcAdvert.side == 'BUY'? '购买':'出售'}"></td>
+                <td th:text="${otcAdvert.coinName}"></td>
+                <td th:text="${otcAdvert.priceType == 1? '浮动价格':#decimal.format(otcAdvert.fixedPrice)}"></td>
+                <td th:text="${#decimal.format(otcAdvert.volume)}"></td>
+                <td>
+                <div class="layui-btn-box">
+					<button class="layui-btn layui-btn-small" 
+						   th:attr="lay-href=${'admin/advertPaymentList?id=' + otcAdvert.id}" lay-target="dialogInfo" lay-height="600" lay-width="600">查看详情</button>
+				</div>
+				</td>
+                <td th:text="${otcAdvert.status == 1? '已上架':(otcAdvert.status == 2? '已下架':'已过期')}"></td>
+                <td th:text="${otcAdvert.isFrozen == 0? '否':'是'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(otcAdvertList)}"
+         th:attr="lay-pages=${otcAdvertList.totalPages}, lay-curr=${otcAdvertList.currentPage}"></div>
+</div>

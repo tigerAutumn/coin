@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.DictGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.dict.DictGroup" >
+    <id column="Id" property="Id" jdbcType="INTEGER" />
+    <id column="groupid" property="groupid" jdbcType="VARCHAR" />
+    <result column="groupname" property="groupname" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, groupid, groupname, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dict_group
+    where Id = #{Id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dict_group
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dict_group
+    where Id = #{Id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.dict.DictGroup" >
+    insert into dict_group (groupid, groupname, status)
+    values (#{groupid,jdbcType=VARCHAR}, #{groupname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.dict.DictGroup" >
+    insert into dict_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupid != null" >
+        groupid,
+      </if>
+      <if test="groupname != null" >
+        groupname,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupid != null" >
+        #{groupid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupname != null" >
+        #{groupname,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.dict.DictGroup" >
+    update dict_group
+    <set >
+      <if test="groupid != null" >
+        groupid = #{groupid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupname != null" >
+        groupname = #{groupname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{Id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.dict.DictGroup" >
+    update dict_group
+    set groupid = #{groupid,jdbcType=VARCHAR},
+      groupname = #{groupname,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where Id = #{Id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="countDictGroupListByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(Id)
+        from dict_group
+    </select>
+    
+    <select id="getDictGroupPageList" resultType="com.qkwl.common.dto.dict.DictGroup" parameterType="java.util.Map">
+        select *
+        from dict_group
+        limit #{offset},#{limit}
+    </select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hotcoin.activity.dao.FUserPoDao">
+    <sql id="userColumns">fid, fregistertime, fhasrealvalidate</sql>
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hotcoin.activity.model.po.FUserPo" id="BaseResultMap">
+        <result property="fid" column="fid"/>
+        <result property="fregistertime" column="fregistertime"/>
+        <result property="fhasrealvalidate" column="fhasrealvalidate"/>
+    </resultMap>
+    <select id="getUserListByParam" resultType="com.hotcoin.activity.model.po.FUserPo">
+        select
+        <include refid="userColumns"/>
+        from f_user
+        <where>
+            <if test="startTime != null">
+                fregistertime &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and fregistertime &lt;= #{endTime} and fhasrealvalidate=1
+            </if>
+        </where>
+    </select>
+    <select id="getUserByDtoParam" parameterType="com.hotcoin.activity.model.param.FUserDto" resultType="com.hotcoin.activity.model.po.FUserPo">
+        select
+        <include refid="userColumns"/>
+        from f_user
+        <where>
+            <if test="fid != null">
+                fid = #{fid}
+            </if>
+            <if test="fhasrealvalidate != null">
+               and fhasrealvalidate = #{fhasrealvalidate}
+            </if>
+            <if test="startTime != null">
+             and  fregistertime &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and fregistertime &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+</mapper>

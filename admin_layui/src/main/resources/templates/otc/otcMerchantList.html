@@ -1,0 +1,118 @@
+<div class="layui-form" lay-href="admin/otcMerchantList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+    	<div class="layui-inline">
+            <label class="layui-form-label">UID：</label>
+            <div class="layui-input-inline">
+                <input name="uid" th:value="${uid }" class="layui-input"/>
+            </div>
+        </div>
+    	<div class="layui-inline">
+            <label class="layui-form-label">审核状态</label>
+            <div class="layui-input-inline">
+                <select name="status">
+                    <option value="0">全部</option>
+                    <option value="1" th:selected="${status eq 1 ?true:false}">未审核</option>
+                    <option value="2" th:selected="${status eq 2 ?true:false}">已通过</option>
+                    <option value="3" th:selected="${status eq 3 ?true:false}">未通过</option>
+                    <option value="4" th:selected="${status eq 4 ?true:false}">已禁用</option>
+                    <option value="5" th:selected="${status eq 5 ?true:false}">已解除</option>
+                </select>
+            </div>
+        </div>
+	    <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th>商户UID</th>
+                <th>申请时间</th>
+                <th>操作时间</th>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>邮箱</th>
+                <th>常住地址</th>
+                <th>押金</th>
+                <th>身份证明</th>
+                <th>视频证明</th>
+                <th>审核状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(otcMerchantList)}">
+            <tr th:each="otcMerchant : ${otcMerchantList.data}">
+                <td th:text="${otcMerchant.uid}"></td>
+                <td th:text="${#dates.format(otcMerchant.applyTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(otcMerchant.operateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${otcMerchant.name}"></td>
+                <td th:text="${otcMerchant.phone}"></td>
+                <td th:text="${otcMerchant.email}"></td>
+                <td th:text="${otcMerchant.address}"></td>
+                <td th:text="${#decimal.format(otcMerchant.deposit)}"></td>
+                <td>
+                	<div  class="layui-btn-box">
+						<button class="layui-btn layui-btn-small" 
+							   th:attr="lay-href=${otcMerchant.image}" lay-target="image" lay-height="600" lay-width="800">查看</button>
+					</div>
+				</td>
+                <td>
+                	<div  class="layui-btn-box">
+						<button class="layui-btn layui-btn-small" 
+							   th:attr="lay-href=${otcMerchant.video}" lay-target="video" lay-height="600" lay-width="800">查看</button>
+					</div>
+				</td>
+                <td th:if="${otcMerchant.status == 1}">
+                	未审核
+                </td>
+                <td th:if="${otcMerchant.status == 1}">
+                	<div class="layui-btn-box">
+						<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/passOtcMerchant"
+								th:attr="lay-href=${'/admin/passOtcMerchant?id=' + otcMerchant.id }" lay-target="ajax" lay-tips="确定要通过吗?">通过</button>
+						<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/refuseOtcMerchant"
+								th:attr="lay-href=${'/admin/refuseOtcMerchant?id=' + otcMerchant.id }" lay-target="ajax" lay-tips="确定要拒绝吗?">拒绝</button>
+					</div>
+                </td>
+                <td th:if="${otcMerchant.status == 2}">
+                	已通过
+                </td>
+                <td th:if="${otcMerchant.status == 2}">
+                	<div class="layui-btn-box">
+						<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/removeOtcMerchant"
+								th:attr="lay-href=${'/admin/removeOtcMerchant?id=' + otcMerchant.id }" lay-target="ajax" lay-tips="确定要解除正常商户权限吗?">解除正常商户权限</button>
+						<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/prohibitOtcMerchant"
+								th:attr="lay-href=${'/admin/prohibitOtcMerchant?id=' + otcMerchant.id }" lay-target="ajax" lay-tips="确定要解除恶意商户权限吗?">解除恶意商户权限</button>
+					</div>
+                </td>
+                <td th:if="${otcMerchant.status == 3}">
+                	未通过
+                </td>
+                <td th:if="${otcMerchant.status == 3}">
+                	----
+                </td>
+                <td th:if="${otcMerchant.status == 4}">
+                	已禁用
+                </td>
+                <td th:if="${otcMerchant.status == 4}">
+                	<div class="layui-btn-box">
+						<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/resumeOtcMerchant"
+								th:attr="lay-href=${'/admin/resumeOtcMerchant?id=' + otcMerchant.id }" lay-target="ajax" lay-tips="确定要恢复吗?">恢复</button>
+					</div>
+                </td>
+                <td th:if="${otcMerchant.status == 5}">
+                	已解除
+                </td>
+                <td th:if="${otcMerchant.status == 5}">
+                	----
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(otcMerchantList)}"
+         th:attr="lay-pages=${otcMerchantList.totalPages}, lay-curr=${otcMerchantList.currentPage}"></div>
+</div>

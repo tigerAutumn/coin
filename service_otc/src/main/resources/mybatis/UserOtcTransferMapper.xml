@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.otc.dao.UserOtcTransferMapper" >
+  <sql id="userOtcCoinWalletColumn">id, uid, coin_id, total, frozen, borrow,ico, gmt_create, gmt_modified</sql>
+	
+
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.otc.OtcUserTransfer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="coin_id" property="coinId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  
+
+	<insert id="insert" parameterType="com.qkwl.common.dto.otc.OtcUserTransfer" useGeneratedKeys="true" keyProperty="id">
+	  insert into user_otc_transfer (coin_id, user_id, other_user_id, create_time, amount, type, fee, version)
+	  values (#{coinId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{otherUserId,jdbcType=INTEGER}, NOW(), #{amount,jdbcType=DECIMAL},  #{type,jdbcType=INTEGER}, #{fee,jdbcType=DECIMAL}, #{version,jdbcType=INTEGER})
+	</insert>
+  
+
+	<select id="selectByType" resultType="com.qkwl.common.dto.otc.OtcUserTransfer" parameterType="java.util.Map">
+		select transfer.*, coin.name as coinName,coin.short_name as shortName, coin.web_logo as webLogo
+		from user_otc_transfer transfer
+		LEFT JOIN system_coin_type coin on transfer.coin_id = coin.id
+		where transfer.user_id = #{user_id, jdbcType=INTEGER} 
+		<if test="type != null">
+			and transfer.type = #{type,jdbcType=INTEGER} 
+		</if>
+		<if test="coin_id != null">
+			and transfer.coin_id = #{coin_id,jdbcType=INTEGER} 
+		</if>
+		<if test="coinName != null and coinName != ''">
+		and (coin.short_name like concat('%',#{coinName},'%') or
+					coin.name like concat('%',#{coinName},'%'))
+		</if>
+	    <if test="beginDate != null">
+			<![CDATA[and transfer.create_time >= #{beginDate,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="endDate != null">
+			<![CDATA[and transfer.create_time < #{endDate,jdbcType=VARCHAR}]]>
+		</if>
+		order by transfer.create_time desc limit #{offset},#{limit}
+	</select>
+
+	<select id="countListByUser" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(u.id) from user_otc_transfer u, system_coin_type s
+		where u.user_id = #{user_id, jdbcType=INTEGER}
+			and u.coin_id = s.id
+		<if test="type != null">
+			and u.type = #{type,jdbcType=INTEGER} 
+		</if>
+		<if test="coin_id != null">
+			and u.coin_id = #{coin_id,jdbcType=INTEGER} 
+		</if>
+		<if test="coinName != null">
+			and (s.short_name like concat('%',#{coinName},'%') or
+					s.name like concat('%',#{coinName},'%'))
+		</if>
+	    <if test="beginDate != null">
+			<![CDATA[and u.create_time >= #{beginDate,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="endDate != null">
+			<![CDATA[and u.create_time < #{endDate,jdbcType=VARCHAR}]]>
+		</if>
+	</select>
+
+  <select id="sumOtcTransferBalance" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+      ifnull(sum(amount),0) as amount,coin_id,type,ifnull(sum(fee),0) as fee
+    from user_otc_transfer
+    where user_id = #{userId,jdbcType=INTEGER} and type = #{type,jdbcType=INTEGER} and coin_id = #{coinId,jdbcType=INTEGER}
+  </select>
+ 
+</mapper>

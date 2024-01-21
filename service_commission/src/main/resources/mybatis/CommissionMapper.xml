@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.commission.dao.CommissionMapper">
+    
+    <select id="selectCommissionByIntroId" resultType="Commission" parameterType="java.lang.Integer">
+        select invitee_loginname, merchandise_time, truncate(commission_amount, 4) commission_amount
+        from commission where inviter_id = #{inviterId} order by merchandise_time desc limit 10;
+    </select>
+    
+    <select id="selectAmountByIntroId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+        select truncate(sum(commission_amount), 4)
+        from commission where inviter_id = #{inviterId} group by inviter_id;
+    </select>
+    
+    <select id="countCommissionListByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(id)
+        from commission where 1=1
+        <if test="inviterId != null">
+            and inviter_id = #{inviterId}
+        </if>
+        <if test="inviteeLoginname != null">
+            and invitee_loginname = #{inviteeLoginname}
+        </if>
+        <if test="merchandiseTime != null">
+            and date_format(merchandise_time,'%Y-%m-%d') = date_format(#{merchandiseTime},'%Y-%m-%d')
+        </if>
+    </select>
+    
+    <select id="getCommissionPageList" resultType="Commission" parameterType="java.util.Map">
+        select invitee_loginname, truncate(commission_amount, 4) commission_amount, merchandise_time
+        from commission where 1=1
+        <if test="inviterId != null">
+            and inviter_id = #{inviterId}
+        </if>
+        <if test="inviteeLoginname != null">
+            and invitee_loginname = #{inviteeLoginname}
+        </if>
+        <if test="merchandiseTime != null">
+            and date_format(merchandise_time,'%Y-%m-%d') = date_format(#{merchandiseTime},'%Y-%m-%d')
+        </if>
+            order by merchandise_time desc
+        limit #{offset},#{limit}
+    </select>
+    
+    <select id="selectIndexRankList" resultType="CommissionRankList" parameterType="java.util.Map">
+        select inviter_loginname, truncate(sum(commission_amount), 4) sumCommission
+        from commission where 1=1
+        <if test="startTime != null">
+			<![CDATA[and merchandise_time >= #{startTime}]]>
+		</if>
+		<if test="endTime != null">
+			<![CDATA[and merchandise_time < #{endTime}]]>
+		</if>
+		group by inviter_id order by sum(commission_amount) desc limit 3
+    </select>
+    
+    <select id="selectRankList" resultType="CommissionRankList" parameterType="java.util.Map">
+        select inviter_loginname, truncate(sum(commission_amount), 4) sumCommission
+        from commission where 1=1
+        <if test="startTime != null">
+			<![CDATA[and merchandise_time >= #{startTime}]]>
+		</if>
+		<if test="endTime != null">
+			<![CDATA[and merchandise_time < #{endTime}]]>
+		</if>
+		group by inviter_id order by sum(commission_amount) desc limit #{offset}, 25
+    </select>
+    
+    <select id="selectRankCount" resultType="CommissionRankList" parameterType="java.util.Map">
+        select inviter_loginname
+        from commission where 1=1
+        <if test="startTime != null">
+			<![CDATA[and merchandise_time >= #{startTime}]]>
+		</if>
+		<if test="endTime != null">
+			<![CDATA[and merchandise_time < #{endTime}]]>
+		</if>
+		group by inviter_id
+    </select>
+    
+    <insert id="addCommission" parameterType="Commission">
+    INSERT INTO commission(
+      inviter_id,
+      inviter_loginname,
+      invitee_id,
+      invitee_loginname,
+      commission_amount,
+      merchandise_time,
+      entrust_id,
+      status,
+      create_time,
+      update_time
+    )VALUES (
+      #{inviterId},
+      #{inviterLoginname},
+      #{inviteeId},
+      #{inviteeLoginname},
+      #{commissionAmount},
+      #{merchandiseTime},
+      #{entrustId},
+      #{status},
+      #{createTime},
+      #{updateTime}
+    )
+  </insert>
+  
+  <select id="selectEBankRankList" resultType="EBankRank" parameterType="java.util.Map">
+  select s2.userId, u.floginname loginName, s2.totalAmount
+			, IFNULL(s4.todayAmount,0) todayAmount
+    from 
+        (select s1.uid1 userId, sum(s1.famount) totalAmount
+            from 
+            (
+                select l1.fuid uid1, l2.fuid uid2, l1.famount
+                	from f_entrust_log l1 
+                    	inner join f_entrust_log l2 on l1.fentrustid = l2.fmatchid and l1.fmatchid = l2.fentrustid
+                	where l1.ftradeid = #{tradeId}
+						<![CDATA[
+						and l1.fcreatetime >= #{startTime}
+						and l1.fcreatetime < #{endTime}
+						]]>
+            ) s1
+            where 
+            <![CDATA[
+            s1.uid1 <> s1.uid2
+            ]]>
+            group by s1.uid1 
+            order by sum(s1.famount) desc
+        ) s2 
+      	left join 
+        	(select s3.uid3 userId, sum(s3.famount) todayAmount
+             	from
+                 (
+                     select l3.fuid uid3, l4.fuid uid4, l3.famount
+                     	from f_entrust_log l3 
+                     		inner join f_entrust_log l4 on l3.fentrustid = l4.fmatchid and l3.fmatchid = l4.fentrustid
+                     	where l3.ftradeid = #{tradeId}
+	                     	<![CDATA[
+							and l3.fcreatetime >= date_format(#{now}, "%Y-%m-%d")
+                     		and l3.fcreatetime < #{now}
+							]]>
+                  ) s3
+             where
+             <![CDATA[
+             s3.uid3 <> s3.uid4
+             ]]>
+             group by s3.uid3
+            ) s4
+      		on s2.userId = s4.userId         
+        inner join f_user u on s2.userId = u.fid
+        limit 0, 50
+    </select>
+</mapper>

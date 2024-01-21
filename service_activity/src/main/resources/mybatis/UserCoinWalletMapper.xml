@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qkwl.service.activity.dao.UserCoinWalletMapper">
+
+  <sql id="column">id, uid, coin_id, total, frozen, borrow, gmt_create, gmt_modified,version,deposit_frozen,deposit_frozen_total</sql>
+
+  <update id="update" parameterType="UserCoinWallet">
+    update user_coin_wallet
+    set total = #{total,jdbcType=DECIMAL},
+      deposit_frozen = #{depositFrozen,jdbcType=DECIMAL},
+      deposit_frozen_total = #{depositFrozenTotal,jdbcType=DECIMAL},
+      version = if( version+1> 9999999999999999,0, version+1),
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER} and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+  <select id="select" resultType="UserCoinWallet">
+    <if test="'${spring.datasource.url}'.indexOf('drds')>=0">
+	  /!TDDL:MASTER*/
+	</if>
+    select <include refid="column" /> from user_coin_wallet where uid = #{uid} and coin_id = #{coinId}
+  </select>
+  
+  <select id="selectLock" resultType="UserCoinWallet">
+    select <include refid="column" /> from user_coin_wallet where uid = #{uid} and coin_id = #{coinId}
+  </select>
+
+  <select id="selectSum" resultType="UserCoinWallet">
+    select ifnull(sum(total),0) total, ifnull(sum(frozen),0) frozen from user_coin_wallet where coin_id = #{coinId}
+  </select>
+  
+  <insert id="snapshotWallet">
+    insert into user_coin_wallet_snapshot 
+    (wallet_id, uid, coin_id, total, frozen, borrow,ico,
+    gmt_create, gmt_modified,  snapshot_time)
+    select id, uid, coin_id, total, frozen, borrow,ico, gmt_create, gmt_modified, NOW() 
+    from user_coin_wallet left join f_user on user_coin_wallet.uid = f_user.fid where coin_id = #{coinId} and total >= #{limit} and f_user.fstatus = 1 and f_user.fiscoin = 1;
+  </insert>
+  
+  <select id="selectSnapshotByCoinId" resultType="UserCoinWalletSnapshot">
+  	select * from user_coin_wallet_snapshot where coin_id = #{coinId} and snapshot_time between #{start} and #{end}
+  </select>
+  
+  <select id="selectTotalAmount" resultType="java.math.BigDecimal">
+  	select sum(total) from user_coin_wallet_snapshot where coin_id = #{coinId} and snapshot_time between #{start} and #{end}
+  </select>
+  
+  <update id="updateFrozen2TotalCAS">
+	update user_coin_wallet set
+		total = total + #{amount,jdbcType=DECIMAL},
+		frozen = frozen - #{amount,jdbcType=DECIMAL},
+		gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+		version =if(version+1> 9999999999999999,0,version+1)
+	where id = #{id,jdbcType=INTEGER} and version=#{version,jdbcType = INTEGER}
+  </update>
+  
+  <select id="selectByUidAndCoin" resultType="UserCoinWallet">
+    select <include refid="column" />
+    from user_coin_wallet
+    where uid = #{uid} and coin_id = #{coinId,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insert" parameterType="UserCoinWallet">
+    insert into user_coin_wallet (uid, coin_id,
+      total, frozen, borrow, ico,
+      gmt_create,gmt_modified, deposit_frozen , deposit_frozen_total)
+    values (#{uid,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER},
+      #{total,jdbcType=DECIMAL}, #{frozen,jdbcType=DECIMAL}, #{borrow,jdbcType=DECIMAL}, #{ico,jdbcType=DECIMAL},
+      #{gmtCreate,jdbcType=TIMESTAMP},#{gmtModified,jdbcType=TIMESTAMP}, #{depositFrozen,jdbcType=DECIMAL}, #{depositFrozenTotal,jdbcType=DECIMAL})
+  </insert>
+</mapper>

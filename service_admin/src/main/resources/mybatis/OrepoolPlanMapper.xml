@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.OrepoolPlanMapper" >
+  <select id="selectByPrimaryKey" resultType="OrepoolPlan" parameterType="java.lang.Integer" >
+    select *
+    from orepool_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultType="OrepoolPlan" >
+    select *
+    from orepool_plan
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from orepool_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="OrepoolPlan" >
+    insert into orepool_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="lockCoinId != null" >
+        lock_coin_id,
+      </if>
+      <if test="incomeCoinId != null" >
+        income_coin_id,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="visibleVolume != null" >
+        visible_volume,
+      </if>
+      <if test="lockVolume != null" >
+        lock_volume,
+      </if>
+      <if test="minAmount != null" >
+        min_amount,
+      </if>
+      <if test="maxAmount != null" >
+        max_amount,
+      </if>
+      <if test="incomeRate != null" >
+        income_rate,
+      </if>
+      <if test="lockPeriod != null" >
+        lock_period,
+      </if>
+      <if test="incomePeriod != null" >
+        income_period,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="lockCoinId != null" >
+        #{lockCoinId},
+      </if>
+      <if test="incomeCoinId != null" >
+        #{incomeCoinId},
+      </if>
+      <if test="volume != null" >
+        #{volume},
+      </if>
+      <if test="visibleVolume != null" >
+        #{visibleVolume},
+      </if>
+      <if test="lockVolume != null" >
+        #{lockVolume},
+      </if>
+      <if test="minAmount != null" >
+        #{minAmount},
+      </if>
+      <if test="maxAmount != null" >
+        #{maxAmount},
+      </if>
+      <if test="incomeRate != null" >
+        #{incomeRate},
+      </if>
+      <if test="lockPeriod != null" >
+        #{lockPeriod},
+      </if>
+      <if test="incomePeriod != null" >
+        #{incomePeriod},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="sort != null" >
+        #{sort},
+      </if>
+      <if test="startTime != null" >
+        #{startTime},
+      </if>
+      <if test="endTime != null" >
+        #{endTime},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="OrepoolPlan" >
+    update orepool_plan
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="lockCoinId != null" >
+        lock_coin_id = #{lockCoinId},
+      </if>
+      <if test="incomeCoinId != null" >
+        income_coin_id = #{incomeCoinId},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume},
+      </if>
+      <if test="visibleVolume != null" >
+        visible_volume = #{visibleVolume},
+      </if>
+      <if test="lockVolume != null" >
+        lock_volume = #{lockVolume},
+      </if>
+      <if test="minAmount != null" >
+        min_amount = #{minAmount},
+      </if>
+      <if test="maxAmount != null" >
+        max_amount = #{maxAmount},
+      </if>
+      <if test="incomeRate != null" >
+        income_rate = #{incomeRate},
+      </if>
+      <if test="lockPeriod != null" >
+        lock_period = #{lockPeriod},
+      </if>
+      <if test="incomePeriod != null" >
+        income_period = #{incomePeriod},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  	<select id="countPlanListByParam" resultType="java.lang.Integer">
+        select count(id)
+        from orepool_plan
+    </select>
+    
+    <select id="getPlanPageList" resultType="OrepoolPlan" parameterType="java.util.Map">
+        select p.*, t1.short_name lockCoinName, t2.short_name incomeCoinName
+        from orepool_plan p, system_coin_type t1, system_coin_type t2
+        where p.lock_coin_id = t1.id and p.income_coin_id = t2.id
+        <if test="orderField != null">
+            order by p.${orderField} ${orderDirection}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+</mapper>

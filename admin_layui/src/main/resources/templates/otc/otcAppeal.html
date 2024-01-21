@@ -1,0 +1,87 @@
+<div class="layui-form layui-form-pane" xmlns:th="http://www.thymeleaf.org" lay-href="admin/otc/submitOtcAppeal">
+	<div class="layui-form-item">
+		<label class="layui-form-label">申诉用户UID：</label>
+		<div class="layui-input-block">
+			<input type="hidden" name="id" th:value="${otcAppeal.id}" />
+			<input disabled="disabled"  class="layui-input"  th:value="${otcAppeal.userId}" />
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">申诉类型：</label>
+		<div class="layui-input-block">
+			<input disabled="disabled" class="layui-input"  th:value="${otcAppeal.typeString}" />
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">申诉具体内容：</label>
+		<div class="layui-input-block">
+			<input disabled="disabled" class="layui-input"  th:value="${otcAppeal.content}" />
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">申诉结果：</label>
+		<div class="layui-input-block">
+			<input type="radio" name="result"  value= "1"  title="确定买方已付款(改操作会释放数字货币)"  checked="checked" /><br />
+			<input type="radio" name="result"  value= "2"  title="确定买方未付款，或双方协议取消订单(该操作会取消交易订单)"/>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">胜诉方：</label>
+		<div class="layui-input-block">
+			<input type="radio" name="winSide"  value= "1"   title="买方胜诉"/> &nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="radio" name="winSide"  value= "2"  title="卖方胜诉"/> &nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="radio" name="winSide"  value= "0" title="不计胜诉" checked="checked" />
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label">处理结果备注：</label>
+		<div class="layui-input-block">
+			<textarea  class="layui-textarea" name="remark" lay-verify="required"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+        <label class="layui-form-label">证据图片：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="imageUrl" id="imageUrl" />
+            <input class="layui-upload-file" type="file" name="file" data-file="imageUrl"/>
+        </div>
+    </div>
+    <script>
+        var $ = layui.jquery, jQuery = layui.jquery;
+    </script>
+
+</div>
+
+<script>
+    layui.use(['upload'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer;
+        // 图片上传
+        var msgIndex = 0;
+        layui.upload({
+                         url: '/article/upload?type=1',
+                         type: "jpg|png",
+                         before: function () {
+                             msgIndex = layer.msg('上传中······', {
+                                 icon: 16
+                                 , shade: 0.01
+                                 , time: 0
+                             });
+                         },
+                         success: function (res, input) {
+                             layer.close(msgIndex);
+                             if (res.state === "SUCCESS") {
+                                 $("#" + $(input).data().file).val(res.url);
+                                 console.log($(input).data().file);
+                             } else {
+                                 layer.msg(res.state, {
+                                     icon: 2
+                                     , shift: 6
+                                 });
+                             }
+                         }
+                     });
+    });
+
+</script>

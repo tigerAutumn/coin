@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.TradeTypeRulesMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.coin.SystemTradeTypeRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="tradeid" property="tradeid" jdbcType="INTEGER" />
+    <result column="rectype" property="rectype" jdbcType="VARCHAR" />
+    <result column="ruleid" property="ruleid" jdbcType="VARCHAR" />
+    <result column="exp" property="exp" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="resultcode" property="resultcode" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, tradeid, rectype, ruleid, exp, status, resultcode
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_trade_type_rules
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_trade_type_rules
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_trade_type_rules
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.coin.SystemTradeTypeRule" >
+    insert into system_trade_type_rules (tradeid, rectype, ruleid, exp, status, resultcode)
+    values (#{tradeid,jdbcType=INTEGER}, #{rectype,jdbcType=VARCHAR}, #{ruleid,jdbcType=VARCHAR},
+      #{exp,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{resultcode,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.coin.SystemTradeTypeRule" >
+    insert into system_trade_type_rules
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tradeid != null" >
+        tradeid,
+      </if>
+      <if test="rectype != null" >
+        rectype,
+      </if>
+      <if test="ruleid != null" >
+        ruleid,
+      </if>
+      <if test="exp != null" >
+        exp,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="resultcode != null" >
+        resultcode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tradeid != null" >
+        #{tradeid,jdbcType=INTEGER},
+      </if>
+      <if test="rectype != null" >
+        #{rectype,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleid != null" >
+        #{ruleid,jdbcType=VARCHAR},
+      </if>
+      <if test="exp != null" >
+        #{exp,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="resultcode != null" >
+        #{resultcode,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.coin.SystemTradeTypeRule" >
+    update system_trade_type_rules
+    <set >
+      <if test="tradeid != null" >
+        tradeid = #{tradeid,jdbcType=INTEGER},
+      </if>
+      <if test="rectype != null" >
+        rectype = #{rectype,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleid != null" >
+        ruleid = #{ruleid,jdbcType=VARCHAR},
+      </if>
+      <if test="exp != null" >
+        exp = #{exp,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="resultcode != null" >
+        resultcode = #{resultcode,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.coin.SystemTradeTypeRule" >
+    update system_trade_type_rules
+    set tradeid = #{tradeid,jdbcType=INTEGER},
+      rectype = #{rectype,jdbcType=VARCHAR},
+      ruleid = #{ruleid,jdbcType=VARCHAR},
+      exp = #{exp,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      resultcode = #{resultcode,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="countTradeTypeRulesListByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(id)
+        from system_trade_type_rules
+    </select>
+    
+    <select id="getTradeTypeRulesPageList" resultType="com.qkwl.common.dto.coin.SystemTradeTypeRule" parameterType="java.util.Map">
+        select r.*, c1.short_name buyCoinName, c2.short_name sellCoinName
+        from system_trade_type_rules r, system_trade_type t, system_coin_type c1, system_coin_type c2
+          where r.tradeid = t.id
+             and t.buy_coin_id = c1.id
+             and t.sell_coin_id = c2.id
+        limit #{offset},#{limit}
+    </select>
+</mapper>

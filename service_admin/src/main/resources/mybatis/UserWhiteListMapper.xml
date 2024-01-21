@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.UserWhiteListMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.whiteList.UserWhiteList" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="coin_id" property="coinId" jdbcType="INTEGER" />
+    <result column="admin_id" property="adminId" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="coin_name" property="coinName" jdbcType="VARCHAR" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, user_id, coin_id, createtime, updatetime,admin_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_white_list
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+   <select id="selectByParamCount" resultType="java.lang.Integer"  >
+	 select 
+	   	count(*)
+	 from user_white_list
+	 where 1=1
+	 <if test="userId != null" >
+	    and user_id = #{userId,jdbcType=INTEGER}
+	 </if>
+	 <if test="coinId != null" >
+	    and coin_id = #{coinId,jdbcType=INTEGER}
+	 </if>
+	 <if test="type != null" >
+	    and type = #{type,jdbcType=INTEGER}
+	 </if>
+  </select>
+  
+  
+  <select id="selectByParam" resultMap="BaseResultMap"  >
+   select 
+   		user_white_list.id
+   		, user_white_list.type
+   		, user_white_list.user_id
+   		, user_white_list.coin_id
+   		, user_white_list.admin_id
+   		, user_white_list.createtime
+   		, user_white_list.updatetime
+   		, f_user.frealname as user_name
+   		, system_coin_type.name as coin_name
+   		, f_admin.fname as admin_name
+   from 
+    (select 
+    id, type, user_id, coin_id, createtime, updatetime,admin_id
+    from user_white_list
+    where 1=1
+    <if test="userId != null" >
+      and user_id = #{userId,jdbcType=INTEGER}
+     </if>
+     <if test="type != null" >
+      and type = #{type,jdbcType=INTEGER}
+     </if>
+     <if test="orderField != null" >
+     	order by #{orderField,jdbcType=VARCHAR}
+     	<if test="orderDirection != null" >
+     		#{orderDirection,jdbcType=VARCHAR}
+     	</if>
+     </if>
+     limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+     ) as user_white_list 
+     LEFT JOIN f_user on user_white_list.user_id = f_user.fid
+     left join system_coin_type on user_white_list.coin_id = system_coin_type.id 
+     left join f_admin on user_white_list.admin_id = f_admin.fid
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_white_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.whiteList.UserWhiteList" >
+    insert into user_white_list (id, type, user_id, 
+      coin_id, createtime, updatetime,admin_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{coinId,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP},#{adminId,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.whiteList.UserWhiteList" >
+    insert into user_white_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="coinId != null" >
+        coin_id,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="adminId != null" >
+        admin_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null" >
+        #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminId != null" >
+        #{adminId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.whiteList.UserWhiteList" >
+    update user_white_list
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null" >
+        coin_id = #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminId != null" >
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.whiteList.UserWhiteList" >
+    update user_white_list
+    set type = #{type,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      coin_id = #{coinId,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      admin_id = #{adminId,jdbcType=INTEGER},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qkwl.service.user.dao.OpenApiMapper">
+
+
+<select id="findByUrlPattern" resultMap="com.qkwl.service.user.dao.base.OpenApiBaseMapper.BaseResultMap">
+SELECT *  FROM  open_api
+    WHERE  #{0}  REGEXP url   and status=1;
+</select>
+
+</mapper>

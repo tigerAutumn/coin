@@ -1,0 +1,55 @@
+<div class="layui-form" lay-href="admin/otc/list_payment" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+	<div class="layui-form-item layui-search-box"  style = "display:none">
+		<div class="layui-inline">
+			<button class="layui-btn layui-btn-small">刷新</button>
+		</div>
+	</div>
+
+	<div class="layui-btn-box">
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/otc/addPayment"
+				lay-href="/admin/otc/goPaymentJSP?url=otc/addPayment" lay-target="dialog">新增</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/otc/updatePayment"
+				lay-href="/admin/otc/goPaymentJSP?url=otc/updatePayment" lay-checked="id" lay-target="dialog">修改</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/c2c/updatePaymentStatus"
+				lay-href="/admin/c2c/updatePaymentStatus?status=1" lay-checked="id" lay-target="ajax" lay-tips="确定要启用吗?">启用</button>
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/c2c/updatePaymentStatus"
+				lay-href="/admin/c2c/updatePaymentStatus?status=0" lay-checked="id" lay-target="ajax" lay-tips="确定要禁用吗?">禁用</button>
+	</div>
+	<div class="layui-conten-box">
+		<table class="layui-table" width="100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>名称（简体）</th>
+					<th>名称（繁体）</th>
+					<th>名称（英语）</th>
+					<th>名称（韩语）</th>
+					<th>图标</th>
+					<th>状态</th>
+					<th>类型</th>
+					<th>创建时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="list : ${OtcPaymentList}">
+					<td>
+						<input type="checkbox" th:name="${list.id}" lay-skin="primary" />
+					</td>
+					<td th:text="${list.id}"></td>
+					<td th:text="${list.chineseName}"></td>
+					<td th:text="${list.zhTWName}"></td>
+					<td th:text="${list.englishName}"></td>
+					<td th:text="${list.koKRName}"></td>
+					<td><img style="height: 20px;height: 20px;" th:src="${list.picture}" /></td>
+					<td th:text="${list.statusString}"></td>
+					<td th:text="${list.typeString}"></td>
+					<td th:text="${list.createTime == null? '':#dates.format(list.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</div>

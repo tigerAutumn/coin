@@ -1,0 +1,41 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/otc/addPayment">
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付方式类型：</label>
+        <div class="layui-input-block">
+			<input class="layui-input"  th:value="${bankinfo.paymentName}"/>
+        </div>
+    </div>
+ 	<div class="layui-form-item">
+        <label class="layui-form-label">姓名：</label>
+        <div class="layui-input-block">
+           <input class="layui-input" th:value="${bankinfo.frealname}"  />
+        </div>
+    </div>
+	<div class="layui-form-item">
+        <label class="layui-form-label">账号：</label>
+        <div class="layui-input-block">
+            <input class="layui-input"  th:value="${bankinfo.fbanknumber}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">银行类型：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" th:value="${bankinfo.fname}"  />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开户地址：</label>
+        <div class="layui-input-block">
+           <input class="layui-input" th:value="${bankinfo.fprov == null ?'':bankinfo.fprov + ' ' + bankinfo.fcity == null ?'':bankinfo.fcity + ' ' + bankinfo.fdist == null ?'':bankinfo.fdist + ' ' + bankinfo.faddress == null ?'':bankinfo.faddress}"  />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建时间：</label>
+        <div class="layui-input-block">
+           <input class="layui-input" th:value="${bankinfo.fcreatetime == null? '':#dates.format(bankinfo.fcreatetime, 'yyyy-MM-dd HH:mm:ss')}"  />
+        </div>
+    </div>
+   <div class="layui-form-item">
+          <img style="width: 300px" th:alt="${bankinfo.fname}" th:src="${bankinfo.qrcodeImg}" />
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/updateDictGroup.html">
+	<div class="layui-form-item">
+        <label class="layui-form-label">字典组id：</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="Id" th:value="${dictGroup.Id}" />
+        	<input class="layui-input" name="groupid" lay-verify="required" th:value="${dictGroup.groupid}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">字典组名称：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="groupname" lay-verify="required" th:value="${dictGroup.groupname}" />
+        </div>
+    </div>
+</div>

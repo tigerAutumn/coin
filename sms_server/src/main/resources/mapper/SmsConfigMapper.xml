@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace为对应对应Mapper接口，且SQL的id属性值必须与Mapper接口中的方法同名 -->
+<mapper namespace="com.hotcoin.sms.dao.SmsConfigMapper">
+    <cache eviction="FIFO" flushInterval="50" size="512" readOnly="true"></cache>
+    <!-- 
+    <typeAliases>
+        <typeAlias alias="SmsConfig" type="com.hotcoin.webchat.mapper.SmsConfig" />
+    </typeAliases>
+    -->
+    <resultMap type="com.hotcoin.sms.model.SmsConfig" id="SmsConfigMap">
+        <result property="smsclazz" column="SMSCLAZZ" />
+        <result property="isactivity" column="ISACTIVITY" />
+        <result property="action" column="ACTION" />
+        <result property="priority" column="PRIORITY" />
+        <result property="description" column="DESCRIPTION" />
+	</resultMap>
+	<sql id="SmsConfig_Column_List">
+				 smsConfig.SMSCLAZZ,
+				 smsConfig.ISACTIVITY,
+				 smsConfig.ACTION,
+				 smsConfig.PRIORITY,
+				 smsConfig.DESCRIPTION
+	</sql>
+	
+	<select id="get" resultMap="SmsConfigMap">
+	    SELECT
+	        <include refid="SmsConfig_Column_List"/>
+	    FROM sms_config smsConfig
+	    WHERE smsConfig.SMSCLAZZ=#{smsclazz}
+	</select>
+
+	<sql id="DynamicSelectSmsConfigValue">
+	    <where>
+		     <trim suffix="" suffixOverrides="AND">
+			  	     <if test="smsclazz != null and smsclazz != '' ">
+						 AND SMSCLAZZ= #{smsclazz}
+					 </if>
+			  	     <if test="isactivity != null and isactivity != '' ">
+						 AND ISACTIVITY= #{isactivity}
+					 </if>
+			  	     <if test="action != null and action != '' ">
+						 AND ACTION= #{action}
+					 </if>
+			  	     <if test="priority != null and priority != '' ">
+						 AND PRIORITY= #{priority}
+					 </if>
+			  	     <if test="description != null and description != '' ">
+						 AND DESCRIPTION= #{description}
+					 </if>
+		     </trim>
+		 </where>
+	</sql>
+	<select id="selectList" parameterType="com.hotcoin.sms.model.SmsConfig" resultMap="SmsConfigMap">
+	    SELECT 
+	        <include refid="SmsConfig_Column_List"/>
+	    FROM sms_config smsConfig
+	    <include refid="DynamicSelectSmsConfigValue" />    
+	</select>
+	
+    <sql id="UserSmsConfigColume">
+		<trim suffix="" suffixOverrides=",">
+			  	<if test="smsclazz != null and smsclazz != '' ">
+					SMSCLAZZ,
+				</if>
+			  	<if test="isactivity != null and isactivity != '' ">
+					ISACTIVITY,
+				</if>
+			  	<if test="action != null and action != '' ">
+					ACTION,
+				</if>
+			  	<if test="priority != null and priority != '' ">
+					PRIORITY,
+				</if>
+			  	<if test="description != null and description != '' ">
+					DESCRIPTION,
+				</if>
+		</trim>
+	</sql>
+	<sql id="UserSmsConfigValue">
+		<trim suffix="" suffixOverrides=",">
+			     <if test="smsclazz != null and smsclazz != '' ">
+					 #{smsclazz},
+				 </if>				  
+			     <if test="isactivity != null and isactivity != '' ">
+					 #{isactivity},
+				 </if>				  
+			     <if test="action != null and action != '' ">
+					 #{action},
+				 </if>				  
+			     <if test="priority != null and priority != '' ">
+					 #{priority},
+				 </if>				  
+			     <if test="description != null and description != '' ">
+					 #{description},
+				 </if>				  
+		</trim>
+	</sql>
+	
+	<insert id="save" parameterType="com.hotcoin.sms.model.SmsConfig">
+		INSERT INTO sms_config(
+		<include refid="UserSmsConfigColume" />
+		) values (
+		<include refid="UserSmsConfigValue" />
+		)
+	</insert> 
+	
+	<sql id="DynamicUpdateSmsConfigValue">
+		<trim suffix="" suffixOverrides=",">
+			     <if test="isactivity != null and isactivity != '' ">
+					 ISACTIVITY= #{isactivity},
+				 </if>				  
+			     <if test="action != null and action != '' ">
+					 ACTION= #{action},
+				 </if>				  
+			     <if test="priority != null and priority != '' ">
+					 PRIORITY= #{priority},
+				 </if>				  
+			     <if test="description != null and description != '' ">
+					 DESCRIPTION= #{description}
+				 </if>				  
+		</trim>
+	</sql>
+	
+	<update id="update" parameterType="com.hotcoin.sms.model.SmsConfig">
+        UPDATE sms_config SET
+        <include refid="DynamicUpdateSmsConfigValue" />       
+        WHERE SMSCLAZZ=#{smsclazz}
+    </update>
+</mapper>

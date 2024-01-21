@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.capital.dao.RedEnvelopeMapper" >
+
+	<insert id="insert" parameterType="com.qkwl.common.dto.capital.RedEnvelope" useGeneratedKeys="true" keyProperty="id">
+	  insert into red_envelope 
+	  (uid, red_envelope_no, nickname, photo, content, type, coin_id, coin_name, amount, count, status, create_time, overdue_time)
+	  values (#{uid}, #{redEnvelopeNo}, #{nickname}, #{photo}, #{content}, #{type}, #{coinId}, #{coinName}, 
+	  	#{amount}, #{count}, #{status}, NOW(), #{overdueTime});
+	</insert>
+	
+	<select id="selectByRedEnvelopeNo" resultType="RedEnvelope" parameterType="java.lang.String">
+	select * from red_envelope where red_envelope_no = #{redEnvelopeNo} for update
+	</select>
+	
+	<select id="countEnvelopeList" resultType="java.lang.Integer" parameterType="java.util.Map">
+ 	select count(*) from red_envelope where uid = #{uid} 
+		and date_format(create_time, "%Y") = date_format(#{createTime}, "%Y")
+ 	</select>
+ 
+ 	<select id="getEnvelopeList" resultType="RedEnvelope" parameterType="java.util.Map">
+	select * from red_envelope where uid = #{uid}
+		and date_format(create_time, "%Y") = date_format(#{createTime}, "%Y")
+		order by create_time desc
+        limit #{offset},#{limit}
+	</select>
+	
+	<select id="getEnvelopeTotal" resultType="UserCoinWallet" parameterType="java.util.Map">
+ 	select sum(receive_amount) total, coin_id coinId from red_envelope where uid = #{uid}
+		and date_format(create_time, "%Y") = date_format(#{createTime}, "%Y")
+ 		group by coin_id
+ 	</select>
+	
+	<select id="selectOverdueEnvelope" resultType="RedEnvelope">
+	select * from red_envelope where overdue_time &lt; NOW() and status = 1
+	</select>
+	
+	<update id="updateStatus" parameterType="com.qkwl.common.dto.capital.RedEnvelope">
+ 	update red_envelope
+ 	set status = #{status}, receive_count = #{receiveCount}, receive_amount = #{receiveAmount}
+ 	 where id = #{id}
+ 	</update>
+</mapper>

@@ -1,0 +1,75 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/otc/updatePayment">
+
+	<input type="hidden" name="id" th:value="${payment.id}" />
+	<input type="hidden" name="nameCode" th:value="${payment.nameCode}" />
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付方式类型：</label>
+        <div class="layui-input-block">
+			<select type="combox" name="type">
+                <option th:each="v : ${paymentType}" th:value="${v.key}" th:text="${v.value}"  th:selected="${v.key eq payment.type}"></option>
+            </select>
+        </div>
+    </div>
+	<div class="layui-form-item">
+        <label class="layui-form-label">名称(简体)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="chineseName" lay-verify="required" th:value="${payment.chineseName}"/>
+        </div>
+    </div>
+    	<div class="layui-form-item">
+        <label class="layui-form-label">名称(繁体)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="zhTWName" lay-verify="required" th:value="${payment.zhTWName}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称(英语)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="englishName" lay-verify="required"  th:value="${payment.englishName}"/>
+        </div>
+    </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">名称(韩语)：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="koKRName" lay-verify="required"  th:value="${payment.koKRName}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">logo：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="picture" id="picture"  th:value="${payment.picture}"/>
+            <input class="layui-upload-file" type="file" name="file" data-file="picture"  />
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['upload'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer;
+        // 图片上传
+        var msgIndex = 0;
+        layui.upload({
+                         url: '/article/upload?type=7',
+                         type: "jpg|png",
+                         before: function () {
+                             msgIndex = layer.msg('上传中······', {
+                                 icon: 16
+                                 , shade: 0.01
+                                 , time: 0
+                             });
+                         },
+                         success: function (res, input) {
+                             layer.close(msgIndex);
+                             if (res.state === "SUCCESS") {
+                                 $("#" + $(input).data().file).val(res.url);
+                                 console.log($(input).data().file);
+                             } else {
+                                 layer.msg(res.state, {
+                                     icon: 2
+                                     , shift: 6
+                                 });
+                             }
+                         }
+                     });
+    });
+</script>

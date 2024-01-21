@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotcoin.activity.dao.UserWalletBalanceLogDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hotcoin.activity.model.po.UserWalletBalanceLogPo" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="coinId" column="coin_id"/>
+        <result property="fieldId" column="field_id"/>
+        <result property="change" column="change"/>
+        <result property="srcId" column="src_id"/>
+        <result property="srcType" column="src_type"/>
+        <result property="direction" column="direction"/>
+        <result property="createtime" column="createtime"/>
+        <result property="createdatestamp" column="createdatestamp"/>
+        <result property="oldvalue" column="oldvalue"/>
+    </resultMap>
+
+    <!--
+          选择性插入
+        -->
+    <sql id="Base_Insert_Selective">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="coinId != null">
+                coin_id,
+            </if>
+            <if test="fieldId != null">
+                field_id,
+            </if>
+            <if test="change != null">
+                `chang`,
+            </if>
+            <if test="srcId != null">
+                src_id,
+            </if>
+            <if test="srcType != null">
+                src_type,
+            </if>
+            <if test="direction != null">
+                direction,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="createdatestamp != null">
+                createdatestamp,
+            </if>
+            <if test="oldvalue != null">
+                oldvalue
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="fieldId != null">
+                #{fieldId,jdbcType=VARCHAR},
+            </if>
+            <if test="change != null">
+                #{change,jdbcType=DECIMAL},
+            </if>
+            <if test="srcId != null">
+                #{srcId,jdbcType=INTEGER},
+            </if>
+            <if test="srcType != null">
+                #{srcType,jdbcType=INTEGER},
+            </if>
+            <if test="direction != null">
+                #{direction,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createdatestamp != null">
+                #{createdatestamp,jdbcType=BIGINT},
+            </if>
+            <if test="oldvalue != null">
+                #{oldvalue,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+
+    <!--
+      数据库表的基本查询列名集合
+    -->
+    <sql id="Base_Column_List">
+        uid, coin_id, field_id, `change`, src_id, src_type, direction, createtime, createdatestamp, oldvalue
+    </sql>
+
+    <!--
+        Where子句
+      -->
+    <sql id="Base_Query_Where">
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="uid != null">
+            and uid = #{uid,jdbcType=INTEGER}
+        </if>
+        <if test="coinId != null">
+            and coin_id = #{coinId,jdbcType=INTEGER}
+        </if>
+        <if test="fieldId != null">
+            and field_id = #{fieldId,jdbcType=VARCHAR}
+        </if>
+        <if test="change != null">
+            and 'change' = #{change,jdbcType=DECIMAL}
+        </if>
+        <if test="srcId != null">
+            and src_id = #{srcId,jdbcType=INTEGER}
+        </if>
+        <if test="srcType != null">
+            and src_type = #{srcType,jdbcType=INTEGER}
+        </if>
+        <if test="direction != null">
+            and direction = #{direction,jdbcType=VARCHAR}
+        </if>
+        <if test="createtime != null">
+            and createtime = #{createtime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createdatestamp != null">
+            and createdatestamp = #{createdatestamp,jdbcType=BIGINT}
+        </if>
+        <if test="oldvalue != null">
+            and oldvalue = #{oldvalue,jdbcType=DECIMAL}
+        </if>
+    </sql>
+
+    <!--
+        基本更新字段
+    -->
+    <sql id="Base_Update_Column">
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                coin_id = #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="fieldId != null">
+                field_id = #{fieldId,jdbcType=VARCHAR},
+            </if>
+            <if test="change != null">
+                change = #{change,jdbcType=DECIMAL},
+            </if>
+            <if test="srcId != null">
+                src_id = #{srcId,jdbcType=INTEGER},
+            </if>
+            <if test="srcType != null">
+                src_type = #{srcType,jdbcType=INTEGER},
+            </if>
+            <if test="direction != null">
+                direction = #{direction,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createdatestamp != null">
+                createdatestamp = #{createdatestamp,jdbcType=BIGINT},
+            </if>
+            <if test="oldvalue != null">
+                oldvalue = #{oldvalue,jdbcType=DECIMAL}
+            </if>
+        </set>
+    </sql>
+
+    <!--
+        分页查询数据库表
+      -->
+    <select id="selectPaged" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_wallet_balance_log
+    </select>
+
+    <!--
+      根据主键查询数据库表
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_wallet_balance_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <!--
+      根据主键删除数据库表中的记录
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete FROM user_wallet_balance_log
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--
+      添加一条记录到数据库表中
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.UserWalletBalanceLogPo">
+        insert into user_wallet_balance_log
+        (<include refid="Base_Column_List"/>)
+        values (
+        <if test="id != null">
+            #{id,jdbcType=INTEGER},
+        </if>
+        <if test="uid != null">
+            #{uid,jdbcType=INTEGER},
+        </if>
+        <if test="coinId != null">
+            #{coinId,jdbcType=INTEGER},
+        </if>
+        <if test="fieldId != null">
+            #{fieldId,jdbcType=VARCHAR},
+        </if>
+        <if test="change != null">
+          #{change,jdbcType=DECIMAL},
+        </if>
+        <if test="srcId != null">
+            #{srcId,jdbcType=INTEGER},
+        </if>
+        <if test="srcType != null">
+            #{srcType,jdbcType=INTEGER},
+        </if>
+        <if test="direction != null">
+            #{direction,jdbcType=VARCHAR},
+        </if>
+        <if test="createtime != null">
+            #{createtime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="createdatestamp != null">
+            #{createdatestamp,jdbcType=BIGINT},
+        </if>
+        <if test="oldvalue != null">
+            #{oldvalue,jdbcType=DECIMAL}
+        </if>
+        )
+    </insert>
+
+    <!--
+     有选择的添加一条记录到数据库表中
+   -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.UserWalletBalanceLogPo">
+        insert into user_wallet_balance_log
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      有选择的可忽略添加一条记录到数据库表中
+    -->
+    <insert id="insertSelectiveIgnore" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.UserWalletBalanceLogPo">
+        insert ignore into user_wallet_balance_log
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      根据主键有选择的更新数据库表
+    -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.hotcoin.activity.model.po.UserWalletBalanceLogPo">
+        update user_wallet_balance_log
+        <include refid="Base_Update_Column"></include>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <!--
+      根据主键更新数据库表
+    -->
+    <update id="updateByPrimaryKey" parameterType="com.hotcoin.activity.model.po.UserWalletBalanceLogPo">
+        update user_wallet_balance_log
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                coin_id = #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="fieldId != null">
+                field_id = #{fieldId,jdbcType=VARCHAR},
+            </if>
+            <if test="change != null">
+                change = #{change,jdbcType=DECIMAL},
+            </if>
+            <if test="srcId != null">
+                src_id = #{srcId,jdbcType=INTEGER},
+            </if>
+            <if test="srcType != null">
+                src_type = #{srcType,jdbcType=INTEGER},
+            </if>
+            <if test="direction != null">
+                direction = #{direction,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createdatestamp != null">
+                createdatestamp = #{createdatestamp,jdbcType=BIGINT},
+            </if>
+            <if test="oldvalue != null">
+                oldvalue = #{oldvalue,jdbcType=DECIMAL}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--
+      批量添加记录到数据库表中
+    -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into user_wallet_balance_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, uid, coin_id, field_id, change, src_id, src_type, direction, createtime, createdatestamp, oldvalue
+        </trim>
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.id,jdbcType=INTEGER}, #{item.uid,jdbcType=INTEGER}, #{item.coinId,jdbcType=INTEGER},
+                #{item.fieldId,jdbcType=VARCHAR}, #{item.change,jdbcType=DECIMAL}, #{item.srcId,jdbcType=INTEGER},
+                #{item.srcType,jdbcType=INTEGER}, #{item.direction,jdbcType=VARCHAR},
+                #{item.createtime,jdbcType=TIMESTAMP}, #{item.createdatestamp,jdbcType=BIGINT},
+                #{item.oldvalue,jdbcType=DECIMAL}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--
+      根据主键批量更新数据库表中的记录
+    -->
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            update user_wallet_balance_log
+            <set>
+                <trim suffixOverrides=",">
+                    <if test="item.id != null">
+                        id = #{item.id,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.uid != null">
+                        uid = #{item.uid,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.coinId != null">
+                        coin_id = #{item.coinId,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.fieldId != null">
+                        field_id = #{item.fieldId,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.change != null">
+                        change = #{item.change,jdbcType=DECIMAL},
+                    </if>
+                    <if test="item.srcId != null">
+                        src_id = #{item.srcId,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.srcType != null">
+                        src_type = #{item.srcType,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.direction != null">
+                        direction = #{item.direction,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.createtime != null">
+                        createtime = #{item.createtime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.createdatestamp != null">
+                        createdatestamp = #{item.createdatestamp,jdbcType=BIGINT},
+                    </if>
+                    <if test="item.oldvalue != null">
+                        oldvalue = #{item.oldvalue,jdbcType=DECIMAL}
+                    </if>
+                </trim>
+            </set>
+            <where>
+                <trim suffixOverrides=",">
+                    where id = #{item.id,jdbcType=INTEGER}
+                </trim>
+            </where>
+        </foreach>
+    </update>
+
+    <!--
+     使用给定的字段名定义Where子句
+   -->
+    <sql id="Identifiers_Array_Conditions">
+        <foreach collection="array" index="index" item="item" separator=" and ">
+            <if test="item == 'id'">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'uid'">
+                uid = #{uid,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'coinId'">
+                coin_id = #{coinId,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'fieldId'">
+                field_id = #{fieldId,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'change'">
+                change = #{change,jdbcType=DECIMAL}
+            </if>
+            <if test="item == 'srcId'">
+                src_id = #{srcId,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'srcType'">
+                src_type = #{srcType,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'direction'">
+                direction = #{direction,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'createtime'">
+                createtime = #{createtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'createdatestamp'">
+                createdatestamp = #{createdatestamp,jdbcType=BIGINT}
+            </if>
+            <if test="item == 'oldvalue'">
+                oldvalue = #{oldvalue,jdbcType=DECIMAL}
+            </if>
+        </foreach>
+    </sql>
+
+    <!--
+      存在即更新否则插入
+    -->
+    <update id="upsert" parameterType="com.hotcoin.activity.model.po.UserWalletBalanceLogPo">
+        insert into user_wallet_balance_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, uid, coin_id, field_id, change, src_id, src_type, direction, createtime, createdatestamp, oldvalue
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, #{fieldId,jdbcType=VARCHAR},
+            #{change,jdbcType=DECIMAL}, #{srcId,jdbcType=INTEGER}, #{srcType,jdbcType=INTEGER},
+            #{direction,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{createdatestamp,jdbcType=BIGINT},
+            #{oldvalue,jdbcType=DECIMAL}
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, #{fieldId,jdbcType=VARCHAR},
+            #{change,jdbcType=DECIMAL}, #{srcId,jdbcType=INTEGER}, #{srcType,jdbcType=INTEGER},
+            #{direction,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{createdatestamp,jdbcType=BIGINT},
+            #{oldvalue,jdbcType=DECIMAL}
+        </trim>
+    </update>
+
+
+    <!--
+      带有空值检查的存在即更新否则插入
+    -->
+    <update id="upsertSelective" parameterType="com.hotcoin.activity.model.po.UserWalletBalanceLogPo">
+        insert into user_wallet_balance_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id,
+            </if>
+            <if test="uid !=null ">
+                uid,
+            </if>
+            <if test="coinId !=null ">
+                coin_id,
+            </if>
+            <if test="fieldId !=null ">
+                field_id,
+            </if>
+            <if test="change !=null ">
+                change,
+            </if>
+            <if test="srcId !=null ">
+                src_id,
+            </if>
+            <if test="srcType !=null ">
+                src_type,
+            </if>
+            <if test="direction !=null ">
+                direction,
+            </if>
+            <if test="createtime !=null ">
+                createtime,
+            </if>
+            <if test="createdatestamp !=null ">
+                createdatestamp,
+            </if>
+            <if test="oldvalue !=null ">
+                oldvalue
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid !=null ">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId !=null ">
+                coin_id = #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="fieldId !=null ">
+                field_id = #{fieldId,jdbcType=VARCHAR},
+            </if>
+            <if test="change !=null ">
+                change = #{change,jdbcType=DECIMAL},
+            </if>
+            <if test="srcId !=null ">
+                src_id = #{srcId,jdbcType=INTEGER},
+            </if>
+            <if test="srcType !=null ">
+                src_type = #{srcType,jdbcType=INTEGER},
+            </if>
+            <if test="direction !=null ">
+                direction = #{direction,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime !=null ">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createdatestamp !=null ">
+                createdatestamp = #{createdatestamp,jdbcType=BIGINT},
+            </if>
+            <if test="oldvalue !=null ">
+                oldvalue = #{oldvalue,jdbcType=DECIMAL}
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid !=null ">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="coinId !=null ">
+                coin_id = #{coinId,jdbcType=INTEGER},
+            </if>
+            <if test="fieldId !=null ">
+                field_id = #{fieldId,jdbcType=VARCHAR},
+            </if>
+            <if test="change !=null ">
+                change = #{change,jdbcType=DECIMAL},
+            </if>
+            <if test="srcId !=null ">
+                src_id = #{srcId,jdbcType=INTEGER},
+            </if>
+            <if test="srcType !=null ">
+                src_type = #{srcType,jdbcType=INTEGER},
+            </if>
+            <if test="direction !=null ">
+                direction = #{direction,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime !=null ">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createdatestamp !=null ">
+                createdatestamp = #{createdatestamp,jdbcType=BIGINT},
+            </if>
+            <if test="oldvalue !=null ">
+                oldvalue = #{oldvalue,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </update>
+
+    <select id="query" resultMap="BaseResultMap" parameterType="com.hotcoin.activity.model.po.UserWalletBalanceLogPo">
+        select
+        <include refid="Base_Column_List"/>
+        from user_wallet_balance_log
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(*) from user_wallet_balance_log
+    </select>
+
+
+    <delete id="deleteBatch">
+        delete from user_wallet_balance_log where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

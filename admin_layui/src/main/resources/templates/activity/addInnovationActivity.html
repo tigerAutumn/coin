@@ -1,0 +1,34 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="/admin/saveInnovationActivity">
+     <div class="layui-form-item">
+        <label class="layui-form-label">交易币种：</label>
+        <div class="layui-input-block">
+        	<select name="coinId">
+            	<option th:each="type : ${allCoinType }" th:value="${type.id}" th:text="${type.shortName}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">奖励比例：</label>
+        <div class="layui-input-block">
+        	<input name="rate" class="layui-input" lay-verify="required" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">奖励总量：</label>
+        <div class="layui-input-block">
+        	<input name="amount" class="layui-input" lay-verify="required" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开始时间：</label>
+        <div class="layui-input-block">
+            <input name="startTime" class="layui-input" lay-verify="required" onclick="layui.laydate({elem: this})"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束时间：</label>
+        <div class="layui-input-block">
+            <input name="endTime" class="layui-input" lay-verify="required" onclick="layui.laydate({elem: this})"/>
+        </div>
+    </div>
+</div>

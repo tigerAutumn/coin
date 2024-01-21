@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace为对应对应Mapper接口，且SQL的id属性值必须与Mapper接口中的方法同名 -->
+<mapper namespace="com.hotcoin.sms.dao.SmsMessageMapper">
+    <cache eviction="FIFO" flushInterval="50" size="512" readOnly="true"></cache>
+    <!-- 
+    <typeAliases>
+        <typeAlias alias="SmsMessage" type="com.hotcoin.sms.mapper.SmsMessage" />
+    </typeAliases>
+    -->
+    <resultMap type="com.hotcoin.sms.model.SmsMessage" id="SmsMessageMap">
+        <result property="sendId" column="SENDID" />
+        <result property="mobile" column="MOBILE" />
+        <result property="content" column="CONTENT" />
+        <result property="sendtype" column="SENDTYPE" />
+        <result property="sendchannel" column="SENDCHANNEL" />
+        <result property="platform" column="PLATFORM" />
+        <result property="status" column="STATUS" />
+        <result property="createtime" column="CREATETIME" />
+	</resultMap>
+	<sql id="SmsMessage_Column_List">
+				 smsMessage.SENDID,
+				 smsMessage.MOBILE,
+				 smsMessage.CONTENT,
+				 smsMessage.SENDTYPE,
+				 smsMessage.SENDCHANNEL,
+				 smsMessage.PLATFORM,
+				 smsMessage.STATUS,
+				 date_format(smsMessage.CREATETIME,'yyyy-mm-dd hh24:mi:ss') CREATETIME
+	</sql>
+	
+	<select id="get" resultMap="SmsMessageMap">
+	    SELECT 
+	        <include refid="SmsMessage_Column_List"/>
+	    FROM sms_message smsMessage
+	    WHERE smsMessage.SENDID=#{sendId} AND smsMessage.SENDCHANNEL=#{sendchannel}
+	</select>
+
+	<sql id="DynamicSelectSmsMessageValue">
+	    <where>
+		     <trim suffix="" suffixOverrides="AND">
+			  	     <if test="sendId != null and sendId != '' ">
+						 AND SENDID= #{sendId}
+					 </if>
+			  	     <if test="mobile != null and mobile != '' ">
+						 AND MOBILE= #{mobile}
+					 </if>
+			  	     <if test="content != null and content != '' ">
+						 AND CONTENT= #{content}
+					 </if>
+			  	     <if test="sendtype != null and sendtype != '' ">
+						 AND SENDTYPE= #{sendtype}
+					 </if>
+			  	     <if test="sendchannel != null and sendchannel != '' ">
+						 AND SENDCHANNEL= #{sendchannel}
+					 </if>
+			  	     <if test="platform != null and platform != '' ">
+						 AND PLATFORM= #{platform}
+					 </if>
+			  	     <if test="status != null and status != '' ">
+						 AND STATUS= #{status}
+					 </if>
+					 <if test="createtime != null and createtime != '' ">
+						 AND CREATETIME= str_to_date(#{createtime},'%Y-%m-%d %H:%i:%s')
+					 </if>
+		     </trim>
+		 </where>
+	</sql>
+	<select id="selectList" parameterType="com.hotcoin.sms.model.SmsMessage" resultMap="SmsMessageMap">
+	    SELECT 
+	        <include refid="SmsMessage_Column_List"/>
+	    FROM sms_message smsMessage
+	    <include refid="DynamicSelectSmsMessageValue" />    
+	</select>
+	
+    <sql id="UserSmsMessageColume">
+		<trim suffix="" suffixOverrides=",">
+				<if test="sendId != null and sendId != '' ">
+					SENDID,
+				</if>
+			  	<if test="mobile != null and mobile != '' ">
+					MOBILE,
+				</if>
+			  	<if test="content != null and content != '' ">
+					CONTENT,
+				</if>
+			  	<if test="sendtype != null and sendtype != '' ">
+					SENDTYPE,
+				</if>
+			  	<if test="sendchannel != null and sendchannel != '' ">
+					SENDCHANNEL,
+				</if>
+			  	<if test="platform != null and platform != '' ">
+					PLATFORM,
+				</if>
+			  	<if test="status != null and status != '' ">
+					STATUS,
+				</if>
+			  	<if test="createtime != null and createtime != '' ">
+					CREATETIME,
+				</if>
+		</trim>
+	</sql>
+	<sql id="UserSmsMessageValue">
+		<trim suffix="" suffixOverrides=",">
+				 <if test="sendId != null and sendId != '' ">
+					#{sendId},
+				 </if>
+			     <if test="mobile != null and mobile != '' ">
+					 #{mobile},
+				 </if>				  
+			     <if test="content != null and content != '' ">
+					 #{content},
+				 </if>				  
+			     <if test="sendtype != null and sendtype != '' ">
+					 #{sendtype},
+				 </if>				  
+			     <if test="sendchannel != null and sendchannel != '' ">
+					 #{sendchannel},
+				 </if>				  
+			     <if test="platform != null and platform != '' ">
+					 #{platform},
+				 </if>				  
+			     <if test="status != null and status != '' ">
+					 #{status},
+				 </if>				  
+		  	     <if test="createtime != null and createtime != '' ">
+					 str_to_date(#{createtime},'%Y-%m-%d %H:%i:%s'),
+				 </if>		  	
+		</trim>
+	</sql>
+	
+	<insert id="save" parameterType="com.hotcoin.sms.model.SmsMessage">
+		INSERT INTO sms_message(
+		<include refid="UserSmsMessageColume" />
+		) values (
+		<include refid="UserSmsMessageValue" />
+		)
+	</insert> 
+	
+	<sql id="DynamicUpdateSmsMessageValue">
+		<trim suffix="" suffixOverrides=",">
+			     <if test="mobile != null and mobile != '' ">
+					 MOBILE= #{mobile},
+				 </if>				  
+			     <if test="content != null and content != '' ">
+					 CONTENT= #{content},
+				 </if>				  
+			     <if test="sendtype != null and sendtype != '' ">
+					 SENDTYPE= #{sendtype},
+				 </if>				  
+			     <if test="sendchannel != null and sendchannel != '' ">
+					 SENDCHANNEL= #{sendchannel},
+				 </if>				  
+			     <if test="platform != null and platform != '' ">
+					 PLATFORM= #{platform},
+				 </if>				  
+			     <if test="status != null and status != '' ">
+					 STATUS= #{status},
+				 </if>				  
+		  	     <if test="createtime != null and createtime != '' ">
+					 CREATETIME= str_to_date(#{createtime},'%Y-%m-%d %H:%i:%s')
+				 </if>		  	
+		</trim>
+	</sql>
+	
+	<update id="update" parameterType="com.hotcoin.sms.model.SmsMessage">
+        UPDATE sms_message SET
+        <include refid="DynamicUpdateSmsMessageValue" />       
+        WHERE SENDID=#{sendId} AND SENDCHANNEL= #{sendchannel}
+    </update>
+</mapper>

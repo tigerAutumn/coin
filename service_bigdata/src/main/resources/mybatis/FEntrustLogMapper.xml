@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.entrust.dao.FEntrustLogMapper">
+    <select id="selectByEntrustId" resultType="com.qkwl.common.dto.entrust.FEntrustLog" parameterType="java.math.BigInteger">
+		select * from f_entrust_log 
+		where fentrustid = #{entrustId}
+    </select>
+    
+    <select id="selectByMatchId" resultType="com.qkwl.common.dto.entrust.FEntrustLog" parameterType="java.math.BigInteger">
+		select * from f_entrust_log 
+		where fmatchid = #{matchId}
+    </select>
+    
+    
+    <select id="orderMatchresults"  resultType="com.qkwl.common.dto.entrust.FEntrustLog"  parameterType="java.util.Map">
+    SELECT * FROM f_entrust_log where ftradeId=#{ftradeId} 
+    and fuid=#{fuid} 
+    <if test="fentrusttype != null">
+		and fentrusttype=#{fentrusttype} 
+	</if>
+    and fcreatetime<![CDATA[ >= ]]>#{fcreatetimeStart,jdbcType=TIMESTAMP}
+    and fcreatetime<![CDATA[ < ]]>#{fcreatetimeEnd,jdbcType=TIMESTAMP}
+    <if test="offSet != null">
+		<if test="direct == 'next'">
+			 and fid<![CDATA[ <= ]]>#{offSet}   order by fid desc limit #{size}
+		</if>
+		<if test="direct == 'prev'">
+			 and fid<![CDATA[ >= ]]>#{offSet}   order by fid asc limit #{size}
+		</if>
+	</if>
+	  <if test="offSet == null">
+		<if test="direct == 'next'">
+			 order by fid desc limit #{size}
+		</if>
+		<if test="direct == 'prev'">
+			 order by fid asc limit #{size}
+		</if>
+	</if>
+    </select>
+    
+</mapper>

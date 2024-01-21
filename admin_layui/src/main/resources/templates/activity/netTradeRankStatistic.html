@@ -1,0 +1,66 @@
+<div class="layui-form" lay-href="admin/netTradeRankStatistic" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+    	<div class="layui-inline">
+            <div class="layui-input-inline">
+            	<input type="hidden" name="id" th:value="${activityId }" />
+                <input name="sellShortName" th:value="${sellShortName }" class="layui-input" disabled="disabled" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input name="tradeName" th:value="${sellShortName }+ '/' +${buyShortName }" class="layui-input" disabled="disabled" />
+            </div>
+        </div>
+        <div class="layui-inline">
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="startTime" lay-verify="required" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+	             th:value="${#dates.format(startTime, 'yyyy-MM-dd HH:mm:ss')}" style="width:200px" disabled="disabled" />
+	        </div>
+    	</div>
+    	<div class="layui-inline">
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="endTime" lay-verify="required" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+	             th:value="${#dates.format(endTime, 'yyyy-MM-dd HH:mm:ss')}" style="width:200px" disabled="disabled" />
+	        </div>
+    	</div>
+	    <div class="layui-inline" style="display:none;">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+        <button class="layui-btn layui-btn-small" th:attr="lay-href='admin/importNetTradeRank?activityId='+${activityId}" lay-target="export" lay-tips="确实要导出这些记录吗?">导出</button>
+	</div>
+	
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>UID</th>
+                <th>手机号码</th>
+                <th>邮箱号码</th>
+                <th>累计买入数量</th>
+                <th>累计卖出数量</th>
+                <th>净交易数量</th>
+                <th>持仓数量</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(rankStatisticList)}">
+            <tr th:each="rankStatistic : ${rankStatisticList.data}">
+                <td th:text="${rankStatistic.id}"></td>
+                <td th:text="${rankStatistic.userId}"></td>
+                <td th:text="${rankStatistic.telephone}"></td>
+                <td th:text="${rankStatistic.email}"></td>
+                <td th:text="${#decimal.format(rankStatistic.buyCount,1,10)}"></td>
+                <td th:text="${#decimal.format(rankStatistic.sellCount,1,10)}"></td>
+                <td th:text="${#decimal.format(rankStatistic.netCount,1,10)}"></td>
+                <td th:text="${#decimal.format(rankStatistic.position,1,10)}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(rankStatisticList)}"
+         th:attr="lay-pages=${rankStatisticList.totalPages}, lay-curr=${rankStatisticList.currentPage}"></div>
+</div>

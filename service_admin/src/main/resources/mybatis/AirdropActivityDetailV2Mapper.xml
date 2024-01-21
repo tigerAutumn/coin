@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qkwl.service.admin.bc.dao.AirdropActivityDetailV2Mapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="activityCoin" column="activity_coin"/>
+        <result property="activityType" column="activity_type"/>
+        <result property="typeDetail" column="type_detail"/>
+        <result property="userId" column="user_id"/>
+        <result property="airDropCoin" column="air_drop_coin"/>
+        <result property="airDropTotal" column="air_drop_total"/>
+        <result property="airDropTime" column="air_drop_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="rule" column="rule"/>
+    </resultMap>
+
+    <!--
+          选择性插入
+        -->
+    <sql id="Base_Insert_Selective">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="activityType != null">
+                activity_type,
+            </if>
+            <if test="typeDetail != null">
+                type_detail,
+            </if>
+
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="airDropCoin != null">
+                air_drop_coin,
+            </if>
+            <if test="airDropTotal != null">
+                air_drop_total,
+            </if>
+            <if test="airDropTime != null">
+                air_drop_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="rule != null">
+                rule
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="activityType != null">
+                #{activityType,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="airDropCoin != null">
+                #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="type_detail != null">
+                #{typeDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal != null">
+                #{airDropTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="airDropTime != null">
+                #{airDropTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rule != null">
+                #{rule,jdbcType=DOUBLE}
+            </if>
+        </trim>
+    </sql>
+
+    <!--
+      数据库表的基本查询列名集合
+    -->
+    <sql id="Base_Column_List">
+        id,activity_coin, activity_type, type_detail,user_id, air_drop_coin, air_drop_total, air_drop_time, status, update_time, create_time,rule
+    </sql>
+
+    <!--
+        Where子句
+      -->
+    <sql id="Base_Query_Where">
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="activityCoin != null">
+            and activity_coin = #{activityCoin,jdbcType=VARCHAR}
+        </if>
+        <if test="activityType != null">
+            and activity_type = #{activityType,jdbcType=INTEGER}
+        </if>
+        <if test="typeDetail != null">
+            and type_detail = #{typeDetail,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=INTEGER}
+        </if>
+        <if test="airDropCoin != null">
+            and air_drop_coin = #{airDropCoin,jdbcType=VARCHAR}
+        </if>
+        <if test="airDropTotal != null">
+            and air_drop_total = #{airDropTotal,jdbcType=DOUBLE}
+        </if>
+        <if test="airDropTime != null">
+            and air_drop_time = #{airDropTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="updateTime != null">
+            and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="rule != null">
+            and rule= #{rule,jdbcType=DOUBLE}
+        </if>
+           limit #{offSet},#{pageSize}
+    </sql>
+
+    <sql id="Base_Query_Count_Where">
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="activityCoin != null">
+            and activity_coin = #{activityCoin,jdbcType=VARCHAR}
+        </if>
+        <if test="activityType != null">
+            and activity_type = #{activityType,jdbcType=INTEGER}
+        </if>
+        <if test="typeDetail != null">
+            and type_detail = #{typeDetail,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=INTEGER}
+        </if>
+        <if test="airDropCoin != null">
+            and air_drop_coin = #{airDropCoin,jdbcType=VARCHAR}
+        </if>
+        <if test="airDropTotal != null">
+            and air_drop_total = #{airDropTotal,jdbcType=DOUBLE}
+        </if>
+        <if test="airDropTime != null">
+            and air_drop_time = #{airDropTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="updateTime != null">
+            and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="rule != null">
+            and rule= #{rule,jdbcType=DOUBLE}
+        </if>
+    </sql>
+    <!--
+        基本更新字段
+    -->
+    <sql id="Base_Update_Column">
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="activityType != null">
+                activity_type = #{activityType,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="typeDetail != null">
+                type_detail = #{typeDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropCoin != null">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal != null">
+                air_drop_total = #{airDropTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="airDropTime != null">
+                air_drop_time = #{airDropTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="rule != null">
+                rule = #{rule,jdbcType=DOUBLE}
+            </if>
+
+        </set>
+    </sql>
+
+    <!--
+        分页查询数据库表
+      -->
+    <select id="selectPaged" resultMap="BaseResultMap"
+            parameterType="com.qkwl.common.dto.activity_v2.bo.AirdropActivityDetailV2Bo">
+        select
+        <include refid="Base_Column_List"/>
+        from system_airdrop_activity_detail
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="countSelectPageList" resultType="long"
+            parameterType="com.qkwl.common.dto.activity_v2.bo.AirdropActivityDetailV2Bo">
+        select count(1) from system_airdrop_activity_detail
+        <where>
+            <include refid="Base_Query_Count_Where"></include>
+        </where>
+    </select>
+    <!--
+      分页查询数据库表
+    -->
+    <select id="selectPagedByType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from system_airdrop_activity_detail
+        <where>
+            <if test="activityType != null">
+                activity_type= #{activityType}
+            </if>
+        </where>
+    </select>
+    <!--
+       查询未发放成功的数据
+      -->
+    <select id="selectNotSuccessData" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from system_airdrop_activity_detail where status!=1
+    </select>
+    <!--
+      根据主键查询数据库表
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from system_airdrop_activity_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <!--
+      根据主键删除数据库表中的记录
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete FROM system_airdrop_activity_detail
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--
+      添加一条记录到数据库表中
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        insert into system_airdrop_activity_detail
+        (<include refid="Base_Column_List"/>)
+        values (
+        <if test="id != null">
+            #{id,jdbcType=INTEGER},
+        </if>
+        <if test="activityType != null">
+            #{activityType,jdbcType=INTEGER},
+        </if>
+        <if test="userId != null">
+            #{userId,jdbcType=INTEGER},
+        </if>
+        <if test="airDropCoin != null">
+            #{airDropCoin,jdbcType=VARCHAR},
+        </if>
+        <if test="typeDetail != null">
+            #{typeDetail,jdbcType=VARCHAR},
+        </if>
+        <if test="airDropTotal != null">
+            #{airDropTotal,jdbcType=DOUBLE},
+        </if>
+        <if test="airDropTime != null">
+            #{airDropTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="status != null">
+            #{status,jdbcType=INTEGER},
+        </if>
+        <if test="updateTime != null">
+            #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="createTime != null">
+            #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="rule != null">
+            #{rule,jdbcType=DOUBLE}
+        </if>
+        )
+    </insert>
+
+    <!--
+     有选择的添加一条记录到数据库表中
+   -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        insert into system_airdrop_activity_detail
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      有选择的可忽略添加一条记录到数据库表中
+    -->
+    <insert id="insertSelectiveIgnore" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        insert ignore into system_airdrop_activity_detail
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      根据主键有选择的更新数据库表
+    -->
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        update system_airdrop_activity_detail
+        <include refid="Base_Update_Column"></include>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <!--
+      根据主键更新数据库表
+    -->
+    <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        update system_airdrop_activity_detail
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="activityType != null">
+                activity_type = #{activityType,jdbcType=INTEGER},
+            </if>
+            <if test="typeDetail != null">
+                type_detail = #{typeDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="airDropCoin != null">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal != null">
+                air_drop_total = #{airDropTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="airDropTime != null">
+                air_drop_time = #{airDropTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="rule != null">
+                rule = #{rule,jdbcType=DOUBLE}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--
+      批量添加记录到数据库表中
+    -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into system_airdrop_activity_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, activity_type,type_detail, user_id, air_drop_coin, air_drop_total, air_drop_time, status, update_time,
+            create_time,rule
+        </trim>
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.id,jdbcType=INTEGER}, #{item.activityType,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER},
+                #{item.airDropCoin,jdbcType=VARCHAR}, #{item.airDropTotal,jdbcType=VARCHAR},
+                #{item.rule,jdbcType=DOUBLE},#{item.typeDetail,jdbcType=VARCHAR},
+                #{item.airDropTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},
+                #{item.updateTime,jdbcType=TIMESTAMP}, #{item.createTime,jdbcType=TIMESTAMP}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--
+      根据主键批量更新数据库表中的记录
+    -->
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            update system_airdrop_activity_detail
+            <set>
+                <trim suffixOverrides=",">
+                    <if test="item.id != null">
+                        id = #{item.id,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.activityType != null">
+                        activity_type = #{item.activityType,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.typeDetail != null">
+                        type_detail = #{item.typeDetail,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.userId != null">
+                        user_id = #{item.userId,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.airDropCoin != null">
+                        air_drop_coin = #{item.airDropCoin,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.airDropTotal != null">
+                        air_drop_total = #{item.airDropTotal,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.airDropTime != null">
+                        air_drop_time = #{item.airDropTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.status != null">
+                        status = #{item.status,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.updateTime != null">
+                        update_time = #{item.updateTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.createTime != null">
+                        create_time = #{item.createTime,jdbcType=TIMESTAMP}
+                    </if>
+                    <if test="item.rule != null">
+                        rule = #{item.rule,jdbcType=DOUBLE}
+                    </if>
+                </trim>
+            </set>
+            <where>
+                <trim suffixOverrides=",">
+                    where id = #{item.id,jdbcType=INTEGER}
+                </trim>
+            </where>
+        </foreach>
+    </update>
+
+    <!--
+     使用给定的字段名定义Where子句
+   -->
+    <sql id="Identifiers_Array_Conditions">
+        <foreach collection="array" index="index" item="item" separator=" and ">
+            <if test="item == 'id'">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'activityType'">
+                activity_type = #{activityType,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'typeDetail'">
+                type_detail = #{type_detail,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'userId'">
+                user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'airDropCoin'">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'airDropTotal'">
+                air_drop_total = #{airDropTotal,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'airDropTime'">
+                air_drop_time = #{airDropTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'status'">
+                status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'updateTime'">
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'createTime'">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'rule'">
+                rule = #{rule,jdbcType=DOUBLE}
+            </if>
+        </foreach>
+    </sql>
+
+    <!--
+      存在即更新否则插入
+    -->
+    <update id="upsert" parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        insert into system_airdrop_activity_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, activity_type,type_detail, user_id, air_drop_coin, air_drop_total, air_drop_time, status, update_time,
+            create_time,rule
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{activityType,jdbcType=INTEGER},#{typeDetail,jdbcType=VARCHAR},
+            #{userId,jdbcType=INTEGER},
+            #{airDropCoin,jdbcType=VARCHAR}, #{airDropTotal,jdbcType=DOUBLE}, #{airDropTime,jdbcType=TIMESTAMP},
+            #{rule,jdbcType=DOUBLE},
+            #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{activityType,jdbcType=INTEGER}, #{typeDetail,jdbcType=VARCHAR},
+            #{userId,jdbcType=INTEGER},#{rule,jdbcType=DOUBLE},
+            #{airDropCoin,jdbcType=VARCHAR}, #{airDropTotal,jdbcType=DOUBLE}, #{airDropTime,jdbcType=TIMESTAMP},
+            #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+        </trim>
+    </update>
+
+
+    <!--
+      带有空值检查的存在即更新否则插入
+    -->
+    <update id="upsertSelective" parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        insert into system_airdrop_activity_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id,
+            </if>
+            <if test="activityType !=null ">
+                activity_type,
+            </if>
+            <if test="typeDetail !=null ">
+                type_detail,
+            </if>
+            <if test="userId !=null ">
+                user_id,
+            </if>
+            <if test="airDropCoin !=null ">
+                air_drop_coin,
+            </if>
+            <if test="airDropTotal !=null ">
+                air_drop_total,
+            </if>
+            <if test="airDropTime !=null ">
+                air_drop_time,
+            </if>
+            <if test="status !=null ">
+                status,
+            </if>
+            <if test="updateTime !=null ">
+                update_time,
+            </if>
+            <if test="createTime !=null ">
+                create_time
+            </if>
+            <if test="rule !=null ">
+                rule
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="activityType !=null ">
+                activity_type = #{activityType,jdbcType=INTEGER},
+            </if>
+            <if test="typeDetail !=null ">
+                type_detail = #{typeDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="userId !=null ">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="airDropCoin !=null ">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal !=null ">
+                air_drop_total = #{airDropTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="airDropTime !=null ">
+                air_drop_time = #{airDropTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status !=null ">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime !=null ">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime !=null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="rule !=null ">
+                rule = #{rule,jdbcType=DOUBLE},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="activityType !=null ">
+                activity_type = #{activityType,jdbcType=INTEGER},
+            </if>
+            <if test="typeDetail !=null ">
+                type_detail = #{typeDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="userId !=null ">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="airDropCoin !=null ">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal !=null ">
+                air_drop_total = #{airDropTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="airDropTime !=null ">
+                air_drop_time = #{airDropTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status !=null ">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime !=null ">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime !=null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="rule !=null ">
+                rule = #{rule,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </update>
+
+    <select id="query" resultMap="BaseResultMap"
+            parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        select
+        <include refid="Base_Column_List"/>
+        from system_airdrop_activity_detail
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(*) from system_airdrop_activity_detail
+    </select>
+
+    <select id="queryTotalByTypeAndCoin" resultType="double"
+            parameterType="com.qkwl.common.dto.activity_v2.po.AirdropActivityDetailV2Po">
+        select SUM(air_drop_total) from system_airdrop_activity_detail
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <delete id="deleteBatch">
+        delete from system_airdrop_activity_detail where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.capital.dao.RedEnvelopeRecordMapper" >
+
+	<insert id="insert" parameterType="com.qkwl.common.dto.capital.RedEnvelopeRecord">
+	  insert into red_envelope_record (red_envelope_no, coin_id, coin_name, amount, create_time)
+	  values (#{redEnvelopeNo}, #{coinId}, #{coinName}, #{amount}, NOW())
+	</insert>
+ 
+ 	<select id="selectByRedEnvelopeNo" resultType="RedEnvelopeRecord" parameterType="com.qkwl.common.dto.capital.RedEnvelopeRecord">
+ 	select * from red_envelope_record 
+ 	where red_envelope_no = #{redEnvelopeNo} 
+ 	<if test="isReceived != null">
+ 		and is_received = #{isReceived}
+ 	</if>
+ 	<if test="uid != null">
+ 		and uid = #{uid}
+ 	</if>
+ 	order by id
+ 	</select>
+ 	
+ 	<update id="updateReceived" parameterType="com.qkwl.common.dto.capital.RedEnvelopeRecord">
+ 	update red_envelope_record 
+ 	set uid = #{uid}, nickname = #{nickname}, login_name = #{loginName},
+ 	 photo = #{photo}, receive_time = NOW(), is_received = #{isReceived}
+ 	 where id = #{id}
+ 	</update>
+ 	
+ 	<update id="updateIsMost" parameterType="com.qkwl.common.dto.capital.RedEnvelopeRecord">
+ 	update red_envelope_record 
+ 	set is_most = #{isMost}
+ 	 where id = #{id}
+ 	</update>
+ 	
+ 	<select id="countRecordList" resultType="java.lang.Integer" parameterType="java.util.Map">
+ 	select count(*) from red_envelope_record 
+ 	where uid = #{uid} and date_format(receive_time, "%Y") = date_format(#{receiveTime}, "%Y")
+ 	</select>
+ 	
+ 	<select id="getRecordList" resultType="RedEnvelopeRecord" parameterType="java.util.Map">
+ 	select r.*, e.nickname sendNickname from red_envelope_record r, red_envelope e
+ 	where r.uid = #{uid} and r.red_envelope_no = e.red_envelope_no
+ 		and r.date_format(receive_time, "%Y") = date_format(#{receiveTime}, "%Y")
+ 		order by r.receive_time desc
+        limit #{offset},#{limit}
+ 	</select>
+ 	
+ 	<select id="getRecordTotal" resultType="UserCoinWallet" parameterType="java.util.Map">
+ 	select sum(amount) total, coin_id coinId from red_envelope_record where uid = #{uid} 
+ 		and date_format(receive_time, "%Y") = date_format(#{receiveTime}, "%Y")
+ 		group by coin_id
+ 	</select>
+ 	
+ 	<select id="getBestCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+ 	select count(*) from red_envelope_record 
+ 	where uid = #{uid} and is_most = 1
+ 		and date_format(receive_time, "%Y") = date_format(#{receiveTime}, "%Y")
+ 	</select>
+</mapper>

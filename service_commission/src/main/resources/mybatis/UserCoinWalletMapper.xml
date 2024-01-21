@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qkwl.service.commission.dao.UserCoinWalletMapper">
+
+  <sql id="column">id, uid, coin_id, total, frozen, borrow, gmt_create, gmt_modified, version, deposit_frozen, deposit_frozen_total</sql>
+
+	<select id="select" resultType="UserCoinWallet">
+	    select <include refid="column" /> from user_coin_wallet where uid = #{uid} and coin_id = #{coinId}
+	</select>
+
+  <update id="update" parameterType="UserCoinWallet">
+    update user_coin_wallet set
+      total = #{total,jdbcType=DECIMAL},
+      frozen = #{frozen,jdbcType=DECIMAL},
+      borrow = #{borrow,jdbcType=DECIMAL},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      deposit_frozen = #{depositFrozen,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateCAS" parameterType="UserCoinWallet">
+    update user_coin_wallet set
+      total = #{total,jdbcType=DECIMAL},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+	  version =if(version+1> 9999999999999999,0,version+1)
+    where id = #{id,jdbcType=INTEGER} and version=#{version,jdbcType = INTEGER}
+  </update>
+  
+  <update id="updateWalletCAS">
+	 update user_coin_wallet set
+	   total = #{total,jdbcType=DECIMAL},
+	   gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+	version =if(version+1> 9999999999999999,0,version+1)
+	 where id = #{id,jdbcType=INTEGER} and version=#{version,jdbcType = BIGINT}
+  </update>
+  
+	<update id="updateBorrowCAS">
+		update user_coin_wallet set
+			total = total - #{borrow,jdbcType=DECIMAL},
+			borrow = borrow + #{borrow,jdbcType=DECIMAL},
+			gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+			version =if(version+1> 9999999999999999,0,version+1)
+		where id = #{id,jdbcType=INTEGER} and version=#{version,jdbcType = INTEGER}
+	</update>
+	
+	<update id="updateUnBorrowCAS">
+		update user_coin_wallet set
+			total = total + #{borrow,jdbcType=DECIMAL},
+			borrow = borrow - #{borrow,jdbcType=DECIMAL},
+			gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+			version =if(version+1> 9999999999999999,0,version+1)
+		where id = #{id,jdbcType=INTEGER} and version=#{version,jdbcType = INTEGER}
+	</update>
+  
+  
+  
+
+</mapper>

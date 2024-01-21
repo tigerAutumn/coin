@@ -1,0 +1,87 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="airdrop/saveAirdrop">
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称:</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="name" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题:</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="title" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">持有币种：</label>
+        <div class="layui-input-block">
+        	<select type="combox" name="coinId">
+					<option th:each="v : ${coinTypeMap}" th:value="${v.key}" th:text="${v.value}"></option>
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">持币最低额度：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="minCount" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">空投币种：</label>
+        <div class="layui-input-block">
+        	<select type="combox" name="airdropCoinId">
+					<option th:each="v : ${coinTypeMap}" th:value="${v.key}" th:text="${v.value}"></option>
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">空投类型：</label>
+        <div class="layui-input-block">
+            <select type="combox" name="type">
+				<option value="0">数量</option>
+                <option value="1">比例</option>
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">空头数量/比例：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="countOrRate" lay-verify="required"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">空投时间：</label>
+		<div class="layui-input-block">
+			<input lay-verify="required" class="layui-input" name="airdropTime" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">活动开始时间：</label>
+		<div class="layui-input-block">
+			<input lay-verify="required" class="layui-input" name="startTime" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">快照时间：</label>
+		<div class="layui-input-block">
+			<input lay-verify="required" class="layui-input" name="snapshotTime" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+		</div>
+	</div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开启空投：</label>
+        <div class="layui-input-block">
+            <select type="combox" name="isOpen">
+				<option value="0">否</option>
+                <option value="1">是</option>
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态：</label>
+        <div class="layui-input-block">
+            <select type="combox" name="status">
+				<option value="0">已禁用</option>
+                <option value="1">已启用</option>
+			</select>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.coin.mapper.CoinCollectHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.qkwl.common.dto.coin.CoinCollectHistory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="coin_id" property="coinId" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="secret" property="secret" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="recharge_fuel_coin" property="rechargeFuelCoin" jdbcType="DECIMAL" />
+    <result column="virtual_capital_operation_id" property="virtualCapitalOperationId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, coin_id, address, secret, status, createtime, updatetime, recharge_fuel_coin, 
+    virtual_capital_operation_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from coin_collect_history
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from coin_collect_history
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qkwl.common.dto.coin.CoinCollectHistory" >
+    insert into coin_collect_history (id, coin_id, address, 
+      secret, status, createtime, 
+      updatetime, recharge_fuel_coin, virtual_capital_operation_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{secret,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{rechargeFuelCoin,jdbcType=DECIMAL}, #{virtualCapitalOperationId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qkwl.common.dto.coin.CoinCollectHistory" >
+    insert into coin_collect_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="coinId != null" >
+        coin_id,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="secret != null" >
+        secret,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="rechargeFuelCoin != null" >
+        recharge_fuel_coin,
+      </if>
+      <if test="virtualCapitalOperationId != null" >
+        virtual_capital_operation_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null" >
+        #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="secret != null" >
+        #{secret,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rechargeFuelCoin != null" >
+        #{rechargeFuelCoin,jdbcType=DECIMAL},
+      </if>
+      <if test="virtualCapitalOperationId != null" >
+        #{virtualCapitalOperationId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qkwl.common.dto.coin.CoinCollectHistory" >
+    update coin_collect_history
+    <set >
+      <if test="coinId != null" >
+        coin_id = #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="secret != null" >
+        secret = #{secret,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rechargeFuelCoin != null" >
+        recharge_fuel_coin = #{rechargeFuelCoin,jdbcType=DECIMAL},
+      </if>
+      <if test="virtualCapitalOperationId != null" >
+        virtual_capital_operation_id = #{virtualCapitalOperationId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qkwl.common.dto.coin.CoinCollectHistory" >
+    update coin_collect_history
+    set coin_id = #{coinId,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      secret = #{secret,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      recharge_fuel_coin = #{rechargeFuelCoin,jdbcType=DECIMAL},
+      virtual_capital_operation_id = #{virtualCapitalOperationId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

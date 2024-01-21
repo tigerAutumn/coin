@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.SmsConfigMapper" >
+  <select id="selectAll" resultType="com.qkwl.common.dto.otc.SmsConfig">
+    select *
+    from sms_config where action = 'SMS_TEXT'
+  </select>
+  
+  <select id="selectBySmsClazz" resultType="com.qkwl.common.dto.otc.SmsConfig" parameterType="java.lang.String">
+    select *
+    from sms_config where smsClazz = #{smsClazz,jdbcType=VARCHAR} and action = 'SMS_TEXT'
+  </select>
+  
+  <update id="close">
+    update sms_config set isActivity = 0
+    where isActivity = 1 and action = 'SMS_TEXT'
+  </update>
+  
+  <update id="update" parameterType="com.qkwl.common.dto.otc.SmsConfig" >
+    update sms_config set isActivity = #{isActivity,jdbcType=VARCHAR}
+    where smsClazz = #{smsClazz,jdbcType=VARCHAR} and action = 'SMS_TEXT'
+  </update>
+  
+</mapper>

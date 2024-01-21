@@ -1,0 +1,55 @@
+<div class="layui-form" lay-href="admin/otcAdvancedQuery" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+    	<div class="layui-inline">
+            <label class="layui-form-label">用户UID：</label>
+            <div class="layui-input-inline">
+                <input name="userId" th:value="${userId}" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询结果</button>
+        </div>
+    </div>
+	
+    <hr/>
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>币种</th>
+                <th>转到场外</th>
+                <th>场外到创新区</th>
+                <th>场外转出</th>
+                <th>买入</th>
+                <th>交易手续费</th>
+                <th>卖出</th>
+                <th>押金</th>
+                <th>可用</th>
+                <th>冻结</th>
+                <th>平账</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(list)}">
+            <tr th:each="otcBalance : ${list}">
+                <td>
+                    <input type="checkbox" th:name="${otcBalance.coinName}" lay-skin="primary"/>
+                </td>
+                <td th:text="${otcBalance.coinName}"></td>
+                <td th:text="${otcBalance.in == null ? '' : #decimal.format(otcBalance.in, 1, 10)}"></td>
+                <td th:text="${otcBalance.outToInnovateAreaObj == null ? '' : #decimal.format(otcBalance.outToInnovateAreaObj, 1, 10)}"></td>
+                <td th:text="${otcBalance.out == null ? '' : #decimal.format(otcBalance.out, 1, 10)}"></td>
+                <td th:text="${otcBalance.buyAmount == null ? '' : #decimal.format(otcBalance.buyAmount, 1, 10)}"></td>
+                <td th:text="${otcBalance.fee == null ? '' : #decimal.format(otcBalance.fee, 1, 10)}"></td>
+                <td th:text="${otcBalance.sellAmount == null ? '' : #decimal.format(otcBalance.sellAmount, 1, 10)}"></td>
+                <td th:text="${otcBalance.otcMerchantDeposit == null ? '' : #decimal.format(otcBalance.otcMerchantDeposit, 1, 10)}"></td>
+                <td th:text="${otcBalance.total == null ? '' : #decimal.format(otcBalance.total, 1, 10)}"></td>
+                <td th:text="${otcBalance.frozen == null ? '' : #decimal.format(otcBalance.frozen, 1, 10)}"></td>
+                <td th:text="${otcBalance.balance == null ? '' : #decimal.format(otcBalance.balance, 1, 10)}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

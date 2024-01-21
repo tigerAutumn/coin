@@ -1,0 +1,49 @@
+<div class="layui-form" lay-href="admin/historicVersionList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+	    <div class="layui-inline" style="display:none;">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+    	<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addHistoricVersion"
+				lay-href="/admin/addHistoricVersion" lay-target="dialog">新增</button>
+				
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/changeHistoricVersion"
+				lay-href="/admin/changeHistoricVersion" lay-checked="id" lay-target="dialog">修改</button>
+				
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/deleteHistoricVersion"
+					lay-href="admin/deleteHistoricVersion" lay-checked="id" lay-target="ajax" lay-tips="确定要删除吗?">删除</button>
+	</div>
+	
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>版本号</th>
+                <th>发布日期</th>
+                <th>安卓下载地址</th>
+                <th>苹果下载地址</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(historicVersionList)}">
+            <tr th:each="historicVersion : ${historicVersionList.data}">
+                <td>
+                    <input type="checkbox" th:name="${historicVersion.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${historicVersion.id}"></td>
+                <td th:text="${historicVersion.version}"></td>
+                <td th:text="${#dates.format(historicVersion.createTime, 'yyyy-MM-dd')}"></td>
+                <td th:text="${historicVersion.androidUrl}"></td>
+                <td th:text="${historicVersion.iosUrl}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(historicVersionList)}"
+         th:attr="lay-pages=${historicVersionList.totalPages}, lay-curr=${historicVersionList.currentPage}"></div>
+</div>

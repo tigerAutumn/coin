@@ -1,0 +1,59 @@
+<div class="layui-form" lay-href="admin/netTradeRankActivityList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+        <div class="layui-inline" style = "display:none">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addNetTradeRankActivity"
+				lay-href="/admin/addNetTradeRankActivity" lay-target="dialog">新增</button>
+				
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/changeNetTradeRankActivity"
+				lay-href="/admin/changeNetTradeRankActivity" lay-checked="id" lay-target="dialog">修改</button>
+				
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/netTradeRankStatistic"
+				lay-href="/admin/netTradeRankStatistic" lay-checked="id" lay-target="info">详情</button>		
+	</div>
+	
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>名称</th>
+                <th>活动交易对</th>
+                <th>活动开始时间</th>
+                <th>活动结束时间</th>
+                <th>活动快照时间</th>
+                <th>净交易规则</th>
+                <th>持仓规则</th>
+                <th>快照状态</th>
+                <th>活动状态</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(activityList)}">
+            <tr th:each="activity : ${activityList.data}">
+                <td>
+                    <input type="checkbox" th:name="${activity.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${activity.id}"></td>
+                <td th:text="${activity.name}"></td>
+                <td th:text="${activity.tradeName}"></td>
+                <td th:text="${#dates.format(activity.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(activity.endTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(activity.snapshotTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="'>='+${#decimal.format(activity.minNetTrade,1,10)}"></td>
+                <td th:text="'>='+${#decimal.format(activity.minPosition,1,10)}"></td>
+                <td th:text="${activity.snapshotStatus == 0? '未快照':'已快照'}"></td>
+                <td th:text="${activity.status == 1? '未开启':(activity.status == 2? '已开启':'已结束')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(activityList)}"
+         th:attr="lay-pages=${activityList.totalPages}, lay-curr=${activityList.currentPage}"></div>
+</div>

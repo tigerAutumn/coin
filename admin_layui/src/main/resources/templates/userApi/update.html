@@ -1,0 +1,9 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form" lay-href="userApi/update">
+    <div class="layui-form-item">
+        <label class="layui-form-label">费率</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="id" th:value="${apiKey.id}"/>
+            <input  type="number" min="0" max="1" class="layui-input" name="rate" lay-verify="required" th:value="${apiKey.rate}" />
+        </div>
+    </div>
+</div>

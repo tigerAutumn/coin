@@ -1,0 +1,72 @@
+<div class="layui-form" lay-href="admin/positionStatistic" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+    	<div class="layui-inline">
+            <label class="layui-form-label">币种</label>
+            <div class="layui-input-inline">
+                <select name="coinId">
+                	<option th:each="type : ${allCoinType }" th:value="${type.id}" th:selected="${type.id eq coinId ?true:false}"
+                	th:text="${type.shortName}"></option>
+                </select>
+            </div>
+        </div>
+	    <div class="layui-inline">
+            <label class="layui-form-label">时间</label>
+            <div class="layui-input-inline">
+                <input name="choosenDate" th:value="${choosenDate }" class="layui-input" style="width: 200px"
+                onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD'})"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">净持仓数量</label>
+            <div class="layui-input-inline">
+                <input name="netPosition" th:value="${netPosition }" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">持仓数量</label>
+            <div class="layui-input-inline">
+                <input name="position" th:value="${position }" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box" style="display: inline;">
+    	<div style="display:inline-block;border:1px solid #DCDCDC;height:32px;line-height:32px;padding:0 30px;">汇总持仓额：</div>
+    	<div style="display:inline-block;border:1px solid #DCDCDC;height:32px;line-height:32px;padding:0 30px;margin-left:-4px;width: 150px"
+    	th:text="${#decimal.format(totalPosition)}"></div>
+		<button class="layui-btn layui-btn-small" lay-href="admin/importPosition" lay-target="export" lay-tips="确实要导出这些记录吗?">导出</button>
+	</div>
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th style="width: 100px">序号</th>
+                <th style="width: 200px">UID</th>
+                <th style="width: 200px">手机号码</th>
+                <th style="width: 200px">邮箱号码</th>
+                <th style="width: 200px">充币数量</th>
+                <th style="width: 200px">持仓数量</th>
+                <th style="width: 200px">净持仓数量</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(userPositionList)}">
+            <tr th:each="userPosition : ${userPositionList.data}">
+                <td th:text="${userPosition.sort}" style="width: 100px"></td>
+                <td th:text="${userPosition.userId}" style="width: 200px"></td>
+                <td th:text="${userPosition.telephone}" style="width: 200px"></td>
+                <td th:text="${userPosition.email}" style="width: 200px"></td>
+                <td th:text="${#decimal.format(userPosition.chargingNumber,1,10)}" style="width: 200px"></td>
+                <td th:text="${#decimal.format(userPosition.position,1,10)}" style="width: 200px"></td>
+                <td th:text="${#decimal.format(userPosition.netPosition,1,10)}" style="width: 200px"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(userPositionList)}"
+         th:attr="lay-pages=${userPositionList.totalPages}, lay-curr=${userPositionList.currentPage}"></div>
+</div>

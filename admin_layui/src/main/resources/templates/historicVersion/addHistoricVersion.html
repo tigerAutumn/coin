@@ -1,0 +1,26 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/saveHistoricVersion">
+    <div class="layui-form-item">
+        <label class="layui-form-label">版本号：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="version" lay-verify="required" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布日期：</label>
+        <div class="layui-input-block">
+        	<input name="createTime" class="layui-input" lay-verify="required" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD'})"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">安卓下载地址：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="androidUrl" lay-verify="required" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">苹果下载地址：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="iosUrl" lay-verify="required" />
+        </div>
+    </div>
+</div>

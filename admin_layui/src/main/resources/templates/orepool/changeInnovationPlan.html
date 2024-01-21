@@ -1,0 +1,66 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/updateInnovationPlan">
+	<div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">标题：</label>
+        <div class="layui-input-block" style="width:500px;margin-left:180px">
+        	<input type="hidden" name="id" th:value="${orepoolPlan.id}" />
+            <input class="layui-input" name="name" lay-verify="required" th:value="${orepoolPlan.name}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">锁仓币种：</label>
+        <div class="layui-input-inline">
+            <select name="lockCoinId">
+            	<option th:each="type : ${allCoinType }" th:value="${type.id}" th:selected="${type.id eq orepoolPlan.lockCoinId ?true:false}" 
+            	th:text="${type.shortName}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">收益币种：</label>
+        <div class="layui-input-inline">
+            <select name="incomeCoinId">
+            	<option th:each="type : ${allCoinType }" th:value="${type.id}" th:selected="${type.id eq orepoolPlan.incomeCoinId ?true:false}" 
+            	th:text="${type.shortName}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">锁仓最小数量限制：</label>
+        <div class="layui-input-block" style="width:500px;margin-left:180px">
+            <input class="layui-input" name="minAmount" lay-verify="required" th:value="${#decimal.format(orepoolPlan.minAmount)}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">日化释放率（%）：</label>
+        <div class="layui-input-block" style="width:500px;margin-left:180px">
+            <input class="layui-input" name="incomeRate" lay-verify="required" 
+            	th:value="${#decimal.format(orepoolPlan.incomeRate)}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">锁仓收益周期（天）：</label>
+        <div class="layui-input-block" style="width:500px;margin-left:180px">
+            <input class="layui-input" name="incomePeriod" lay-verify="required" th:value="${orepoolPlan.incomePeriod}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">活动开始时间：</label>
+        <div class="layui-input-block" style="width:500px;margin-left:180px">
+            <input class="layui-input" name="startTime" lay-verify="required" th:value="${#dates.format(orepoolPlan.startTime, 'yyyy-MM-dd HH:mm:ss')}"
+            	onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">活动结束时间：</label>
+        <div class="layui-input-block" style="width:500px;margin-left:180px">
+            <input class="layui-input" name="endTime" lay-verify="required" th:value="${#dates.format(orepoolPlan.endTime, 'yyyy-MM-dd HH:mm:ss')}"
+            	onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 180px">排序：</label>
+        <div class="layui-input-block" style="width:500px;margin-left:180px">
+            <input class="layui-input" name="sort" lay-verify="required" th:value="${orepoolPlan.sort}"/>
+        </div>
+    </div>
+</div>

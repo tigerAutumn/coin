@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.FEntrustMapper" >
+
+	<sql id="entrustColumns">
+		f_entrust.fid, f_entrust.fuid, f_entrust.ftradeid, f_entrust.fbuycoinid, f_entrust.fsellcoinid,
+		f_entrust.fstatus, f_entrust.ftype, f_entrust.flast, f_entrust.flastamount, f_entrust.flastcount,
+		f_entrust.fprize, f_entrust.fcount, f_entrust.famount, f_entrust.fsuccessamount, f_entrust.fleftcount,
+		f_entrust.fleftfees, f_entrust.ffees, f_entrust.fmatchtype, f_entrust.fsource, f_entrust.fhuobientrustid,
+		f_entrust.fhuobiaccountid, f_entrust.flastupdatTime, f_entrust.fcreateTime, f_entrust.fagentid,f_entrust.version
+	</sql>
+
+	<update id="updateByfId" parameterType="FEntrust" >
+		update f_entrust set
+		fstatus = #{fstatus},
+		flastupdattime = #{flastupdattime}
+		where fid = #{fid}
+	</update>
+	
+	<update id="updateByfIdCAS" parameterType="FEntrust">
+	  update f_entrust set
+	  fstatus = #{fstatus},
+	  flastupdattime = #{flastupdattime},
+	  version = version + 1
+	  where fid = #{fid} and version = #{version,jdbcType = BIGINT}
+	</update>
+
+	<select id="selectById" resultType = "FEntrust">
+		select <include refid="entrustColumns"/> from f_entrust where fuid = #{fuid} and fid = #{fid}
+	</select>
+
+
+	<!-- Admin -->
+	<!-- Admin -->
+	<select id="getAdminPageList" resultType="FEntrust" parameterType="java.util.Map">
+		select <![CDATA[ /*+TDDL: cmd_extra(USE_MGET_IN_JOIN=FALSE)*/  ]]>
+		<include refid="entrustColumns" />
+		,f_user.floginname
+		,f_user.fnickname
+		,f_user.frealname
+		from (
+		select
+		<include refid="entrustColumns" />
+		from f_entrust
+		where 1=1
+		<if test="keyword != null">
+			and f_entrust.fuid = ${keyword}
+		</if>
+		<if test="fstatus != null">
+			and f_entrust.fstatus = ${fstatus}
+		</if>
+		<if test="ftype != null">
+			and f_entrust.ftype = ${ftype}
+		</if>
+		<if test="fmatchType != null">
+			and  f_entrust.fmatchtype = ${fmatchType}
+		</if>
+		<if test="ftradeid != null">
+			and f_entrust.ftradeid = ${ftradeid}
+		</if>
+		<if test="fprize != null">
+			and f_entrust.fprize = ${fprize}
+		</if>
+		<if test="fagentid != null">
+			and f_entrust.fagentid = ${fagentid}
+		</if>
+		<if test="start != null and start == end">
+			<![CDATA[and DATE_FORMAT(f_entrust.fcreatetime,"%Y-%m-%d") = DATE_FORMAT(#{start},"%Y-%m-%d")]]>
+		</if>
+		<if test="start != null and start != end">
+			<![CDATA[and DATE_FORMAT(f_entrust.fcreatetime,"%Y-%m-%d") >= DATE_FORMAT(#{start},"%Y-%m-%d")]]>
+		</if>
+		<if test="end != null and start != end">
+			<![CDATA[and DATE_FORMAT(f_entrust.fcreatetime,"%Y-%m-%d") <= DATE_FORMAT(#{end},"%Y-%m-%d")]]>
+		</if>
+		<if test="orderField != null">
+			order by f_entrust.${orderField} ${orderDirection}
+		</if>
+		limit #{offset},#{limit}
+		) f_entrust left join
+		f_user on f_user.fid = f_entrust.fuid
+	</select>
+
+	<select id="countAdminPage" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(f_entrust.fid)
+		from
+		f_entrust
+		where 1=1
+		<if test="keyword != null">
+			and f_entrust.fuid = ${keyword}
+		</if>
+		<if test="fstatus != null">
+			and f_entrust.fstatus = ${fstatus}
+		</if>
+		<if test="ftype != null">
+			and f_entrust.ftype = ${ftype}
+		</if>
+		<if test="ftradeid != null">
+			and f_entrust.ftradeid = ${ftradeid}
+		</if>
+		<if test="fprize != null">
+			and f_entrust.fprize = ${fprize}
+		</if>
+		<if test="fagentid != null">
+			and f_entrust.fagentid = ${fagentid}
+		</if>
+		<if test="fcreatetime != null">
+			and DATE_FORMAT(f_entrust.fcreatetime,"%Y-%m-%d") = DATE_FORMAT(#{fcreatetime},"%Y-%m-%d")
+		</if>
+	</select>
+
+	<select id="getById" resultType = "FEntrust" parameterType="java.math.BigInteger">
+		select <include refid="entrustColumns"/> from f_entrust where fid = #{fid}
+	</select>
+
+	<select id="getTotalAmountByType" resultType="FEntrust" parameterType="java.util.Map">
+		select ifnull(sum(fcount-fleftcount),0) fcount,ifnull(sum(fleftcount),0) fleftcount,ifnull(sum(famount), 0) famount,
+		ifnull(sum(fsuccessamount), 0) fsuccessamount,ifnull(sum(ffees), 0) ffees ,ifnull(sum(fleftfunds),0) fleftfunds 
+		from
+		f_entrust
+		where 1=1
+		<if test="fuid != null">
+			and fuid = #{fuid}
+		</if>
+		<if test="buycoinid != null">
+			and fbuycoinid = #{buycoinid}
+		</if>
+		<if test="sellcoinid != null">
+			and fsellcoinid = #{sellcoinid}
+		</if>
+		<if test="type != null">
+			and ftype = #{type}
+		</if>
+		<if test="buycoinid == null">
+			and fbuycoinid > 0
+		</if>
+		<if test="status != null">
+			and fstatus = #{status}
+		</if>
+		<if test="start != null">
+			<![CDATA[and fcreatetime >= #{start,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="end != null">
+			<![CDATA[and fcreatetime <= #{end,jdbcType=VARCHAR}]]>
+		</if>
+	</select>
+	
+	<select id="getTotalAmountByTypeList" resultType="FEntrust" parameterType="java.util.Map">
+		select ifnull(sum(fcount-fleftcount),0) fcount,ifnull(sum(fleftcount),0) fleftcount,ifnull(sum(famount), 0) famount,
+		ifnull(sum(fsuccessamount), 0) fsuccessamount,ifnull(sum(ffees), 0) ffees, ifnull(sum(fleftfunds),0) fleftfunds, 
+		<trim prefix="" suffix="" suffixOverrides="," >
+		<if test="buycoinid != null">
+			 fbuycoinid ,
+		</if>
+		<if test="sellcoinid != null">
+			 fsellcoinid ,
+		</if>
+		</trim>
+		from
+		f_entrust
+		where 1=1
+		<if test="fuid != null">
+			and fuid = #{fuid}
+		</if>
+		<if test="type != null">
+			and ftype = #{type}
+		</if>
+		<if test="buycoinid == null">
+			and fbuycoinid > 0
+		</if>
+		<if test="status != null">
+			and fstatus = #{status}
+		</if>
+		<if test="start != null">
+			<![CDATA[and fcreatetime >= #{start,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="end != null">
+			<![CDATA[and fcreatetime <= #{end,jdbcType=VARCHAR}]]>
+		</if>
+		
+		<if test="date != null">
+			<![CDATA[and flastupdatTime <= #{date,jdbcType=VARCHAR}]]>
+		</if>
+		group by
+		<trim prefix="" suffix="" suffixOverrides="," >
+		<if test="buycoinid != null">
+			 fbuycoinid ,
+		</if>
+		<if test="sellcoinid != null">
+			 fsellcoinid ,
+		</if>
+		</trim>
+		
+	</select>
+
+    <select id="selectFEntrustCount" resultType = "java.lang.Integer" parameterType="java.lang.Integer">
+		select count(*) from f_entrust 
+			where fbuycoinid = #{coinId} 
+				or fsellcoinid = #{coinId}
+	</select>
+
+	<!--
+   数据库表的基本查询列名集合
+ -->
+	<sql id="Base_Column_List">
+        fid, fuid, ftradeid, fbuycoinid, fsellcoinid, fstatus, ftype, fmatchtype, flast, flastamount, flastcount,
+        fprize, fcount, famount, fsuccessamount, fleftcount, ffees, fleftfees, fsource, fhuobientrustid,
+        fhuobiaccountid, flastupdattime, fcreatetime, fagentid, version, fleverorder
+    </sql>
+	<!--
+       Where子句
+     -->
+	<sql id="Base_Query_Where">
+		<if test="fid != null">
+			and fid = #{fid,jdbcType=INTEGER}
+		</if>
+		<if test="fuid != null">
+			and fuid = #{fuid,jdbcType=INTEGER}
+		</if>
+		<if test="ftradeid != null">
+			and ftradeid = #{ftradeid,jdbcType=INTEGER}
+		</if>
+		<if test="fbuycoinid != null">
+			and fbuycoinid = #{fbuycoinid,jdbcType=INTEGER}
+		</if>
+		<if test="fsellcoinid != null">
+			and fsellcoinid = #{fsellcoinid,jdbcType=INTEGER}
+		</if>
+		<if test="fstatus != null">
+			and fstatus = #{fstatus,jdbcType=INTEGER}
+		</if>
+		<if test="ftype != null">
+			and ftype = #{ftype,jdbcType=INTEGER}
+		</if>
+		<if test="fmatchtype != null">
+			and fmatchtype = #{fmatchtype,jdbcType=INTEGER}
+		</if>
+		<if test="flast != null">
+			and flast = #{flast,jdbcType=DECIMAL}
+		</if>
+		<if test="flastamount != null">
+			and flastamount = #{flastamount,jdbcType=DECIMAL}
+		</if>
+		<if test="flastcount != null">
+			and flastcount = #{flastcount,jdbcType=INTEGER}
+		</if>
+		<if test="fprize != null">
+			and fprize = #{fprize,jdbcType=DECIMAL}
+		</if>
+		<if test="fcount != null">
+			and fcount = #{fcount,jdbcType=DECIMAL}
+		</if>
+		<if test="famount != null">
+			and famount = #{famount,jdbcType=DECIMAL}
+		</if>
+		<if test="fsuccessamount != null">
+			and fsuccessamount = #{fsuccessamount,jdbcType=DECIMAL}
+		</if>
+		<if test="fleftcount != null">
+			and fleftcount = #{fleftcount,jdbcType=DECIMAL}
+		</if>
+		<if test="ffees != null">
+			and ffees = #{ffees,jdbcType=DECIMAL}
+		</if>
+		<if test="fleftfees != null">
+			and fleftfees = #{fleftfees,jdbcType=DECIMAL}
+		</if>
+		<if test="fsource != null">
+			and fsource = #{fsource,jdbcType=INTEGER}
+		</if>
+		<if test="fhuobientrustid != null">
+			and fhuobientrustid = #{fhuobientrustid,jdbcType=BIGINT}
+		</if>
+		<if test="fhuobiaccountid != null">
+			and fhuobiaccountid = #{fhuobiaccountid,jdbcType=INTEGER}
+		</if>
+		<if test="flastupdattime != null">
+			and flastupdattime = #{flastupdattime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="fcreatetime != null">
+			and fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="fagentid != null">
+			and fagentid = #{fagentid,jdbcType=INTEGER}
+		</if>
+		<if test="version != null">
+			and version = #{version,jdbcType=BIGINT}
+		</if>
+		<if test="fleverorder != null">
+			and fleverorder = #{fleverorder,jdbcType=TINYINT}
+		</if>
+	</sql>
+	<!-- 可根据自己的需求，是否要使用 -->
+	<resultMap type="com.qkwl.common.dto.entrust.FEntrust" id="BaseResultMap">
+		<result property="fid" column="fid"/>
+		<result property="fuid" column="fuid"/>
+		<result property="ftradeid" column="ftradeid"/>
+		<result property="fbuycoinid" column="fbuycoinid"/>
+		<result property="fsellcoinid" column="fsellcoinid"/>
+		<result property="fstatus" column="fstatus"/>
+		<result property="ftype" column="ftype"/>
+		<result property="fmatchtype" column="fmatchtype"/>
+		<result property="flast" column="flast"/>
+		<result property="flastamount" column="flastamount"/>
+		<result property="flastcount" column="flastcount"/>
+		<result property="fprize" column="fprize"/>
+		<result property="fcount" column="fcount"/>
+		<result property="famount" column="famount"/>
+		<result property="fsuccessamount" column="fsuccessamount"/>
+		<result property="fleftcount" column="fleftcount"/>
+		<result property="ffees" column="ffees"/>
+		<result property="fleftfees" column="fleftfees"/>
+		<result property="fsource" column="fsource"/>
+		<result property="fhuobientrustid" column="fhuobientrustid"/>
+		<result property="fhuobiaccountid" column="fhuobiaccountid"/>
+		<result property="flastupdattime" column="flastupdattime"/>
+		<result property="fcreatetime" column="fcreatetime"/>
+		<result property="fagentid" column="fagentid"/>
+		<result property="version" column="version"/>
+		<result property="fleverorder" column="fleverorder"/>
+	</resultMap>
+	<select id="query" resultMap="BaseResultMap" parameterType="com.qkwl.common.dto.entrust.FEntrust">
+		select
+		<include refid="Base_Column_List"/>
+		from f_entrust
+		<where>
+			<include refid="Base_Query_Where"></include>
+		</where>
+	</select>
+</mapper>

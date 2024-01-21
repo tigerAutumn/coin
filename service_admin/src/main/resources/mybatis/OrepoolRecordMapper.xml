@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.OrepoolRecordMapper" >
+  <select id="selectAll" resultType="OrepoolRecord" >
+    select *
+    from orepool_record
+  </select>
+  
+  	<select id="countRecordListByParam" resultType="java.lang.Integer">
+        select count(id)
+        from orepool_record 
+        where 1 = 1
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="lockCoinId != null">
+            and lock_coin_id = #{lockCoinId}
+        </if>
+    </select>
+    
+    <select id="getRecordPageList" resultType="OrepoolRecord" parameterType="java.util.Map">
+        select r.*, p.name, p.type, p.lock_period, p.income_period, p.income_rate incomeRate,
+        t1.short_name lockCoinName, t2.short_name incomeCoinName
+        from orepool_record r, orepool_plan p, system_coin_type t1, system_coin_type t2
+        where r.plan_id = p.id and r.lock_coin_id = t1.id and r.income_coin_id = t2.id
+        <if test="userId != null">
+            and r.user_id = #{userId}
+        </if>
+        <if test="lockCoinId != null">
+            and r.lock_coin_id = #{lockCoinId}
+        </if>
+        <if test="orderField != null">
+            order by r.${orderField} ${orderDirection}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+    
+    <select id="getInnovationRecord" resultType="OrepoolRecord" parameterType="com.qkwl.common.dto.orepool.OrepoolRecord">
+        select r.*
+        from orepool_record r, orepool_plan p
+        where r.plan_id = p.id
+        	and p.type = 3 and r.status = 4
+        <if test="userId != null">
+            and r.user_id = #{userId}
+        </if>
+        <if test="lockCoinId != null">
+            and r.lock_coin_id = #{lockCoinId}
+        </if>
+    </select>
+    
+    <update id="update" parameterType="OrepoolRecord" >
+    update orepool_record 
+	<set >
+      <if test="planId != null" >
+        plan_id = #{planId},
+      </if>
+      <if test="userId != null" >
+    	user_id = #{userId},
+      </if>
+      <if test="lockCoinId != null" >
+        lock_coin_id = #{lockCoinId},
+      </if>
+      <if test="incomeCoinId != null" >
+        income_coin_id = #{incomeCoinId},
+      </if>
+      <if test="lockVolume != null" >
+        lock_volume = #{lockVolume},
+      </if>
+      <if test="status != null" >
+    	status = #{status},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where 
+    	id = #{id,jdbcType=INTEGER}
+   </update>
+   
+   <select id="countLockRecord" resultType="java.lang.Integer">
+        select count(id)
+        from orepool_record 
+        where plan_id = #{planId} and status != 3
+    </select>
+    
+    <select id="selectLockRecord" resultType="OrepoolRecord" parameterType="java.lang.Integer">
+        select *
+    		from orepool_record
+    		where plan_id = #{planId} and status != 3
+    </select>
+</mapper>

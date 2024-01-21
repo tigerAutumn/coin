@@ -1,0 +1,258 @@
+package com.qkwl.common.coin.driver;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.qkwl.common.coin.CoinDriver;
+import com.qkwl.common.coin.CoinUtils;
+import com.qkwl.common.coin.TxInfo;
+import com.qkwl.common.dto.coin.FPool;
+import com.qkwl.common.exceptions.BCException;
+import com.qkwl.common.util.ReturnResult;
+
+/**
+ * Created by janyw on 2017/6/26.
+ */
+public class ETPDriver implements CoinDriver {
+
+    private static final int DEF_DIV_SCALE = 10;
+    private static final BigDecimal WEI = new BigDecimal("100000000");
+
+    private CoinUtils coinUtils = null;
+    private String accessKey = null;
+    private String secretKey = null;
+    private String passWord = null;
+    private Integer coinSort = null;
+    private String account = null;
+    private String accPwd = null;
+
+    public ETPDriver(String accessKey, String secretKey, String walletLink, String chainLink ,String pass, Integer coinSort, String account) {
+        coinUtils = new CoinUtils(accessKey, secretKey, walletLink, chainLink);
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
+        this.passWord = pass;
+        this.coinSort = coinSort;
+        this.account = account;
+        this.accPwd = "[\"" + accessKey + "\",\"" + secretKey + "\"]";
+    }
+
+    @Override
+    public Integer getCoinSort() {
+        return this.coinSort;
+    }
+
+    @Override
+    public BigInteger getBestHeight() {
+        JSONObject resultJson = coinUtils.goETP("fetch-height", "[]");
+        return resultJson.getBigInteger("result");
+    }
+
+    @Override
+    public BigDecimal getBalance() {
+        JSONObject resultJson = coinUtils.goETP("getbalance",accPwd);
+        return getValue(resultJson.getString("total-unspent"));
+    }
+
+    @Override
+    public FPool getNewAddress(String uId) {
+        JSONObject resultJson = coinUtils.goETP("getnewaddress",accPwd);
+        return new FPool(resultJson.getString("result"));
+    }
+
+    @Override
+    public boolean walletLock() {
+        return true;
+    }
+
+    @Override
+    public boolean walletPassPhrase(int times) {
+        return true;
+    }
+
+    @Override
+    public boolean setTxFee(BigDecimal fee) {
+        return false;
+    }
+
+    @Override
+    public List<TxInfo> listTransactions(int count, int from) {
+    	BigInteger best = null;
+    	BigInteger begin = null;
+        if (from != 0) {
+            return null;
+        } else {
+            /*int best = getBestHeight();
+            from = best - count;
+            count = best;*/
+        	
+        	best = getBestHeight();
+        	begin = best.subtract(BigInteger.valueOf(count));
+        }
+        //JSONObject resultJson = coinUtils.goETP("listtxs", "[\"" + "-e" + "\",\"" + from + ":" + count + "\",\"" +accessKey + "\",\"" + secretKey + "\"]");
+        JSONObject resultJson = coinUtils.goETP("listtxs", "[\"" + "-e" + "\",\"" + begin + ":" + best + "\",\"" +accessKey + "\",\"" + secretKey + "\"]");
+        JSONArray txs = resultJson.getJSONArray("transactions");
+        if (txs == null || txs.size() == 0) {
+            return null;
+        }
+        List<TxInfo> txInfos = new ArrayList<>();
+        for (int i = 0; i < txs.size(); i++) {
+            JSONObject tx = txs.getJSONObject(i);
+            if (!tx.getString("direction").equals("receive")) {
+                continue;
+            }
+            JSONObject out = getOut(tx.getJSONArray("outputs"));
+            if (out == null) {
+                continue;
+            }
+            String type = out.getJSONObject("attachment").getString("type");
+            if (type == null || !type.equals("etp")) {
+                continue;
+            }
+            TxInfo txInfo = new TxInfo();
+            txInfo.setTxid(tx.getString("hash"));
+            txInfo.setAddress(out.getString("address"));
+            txInfo.setBlockNumber(tx.getBigInteger("height"));
+            txInfo.setAmount(getValue(out.getString("etp-value")));
+            long time = Long.parseLong(tx.get("timestamp").toString() + "000");
+            txInfo.setTime(new Date(time));
+            txInfos.add(txInfo);
+        }
+        Collections.reverse(txInfos);
+        return txInfos;
+    }
+
+    @Override
+    public TxInfo getTransaction(String txId) {
+        return null;
+    }
+
+    @Override
+    public String sendToAddress(String address, BigDecimal account, String comment, BigDecimal fee) {
+        return null;
+    }
+
+    @Override
+    public String sendToAddress(String address, BigDecimal amount, String comment, BigDecimal fee, String memo) {
+        return null;
+    }
+
+    @Override
+    public String sendToAddress(String to, String amount, String nonce) {
+        String amountTo = getMul(amount);
+        String parms = "[\"" + accessKey + "\",\"" + secretKey + "\",\"" +
+                account + "\",\"" + to  + "\",\"" + amountTo + "\"]";
+        JSONObject resultJson = coinUtils.goETP("sendfrom", parms);
+        return resultJson.getJSONObject("transaction").getString("hash");
+    }
+
+    @Override
+    public String getETCSHA3(String str) {
+        return null;
+    }
+
+    private JSONObject getOut(JSONArray outs) {
+        for (int i = 0; i < outs.size(); i++) {
+            JSONObject out = outs.getJSONObject(i);
+            if (!out.getBoolean("own")) {
+                continue;
+            }
+            return out;
+        }
+        return null;
+    }
+
+    private BigDecimal getValue(String value) {
+        BigDecimal v = new BigDecimal(value);
+        return v.divide(WEI, DEF_DIV_SCALE, BigDecimal.ROUND_DOWN);
+    }
+
+    private String getMul(String value) {
+        BigDecimal v = new BigDecimal(value);
+        return v.multiply(WEI).setScale(DEF_DIV_SCALE, BigDecimal.ROUND_DOWN).toBigInteger().toString();
+    }
+
+    @Override
+    public Integer getTransactionCount() {
+        return null;
+    }
+
+	@Override
+	public String sendToAddressAccelerate(String to, String amount, String nonce,String gasPrice) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getTransactionByHash(String transactionHash) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String sendToAddress(String from, String to, BigDecimal amount, String comment, BigDecimal fee) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JSONArray listaddress() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String registaddress(String addr,BigDecimal fee) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ReturnResult sendToAddress(String from, String to, BigDecimal amount, String comment, BigDecimal fee,
+			Integer propertyid,BigDecimal satoshiPerByte) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal getBalance(String address) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal estimatesmartfee(Integer time) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ReturnResult sendToAddress(String to, BigDecimal amount,BigDecimal fee, String nonce, String gasPrice, String gas,String memo){
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<TxInfo> listTransactionsByAddress(int pageSize, int page,String address) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String sendToAddress(String from, String to, BigDecimal amount, String memo, BigDecimal fee,
+			String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<TxInfo> getBlock(BigInteger blockNum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

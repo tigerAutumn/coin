@@ -1,0 +1,75 @@
+<div class="layui-form" lay-href="admin/rechargeActivityList" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box" style="display: none">
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-small"></button>
+        </div>
+    </div>
+    <div class="layui-btn-box">
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addRechargeActivity"
+                lay-href="/admin/addRechargeActivity" lay-target="dialog">新增
+        </button>
+
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/openRegisterActivity"
+                lay-href="/admin/openRechargeActivity" lay-checked="id" lay-target="ajax" lay-tips="确定要启用吗?">启用
+        </button>
+
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/closeRechargeActivity"
+                lay-href="/admin/closeRechargeActivity" lay-checked="id" lay-target="ajax" lay-tips="确定要禁用吗?">禁用
+        </button>
+
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/updateRechargeActivity"
+                lay-href="/admin/updateRechargeActivity" lay-checked="id" lay-target="dialog">修改
+        </button>
+
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/deleteRechargeActivity"
+                lay-href="/admin/deleteRechargeActivity" lay-checked="id" lay-target="ajax" lay-tips="确定要删除吗?">删除
+        </button>
+    </div>
+
+    <div class="layui-conten-box">
+        <table class="layui-table" width="100%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>充值币种</th>
+                <th>空投币种</th>
+                <th>空投数量</th>
+                <th>空投总额度</th>
+                <th>空投类型</th>
+                <th>空投规则</th>
+                <th>活动开始时间</th>
+                <th>活动结束时间</th>
+                <th>活动详情</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(rechargeActivityList)}">
+            <tr th:each="item : ${rechargeActivityList}">
+                <td>
+                    <input type="checkbox" th:name="${item.id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.rechargeCoin}"></td>
+                <td th:text="${item.airDropCoin}"></td>
+                <td th:text="${item.airDropAmount}"></td>
+                <td th:text="${item.airDropTotal}"></td>
+                <td th:text="${item.airDropType}=='coin'?'币币充值':'法币充值'"></td>
+                <td th:text="${item.airDropRule}"></td>
+                <td th:text="${#dates.format(item.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(item.endTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td shiro:hasPermission="admin/rechargeActivityDetail">
+                    <div class="layui-inline">
+                        <i class="layui-icon layui-lookup"  th:attr="lay-href=${'/admin/activityDetailList?type=2&airDropType='
+                                +item.airDropType+'&activityCoin='+item.rechargeCoin+'&airDropRule='+item.airDropRule
+                                +'&airDropTime='+item.endTime.getTime()}" onclick="layui.lookup.openLook(this)" title="活动详情">&#xe608;</i>
+                    </div>
+                </td>
+                <td th:text="${item.status == -1? '禁用':((#dates.createNow().getTime()-item.endTime.getTime())>0? '已结束':'启用')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:attr="lay-pages=${pages}, lay-curr=${currentPage}"></div>
+</div>

@@ -1,0 +1,53 @@
+<div class="layui-form" lay-href="admin/dictGroupList.html" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <div class="layui-form-item layui-search-box">
+	    <div class="layui-inline" style="display:none;">
+            <button class="layui-btn layui-btn-small">查询</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="layui-btn-box">
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/closeDictGroup.html"
+					lay-href="admin/closeDictGroup.html" lay-checked="Id" lay-target="ajax" lay-tips="确定要禁用吗?">禁用</button>
+					
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/openDictGroup.html"
+					lay-href="admin/openDictGroup.html" lay-checked="Id" lay-target="ajax" lay-tips="确定要启用吗?">启用</button>	
+					
+    	<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/addDictGroup.html"
+				lay-href="/admin/addDictGroup.html" lay-target="dialog">新增</button>
+				
+		<button class="layui-btn layui-btn-small" shiro:hasPermission="admin/deleteDictGroup.html"
+					lay-href="admin/deleteDictGroup.html" lay-checked="Id" lay-target="ajax" lay-tips="确定要删除吗?">删除</button>
+				
+        <button class="layui-btn layui-btn-small" shiro:hasPermission="admin/changeDictGroup.html"
+				lay-href="/admin/changeDictGroup.html" lay-checked="Id" lay-target="dialog">修改</button>
+	</div>
+	
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>序号</th>
+                <th>字典组id</th>
+                <th>字典组名称</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(dictGroupList)}">
+            <tr th:each="dictGroup : ${dictGroupList.data}">
+                <td>
+                    <input type="checkbox" th:name="${dictGroup.Id}" lay-skin="primary"/>
+                </td>
+                <td th:text="${dictGroupStat.index + 1}"></td>
+                <td th:text="${dictGroup.groupid}"></td>
+                <td th:text="${dictGroup.groupname}"></td>
+                <td th:text="${dictGroup.status == 1? '启用':'禁用'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(dictGroupList)}"
+         th:attr="lay-pages=${dictGroupList.totalPages}, lay-curr=${dictGroupList.currentPage}"></div>
+</div>

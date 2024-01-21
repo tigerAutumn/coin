@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.activity.dao.FEntrustHistoryMapper" >
+  
+  <resultMap id="allInfo" type="java.util.Map">
+	<result column="buyCount" property="buyCount" jdbcType="INTEGER" />
+	<result column="sellCount" property="sellCount" jdbcType="INTEGER" />
+	<result column="sumBuy" property="sumBuy" jdbcType="DECIMAL" />
+	<result column="sumSell" property="sumSell" jdbcType="DECIMAL" />
+	<result column="feesBuy" property="feesBuy" jdbcType="DECIMAL" />
+	<result column="feesSell" property="feesSell" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="personAllInfo" type="java.util.Map">
+	<result column="buyCount" property="buyCount" jdbcType="INTEGER" />
+	<result column="sellCount" property="sellCount" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="entrustHistoryColumns">
+  	 fid, fuid, ftradeid, fbuycoinid, fsellcoinid, fstatus, ftype, flast, fprize, fcount, famount, fsuccessamount, fleftcount, fleftfees, ffees,
+  	 fmatchtype, fsource, fhuobientrustid, fhuobiaccountid, flastupdattime, fcreatetime, fislever
+  </sql>
+  
+  <select id="selectTotal" resultMap="allInfo">
+  	select 
+	sum(case when ftype = 0 then 1 else 0 end ) as buyCount , 
+	sum(case when ftype = 1 then 1 else 0 end ) as sellCount, 
+	sum(case when ftype = 0 then fcount - fleftcount else 0 end ) as sumBuy , 
+	sum(case when ftype = 1 then fcount - fleftcount else 0 end ) as sumSell, 
+	sum(case when ftype = 0 then ffees else 0 end ) as feesBuy , 
+	sum(case when ftype = 1 then ffees else 0 end ) as feesSell
+	from f_entrust_history where ftradeId = #{ftradeId} and fcreatetime between #{start} and #{end} ;
+  </select>
+  
+  <select id="selectLogTotal" resultMap="allInfo">
+  	select 
+	sum(case when fentrusttype = 0 then ffee*fprize else 0 end ) as feesBuy , 
+	sum(case when fentrusttype = 1 then ffee else 0 end ) as feesSell
+	from f_entrust_log where ftradeid = #{ftradeId} and fcreatetime between #{start} and #{end} ;
+  </select>
+  
+  <select id="selectPerson" resultMap="personAllInfo">
+  	select 
+	sum(case when ftype = 0 then 1 else 0 end ) as buyCount , 
+	sum(case when ftype = 1 then 1 else 0 end ) as sellCount
+	from (select fuid, ftype from f_entrust_history where ftradeId = #{ftradeId} and fcreatetime between #{start} and #{end} group by fuid, ftype) as fen;
+  </select>
+
+
+	<select id="selectReport" resultType="ReportTrade" parameterType="java.util.Map">
+		<![CDATA[
+		SELECT
+			sum(trade_amount) AS trade_amount,
+			sum(trade_count) AS trade_count,
+			sum(trade_fee) AS trade_fee
+		FROM
+		(SELECT
+			ifnull(sum(fsuccessamount),0) as trade_amount,
+			ifnull(sum(fcount-fleftcount),0) as trade_count,
+  			ifnull(sum(ffees),0) as trade_fee
+		FROM
+			f_entrust_history
+		WHERE ftradeid = #{tradeId, jdbcType=INTEGER}
+		AND (fstatus = 3 or (fstatus = 5 and famount > 0))
+		AND ftype = #{type, jdbcType=INTEGER}
+		AND flastupdattime >= #{begin, jdbcType=VARCHAR}
+		AND flastupdattime < #{end, jdbcType=VARCHAR}
+		UNION ALL
+		SELECT
+			ifnull(sum(fsuccessamount),0) as trade_amount,
+			ifnull(sum(fcount-fleftcount),0) as trade_count,
+  			ifnull(sum(ffees),0) as trade_fee
+		FROM
+			f_entrust
+		WHERE ftradeid = #{tradeId, jdbcType=INTEGER}
+		AND (fstatus = 3 or fstatus = 2)
+		AND ftype = #{type, jdbcType=INTEGER}
+		AND flastupdattime >= #{begin, jdbcType=VARCHAR}
+		AND flastupdattime < #{end, jdbcType=VARCHAR}) v_temp
+		]]>
+	</select>
+	
+	
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
+    insert into f_entrust_history (
+      fuid, 
+      ftradeid,
+      fbuycoinid,
+      fsellcoinid,
+      fstatus, 
+      ftype, 
+      fmatchtype, 
+      flast, 
+      fprize, 
+      fcount, 
+      famount, 
+      fsuccessamount, 
+      fleftcount, 
+      fleftfees, 
+      ffees, 
+      fsource, 
+      fhuobientrustid, 
+      fhuobiaccountid, 
+      flastupdattime, 
+      fcreatetime,
+      fagentid,
+      fentrustid,
+      ffunds,
+      fleftfunds
+    ) values 
+     <foreach collection="historyList" item="item" index="index" separator=",">
+      (#{item.fuid,jdbcType=INTEGER},
+      #{item.ftradeid,jdbcType=INTEGER},
+      #{item.fbuycoinid,jdbcType=INTEGER},
+      #{item.fsellcoinid,jdbcType=INTEGER},
+      #{item.fstatus,jdbcType=INTEGER}, 
+      #{item.ftype,jdbcType=INTEGER}, 
+      #{item.fmatchtype,jdbcType=INTEGER}, 
+      #{item.flast,jdbcType=DECIMAL}, 
+      #{item.fprize,jdbcType=DECIMAL}, 
+      #{item.fcount,jdbcType=DECIMAL}, 
+      #{item.famount,jdbcType=DECIMAL}, 
+      #{item.fsuccessamount,jdbcType=DECIMAL}, 
+      #{item.fleftcount,jdbcType=DECIMAL}, 
+      #{item.fleftfees,jdbcType=DECIMAL},
+      #{item.ffees,jdbcType=DECIMAL}, 
+      #{item.fsource,jdbcType=INTEGER}, 
+      #{item.fhuobientrustid,jdbcType=BIGINT}, 
+      #{item.fhuobiaccountid,jdbcType=INTEGER}, 
+      #{item.flastupdattime,jdbcType=TIMESTAMP}, 
+      #{item.fcreatetime,jdbcType=TIMESTAMP},
+      #{item.fagentid,jdbcType=INTEGER},
+      #{item.fentrustid,jdbcType=BIGINT},
+         #{item.ffunds,jdbcType=DECIMAL},
+         #{item.fleftfunds,jdbcType=DECIMAL})
+     </foreach>
+   </insert>
+</mapper>

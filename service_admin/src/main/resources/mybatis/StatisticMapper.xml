@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.StatisticMapper">
+
+	<select id="countEBankRankByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(distinct s1.uid1)
+	            from 
+	            (
+	                select l1.fuid uid1, l2.fuid uid2
+	                	from f_entrust_log l1 
+	                    	inner join f_entrust_log l2 on l1.fentrustid = l2.fmatchid and l1.fmatchid = l2.fentrustid
+	                	where l1.ftradeid = #{tradeId}
+	                		<if test="startTime != null and startTime != ''">
+								and l1.fcreatetime &gt;= #{startTime}
+	                		</if>
+	                		<if test="endTime != null and endTime != ''">
+								and l1.fcreatetime &lt; #{endTime}
+							</if>
+	            ) s1
+	            where 
+	            <![CDATA[
+	            s1.uid1 <> s1.uid2
+	            ]]>
+    </select>
+    
+	<select id="selectEBankRankList" resultType="EBankRank" parameterType="java.util.Map">
+	  select s2.userId, u.floginname loginName, s2.totalAmount
+				, IFNULL(s4.todayAmount,0) todayAmount
+	    from 
+	        (select s1.uid1 userId, sum(s1.famount) totalAmount
+	            from 
+	            (
+	                select l1.fuid uid1, l2.fuid uid2, l1.famount
+	                	from f_entrust_log l1 
+	                    	inner join f_entrust_log l2 on l1.fentrustid = l2.fmatchid and l1.fmatchid = l2.fentrustid
+	                	where l1.ftradeid = #{tradeId}
+							<if test="startTime != null and startTime != ''">
+								and l1.fcreatetime &gt;= #{startTime}
+	                		</if>
+	                		<if test="endTime != null and endTime != ''">
+								and l1.fcreatetime &lt; #{endTime}
+							</if>
+	            ) s1
+	            where 
+	            <![CDATA[
+	            s1.uid1 <> s1.uid2
+	            ]]>
+	            group by s1.uid1 
+	            order by sum(s1.famount) desc
+	        ) s2 
+	      	left join 
+	        	(select s3.uid3 userId, sum(s3.famount) todayAmount
+	             	from
+	                 (
+	                     select l3.fuid uid3, l4.fuid uid4, l3.famount
+	                     	from f_entrust_log l3 
+	                     		inner join f_entrust_log l4 on l3.fentrustid = l4.fmatchid and l3.fmatchid = l4.fentrustid
+	                     	where l3.ftradeid = #{tradeId}
+		                     	<![CDATA[
+								and l3.fcreatetime >= date_format(#{now}, "%Y-%m-%d")
+	                     		and l3.fcreatetime < #{now}
+								]]>
+	                  ) s3
+	             where
+	             <![CDATA[
+	             s3.uid3 <> s3.uid4
+	             ]]>
+	             group by s3.uid3
+	            ) s4
+	      		on s2.userId = s4.userId         
+	        inner join f_user u on s2.userId = u.fid
+	        limit #{offset},#{limit}
+    </select>
+    
+    <select id="selectEBankTotalAmount" resultType="java.math.BigDecimal" parameterType="java.util.Map">
+    	select sum(s1.famount) totalAmount
+	            from 
+	            (
+	                select l1.fuid uid1, l2.fuid uid2, l1.famount
+	                	from f_entrust_log l1 
+	                    	inner join f_entrust_log l2 on l1.fentrustid = l2.fmatchid and l1.fmatchid = l2.fentrustid
+	                	where l1.ftradeid = #{tradeId}
+							<if test="startTime != null and startTime != ''">
+								and l1.fcreatetime &gt;= #{startTime}
+	                		</if>
+	                		<if test="endTime != null and endTime != ''">
+								and l1.fcreatetime &lt; #{endTime}
+							</if>
+	            ) s1
+	            where 
+	            <![CDATA[
+	            s1.uid1 <> s1.uid2
+	            ]]>
+    </select>
+    
+    <select id="countUserPositionByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(id)
+	            from user_position
+	            where coin_id = #{coinId}
+	            <if test="choosenDate != null and choosenDate != ''">
+					and date_format(create_time, "%Y-%m-%d") = #{choosenDate}
+           		</if>
+           		<if test="netPosition != null">
+					and net_position &gt;= #{netPosition} 
+           		</if>
+           		<if test="position != null">
+					and position &gt;= #{position} 
+           		</if>
+	</select>
+	
+	<select id="selectUserPositionList" resultType="UserPosition" parameterType="java.util.Map">
+		select * from user_position
+			where coin_id = #{coinId}
+	            <if test="choosenDate != null and choosenDate != ''">
+					and date_format(create_time, "%Y-%m-%d") = #{choosenDate}
+           		</if>
+           		<if test="netPosition != null">
+					and net_position &gt;= #{netPosition} 
+           		</if>
+           		<if test="position != null">
+					and position &gt;= #{position} 
+           		</if> 
+	</select>
+	
+	<select id="selectTotalPosition" resultType="java.math.BigDecimal" parameterType="java.util.Map">
+		select sum(position) from user_position
+			where coin_id = #{coinId}
+	            <if test="choosenDate != null and choosenDate != ''">
+					and date_format(create_time, "%Y-%m-%d") = #{choosenDate}
+           		</if>
+           		<if test="netPosition != null">
+					and net_position &gt;= #{netPosition} 
+           		</if>
+           		<if test="position != null">
+					and position &gt;= #{position} 
+           		</if> 
+	</select>
+	
+	<insert id="countUserPosition" parameterType="java.util.Map">
+		insert into user_position (coin_id, user_id, telephone, email, charging_number, position, net_position, create_time)
+			select #{coinId}, #{userId}, u.ftelephone, u.femail,
+					 o.amount, (w.total + w.frozen), (w.total + w.frozen - o.amount), NOW()
+				from
+					user_coin_wallet w , f_user u, 
+					(select ifnull(sum(famount), 0) amount from f_virtual_capital_operation
+						where fcoinid = #{coinId} and fuid = #{userId}
+							and ftype = 1 and fstatus = 3) o
+				where u.fid = w.uid
+					and w.coin_id = #{coinId}
+					and w.uid = #{userId}
+	</insert>
+	
+	<select id="countUserTradePositionByParam" resultType="java.lang.Integer" parameterType="java.util.Map">
+    	select count(s.user_id) from
+			(select p.user_id, sum(p.net_count) net_count, (w.total+w.frozen) position
+				from user_trade_position p, user_coin_wallet w
+				where p.user_id = w.uid
+					and w.coin_id = #{coinId}
+					and p.trade_id = #{tradeId}
+		            <if test="startDate != null and startDate != ''">
+						and date_format(p.create_time, "%Y-%m-%d") &gt;= #{startDate}
+	           		</if>
+	           		<if test="positionStart != null">
+						and (w.total+w.frozen) &gt;= #{positionStart} 
+	           		</if> 
+	           		<if test="positionEnd != null">
+						and (w.total+w.frozen) &lt;= #{positionEnd} 
+	           		</if> 
+	           	group by p.user_id
+	         ) s
+	         where 1=1
+           		<if test="netCountStart != null">
+					and s.net_count &gt;= #{netCountStart} 
+           		</if>
+           		<if test="netCountEnd != null">
+					and s.net_count &lt;= #{netCountEnd} 
+           		</if>
+	</select>
+	
+	<select id="selectUserTradePositionPageList" resultType="com.qkwl.common.dto.statistic.UserTradePosition" parameterType="java.util.Map">
+		select s.user_id, s.telephone, s.email, s.buy_count, s.sell_count, s.net_count, s.position from
+			(select u.fid user_id, u.ftelephone telephone, u.femail email, sum(p.buy_count) buy_count, sum(p.sell_count) sell_count,
+					sum(p.net_count) net_count, (w.total+w.frozen) position, w.coin_id 
+				from f_user u, user_trade_position p, user_coin_wallet w
+				where u.fid = p.user_id
+					and p.user_id = w.uid
+					and w.coin_id = #{coinId}
+					and p.trade_id = #{tradeId}
+		            <if test="startDate != null and startDate != ''">
+		            	and p.create_time &gt;= #{startDate}
+		            </if>
+	           		<if test="positionStart != null">
+						and (w.total+w.frozen) &gt;= #{positionStart} 
+	           		</if> 
+	           		<if test="positionEnd != null">
+						and (w.total+w.frozen) &lt;= #{positionEnd} 
+	           		</if> 
+	           	group by p.user_id
+	         ) s
+	         where 1=1
+           		<if test="netCountStart != null">
+					and s.net_count &gt;= #{netCountStart} 
+           		</if>
+           		<if test="netCountEnd != null">
+					and s.net_count &lt;= #{netCountEnd} 
+           		</if>
+           	limit #{offset},#{limit}
+	</select>
+	
+	<select id="selectTradeByTradeId" resultType="com.qkwl.common.dto.statistic.UserTrade" parameterType="java.lang.Integer">
+		select fuid userId, SUM(IF(fentrusttype = 1, fcount, 0)) sellCount, 
+				sum(IF(fentrusttype = 0 , fcount-ffee, 0)) buyCount 
+			from `f_entrust_log` 
+			where ftradeid = #{tradeId} 
+				and fcreatetime > date_add(curdate(), interval -1 day)
+			group by fuid
+	</select>
+	
+	<insert id="countUserTradePosition" parameterType="java.util.Map">
+		insert into user_trade_position (trade_id, user_id, buy_count, sell_count, net_count, create_time)
+			values (#{tradeId}, #{userId}, #{buyCount}, #{sellCount}, #{netCount}, #{createTime})
+	</insert>
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.OtcOrderLogMapper" >
+  <sql id="Base_Column_List" >
+    id, order_id, before_status, after_status, before_data, after_data, create_time, 
+    creator, creator_name, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultType="OtcOrderLog" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from otc_order_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from otc_order_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="OtcOrderLog" >
+    insert into otc_order_log (id, order_id, before_status, 
+      after_status, before_data, after_data, 
+      create_time, creator, creator_name, 
+      remark)
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{beforeStatus,jdbcType=TINYINT}, 
+      #{afterStatus,jdbcType=TINYINT}, #{beforeData,jdbcType=VARCHAR}, #{afterData,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=BIGINT}, #{creatorName,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="OtcOrderLog" >
+    insert into otc_order_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="beforeStatus != null" >
+        before_status,
+      </if>
+      <if test="afterStatus != null" >
+        after_status,
+      </if>
+      <if test="beforeData != null" >
+        before_data,
+      </if>
+      <if test="afterData != null" >
+        after_data,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creatorName != null" >
+        creator_name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="beforeStatus != null" >
+        #{beforeStatus,jdbcType=TINYINT},
+      </if>
+      <if test="afterStatus != null" >
+        #{afterStatus,jdbcType=TINYINT},
+      </if>
+      <if test="beforeData != null" >
+        #{beforeData,jdbcType=VARCHAR},
+      </if>
+      <if test="afterData != null" >
+        #{afterData,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="creatorName != null" >
+        #{creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="OtcOrderLog" >
+    update otc_order_log
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="beforeStatus != null" >
+        before_status = #{beforeStatus,jdbcType=TINYINT},
+      </if>
+      <if test="afterStatus != null" >
+        after_status = #{afterStatus,jdbcType=TINYINT},
+      </if>
+      <if test="beforeData != null" >
+        before_data = #{beforeData,jdbcType=VARCHAR},
+      </if>
+      <if test="afterData != null" >
+        after_data = #{afterData,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="creatorName != null" >
+        creator_name = #{creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="OtcOrderLog" >
+    update otc_order_log
+    set order_id = #{orderId,jdbcType=BIGINT},
+      before_status = #{beforeStatus,jdbcType=TINYINT},
+      after_status = #{afterStatus,jdbcType=TINYINT},
+      before_data = #{beforeData,jdbcType=VARCHAR},
+      after_data = #{afterData,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=BIGINT},
+      creator_name = #{creatorName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="findByOrderId" resultType="OtcOrderLog" parameterType="java.lang.Long">
+  	select 
+    <include refid="Base_Column_List" />
+    from otc_order_log
+    where order_id = #{orderId,jdbcType=BIGINT} order by create_time desc
+  </select>
+</mapper>

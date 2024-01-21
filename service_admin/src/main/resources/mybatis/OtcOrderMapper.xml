@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.admin.bc.dao.OtcOrderMapper" >
+  
+  <sql id="Base_Column_List" >
+    otc_order.id, otc_order.ad_fee,otc_order.order_no, otc_order.ad_id, otc_order.ad_user_id, otc_order.user_id, otc_order.amount, otc_order.price, otc_order.total_amount, otc_order.status, otc_order.remark, 
+    otc_order.limit_time, otc_order.create_time, otc_order.update_time,otc_order.payment,otc_order.bank_info_id,
+    otc_order.appeal_time,is_extend_time,is_user_evaluation,is_ad_user_evaluation,user_evaluation_type,ad_user_evaluation_type,seller_id,buyer_id
+  </sql>
+  
+  <select id="selectByPrimaryKeyLock" resultType="OtcOrder" parameterType="java.lang.Long">
+  	select 
+    <include refid="Base_Column_List" />
+    from otc_order
+    where id = #{id,jdbcType=BIGINT} for update
+  </select>
+  
+  <select id="selectByPrimaryKey" resultType="OtcOrder" parameterType="java.lang.Long" >
+	  /*TDDL:MASTER*/
+    select 
+    <include refid="Base_Column_List" />,
+    otc_payment.id as otcPayment.id,
+    otc_payment.name_code as otcPayment.nameCode,
+    otc_payment.picture as otcPayment.picture
+    from otc_order left join otc_payment on otc_order.payment = otc_payment.id
+    where otc_order.id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <insert id="insertSelective" parameterType="OtcOrder" useGeneratedKeys="true" keyProperty="id">
+    insert into otc_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="adId != null" >
+        ad_id,
+      </if>
+      <if test="adUserId != null" >
+        ad_user_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="limitTime != null" >
+        limit_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="payment != null" >
+        payment,
+      </if>
+      <if test="bankInfoId != null" >
+        bank_info_id,
+      </if>
+      <if test="appealTime != null" >
+        appeal_time,
+      </if>
+      <if test="isExtendTime != null" >
+        is_extend_time,
+      </if>
+      <if test="isEvaluation != null" >
+        is_evaluation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="adId != null" >
+        #{adId,jdbcType=BIGINT},
+      </if>
+      <if test="adUserId != null" >
+        #{adUserId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="limitTime != null" >
+        #{limitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        NOW(),
+      </if>
+      <if test="updateTime != null" >
+        NOW(),
+      </if>
+      <if test="payment != null" >
+        #{payment,jdbcType=INTEGER},
+      </if>
+      <if test="bankInfoId != null" >
+       #{bankInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="appealTime != null" >
+        #{appealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isExtendTime != null" >
+        #{isExtendTime,jdbcType=TINYINT},
+      </if>
+      <if test="isEvaluation != null" >
+        #{isEvaluation,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="OtcOrder" >
+    update otc_order
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="adId != null" >
+        ad_id = #{adId,jdbcType=BIGINT},
+      </if>
+      <if test="adUserId != null" >
+        ad_user_id = #{adUserId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="limitTime != null" >
+        limit_time = #{limitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payment != null" >
+        payment = #{payment,jdbcType=INTEGER},
+      </if>
+      <if test="bankInfoId != null" >
+        bank_info_id = #{bankInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="appealTime != null" >
+        appeal_time = #{appealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isExtendTime != null" >
+        is_extend_time = #{isExtendTime,jdbcType=TINYINT},
+      </if>
+      <if test="isUserEvaluation != null" >
+        is_user_evaluation = #{isUserEvaluation,jdbcType=TINYINT},
+      </if>
+      <if test="isAdUserEvaluation != null" >
+         is_ad_user_evaluation = #{isAdUserEvaluation,jdbcType=TINYINT},
+      </if>
+      <if test="userEvaluationType != null" >
+        user_evaluation_type = #{userEvaluationType,jdbcType=INTEGER},
+      </if>
+      <if test="adUserEvaluationType != null" >
+        ad_user_evaluation_type = #{adUserEvaluationType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="listOrder" parameterType="java.util.HashMap" resultType="OtcOrder">
+  	select 
+    <include refid="Base_Column_List" />,f_user.fnickname as nickName,
+    adUser.fnickname as adNickname,
+    otc_payment.id as otcPayment.id,
+    otc_payment.name_code as otcPayment.nameCode,
+    otc_payment.picture as otcPayment.picture,
+    system_coin_type.short_name as coinName,
+    otc_currency.currency_code as currencyName,
+    otc_advert.side,
+    otc_advert.side as sideType
+    from otc_order 
+    inner join otc_advert on otc_order.ad_id = otc_advert.id
+    inner join f_user on otc_order.user_id = f_user.fid
+    inner join otc_payment on otc_order.payment = otc_payment.id
+    inner join system_coin_type on otc_advert.coin_id = system_coin_type.id
+    inner join otc_currency on otc_advert.currency_id = otc_currency.id
+    inner join f_user adUser on otc_order.ad_user_id = adUser.fid
+    <where>
+    	and 1=1
+    	<!-- <choose>
+    		
+    			1、如果当前登录用户等于订单用户则是购买
+    			2、如果当前登录用户等于广告用户则是出售
+    		
+    		<when test="side == 'BUY'">
+    			and otc_order.user_id = #{userId}
+    		</when>
+    		<when test="side == 'SELL'">
+    			and otc_order.ad_user_id = #{userId}
+    		</when>
+    		<otherwise>
+    			and (otc_order.user_id = #{userId} or otc_order.ad_user_id = #{userId})
+    		</otherwise>
+    	</choose> -->
+    	<if test="userId !=null and userId != '' ">
+    		and (otc_order.user_id = #{userId} or otc_order.ad_user_id = #{userId})		
+    	</if>
+    	<if test="side !=null and side != '' ">
+    		and otc_advert.side = #{side}		
+    	</if>
+    	<if test="coinId !=null and coinId !=0">
+    		and otc_advert.coin_id = #{coinId}		
+    	</if>
+    	<if test="currencyId !=null and currencyId !=0">
+    		and otc_advert.currency_id = #{currencyId}		
+    	</if>
+    	<if test="status != null">
+			and otc_order.status = #{status}
+		</if>
+    </where>
+    order by otc_order.create_time desc
+  </select>
+  
+  <select id="expiredOrderList" resultType="OtcOrder">
+	  /*TDDL:MASTER*/
+    select
+    <include refid="Base_Column_List" />
+    from otc_order
+	where NOW() > limit_time and status = 1
+  </select>
+</mapper>

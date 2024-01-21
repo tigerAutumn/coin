@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qkwl.service.user.dao.FUserExtendMapper" >
+
+  <select id="selectByUid" parameterType="java.lang.Integer" resultType="FUserExtend">
+    select id, language, secondary_verification,anti_phishing_code
+    from f_user_extend
+    where 
+    	uid = #{uid,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insert" parameterType="FUserExtend" keyProperty="fid">
+    insert into f_user_extend (uid, language,anti_phishing_code, create_time, update_time)
+    	values (#{uid}, #{language},#{antiPhishingCode},#{createTime}, #{updateTime})
+  </insert>
+  
+  <update id="updateLanguage" parameterType="FUserExtend" >
+    update f_user_extend set 
+    	language = #{language},
+    	update_time = #{updateTime}
+    where 
+    	id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateSecondaryVerification" parameterType="FUserExtend" >
+    update f_user_extend set 
+    	secondary_verification = #{secondaryVerification},
+    	update_time = #{updateTime}
+    where 
+    	id = #{id,jdbcType=INTEGER}
+  </update>
+  
+
+   <update id="updateAntiPhishingCodeById"  >
+    update f_user_extend set 
+    	anti_phishing_code= #{antiPhishingCode}
+    where 
+    	id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

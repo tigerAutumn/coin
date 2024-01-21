@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotcoin.activity.dao.AdminActivityTradeDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hotcoin.activity.model.po.AdminActivityTradePo" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="tradeCoin" column="trade_coin"/>
+        <result property="linkCoinPairs" column="link_coin_pairs"/>
+        <result property="airDropCoin" column="air_drop_coin"/>
+        <result property="airDropAmount" column="air_drop_amount"/>
+        <result property="airDropTotal" column="air_drop_total"/>
+        <result property="airDropType" column="air_drop_type"/>
+        <result property="airDropRule" column="air_drop_rule"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--
+          选择性插入
+        -->
+    <sql id="Base_Insert_Selective">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="tradeCoin != null">
+                trade_coin,
+            </if>
+            <if test="linkCoinPairs != null">
+                link_coin_pairs,
+            </if>
+            <if test="airDropCoin != null">
+                air_drop_coin,
+            </if>
+            <if test="airDropAmount != null">
+                air_drop_amount,
+            </if>
+            <if test="airDropTotal != null">
+                air_drop_total,
+            </if>
+            <if test="airDropType != null">
+                air_drop_type,
+            </if>
+            <if test="airDropRule != null">
+                air_drop_rule,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="tradeCoin != null">
+                #{tradeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinPairs != null">
+                #{linkCoinPairs,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropCoin != null">
+                #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropAmount != null">
+                #{airDropAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal != null">
+                #{airDropTotal,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropType != null">
+                #{airDropType,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropRule != null">
+                #{airDropRule,jdbcType=DOUBLE},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+
+    <!--
+      数据库表的基本查询列名集合
+    -->
+    <sql id="Base_Column_List">
+        id, trade_coin, link_coin_pairs, air_drop_coin, air_drop_amount, air_drop_total, air_drop_type, air_drop_rule,
+        start_time, end_time, status, create_time, update_time
+    </sql>
+
+    <!--
+        Where子句
+      -->
+    <sql id="Base_Query_Where">
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="tradeCoin != null">
+            and trade_coin = #{tradeCoin,jdbcType=VARCHAR}
+        </if>
+        <if test="linkCoinPairs != null">
+            and link_coin_pairs = #{linkCoinPairs,jdbcType=VARCHAR}
+        </if>
+        <if test="airDropCoin != null">
+            and air_drop_coin = #{airDropCoin,jdbcType=VARCHAR}
+        </if>
+        <if test="airDropAmount != null">
+            and air_drop_amount = #{airDropAmount,jdbcType=VARCHAR}
+        </if>
+        <if test="airDropTotal != null">
+            and air_drop_total = #{airDropTotal,jdbcType=VARCHAR}
+        </if>
+        <if test="airDropType != null">
+            and air_drop_type = #{airDropType,jdbcType=VARCHAR}
+        </if>
+        <if test="airDropRule != null">
+            and 1e-5 > ABS(air_drop_rule- #{airDropRule,jdbcType=DOUBLE})
+        </if>
+        <if test="startTime != null">
+            and start_time = #{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime != null">
+            and end_time = #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null">
+            and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <!--
+        基本更新字段
+    -->
+    <sql id="Base_Update_Column">
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="tradeCoin != null">
+                trade_coin = #{tradeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinPairs != null">
+                link_coin_pairs = #{linkCoinPairs,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropCoin != null">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropAmount != null">
+                air_drop_amount = #{airDropAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal != null">
+                air_drop_total = #{airDropTotal,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropType != null">
+                air_drop_type = #{airDropType,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropRule != null">
+                air_drop_rule = #{airDropRule,jdbcType=DOUBLE},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+    </sql>
+
+    <!--
+        分页查询数据库表
+      -->
+    <select id="selectPaged" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from system_activity_trade
+    </select>
+
+    <!--
+      根据主键查询数据库表
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from system_activity_trade
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <!--
+      根据主键删除数据库表中的记录
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete FROM system_activity_trade
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--
+      添加一条记录到数据库表中
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.AdminActivityTradePo">
+        insert into system_activity_trade
+        (<include refid="Base_Column_List"/>)
+        values (
+        <if test="id != null">
+            #{id,jdbcType=INTEGER},
+        </if>
+        <if test="tradeCoin != null">
+            #{tradeCoin,jdbcType=VARCHAR},
+        </if>
+        <if test="linkCoinPairs != null">
+            #{linkCoinPairs,jdbcType=VARCHAR},
+        </if>
+        <if test="airDropCoin != null">
+            #{airDropCoin,jdbcType=VARCHAR},
+        </if>
+        <if test="airDropAmount != null">
+            #{airDropAmount,jdbcType=VARCHAR},
+        </if>
+        <if test="airDropTotal != null">
+            #{airDropTotal,jdbcType=VARCHAR},
+        </if>
+        <if test="airDropType != null">
+            #{airDropType,jdbcType=VARCHAR},
+        </if>
+        <if test="airDropRule != null">
+            #{airDropRule,jdbcType=DOUBLE},
+        </if>
+        <if test="startTime != null">
+            #{startTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="endTime != null">
+            #{endTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="status != null">
+            #{status,jdbcType=INTEGER},
+        </if>
+        <if test="createTime != null">
+            #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateTime != null">
+            #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        )
+    </insert>
+
+    <!--
+     有选择的添加一条记录到数据库表中
+   -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.AdminActivityTradePo">
+        insert into system_activity_trade
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      有选择的可忽略添加一条记录到数据库表中
+    -->
+    <insert id="insertSelectiveIgnore" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.hotcoin.activity.model.po.AdminActivityTradePo">
+        insert ignore into system_activity_trade
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      根据主键有选择的更新数据库表
+    -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.hotcoin.activity.model.po.AdminActivityTradePo">
+        update system_activity_trade
+        <include refid="Base_Update_Column"></include>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <!--
+      根据主键更新数据库表
+    -->
+    <update id="updateByPrimaryKey" parameterType="com.hotcoin.activity.model.po.AdminActivityTradePo">
+        update system_activity_trade
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="tradeCoin != null">
+                trade_coin = #{tradeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinPairs != null">
+                link_coin_pairs = #{linkCoinPairs,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropCoin != null">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropAmount != null">
+                air_drop_amount = #{airDropAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal != null">
+                air_drop_total = #{airDropTotal,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropType != null">
+                air_drop_type = #{airDropType,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropRule != null">
+                air_drop_rule = #{airDropRule,jdbcType=DOUBLE},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--
+      批量添加记录到数据库表中
+    -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into system_activity_trade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, trade_coin, link_coin_pairs, air_drop_coin, air_drop_amount, air_drop_total, air_drop_type,
+            air_drop_rule, start_time, end_time, status, create_time, update_time
+        </trim>
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.id,jdbcType=INTEGER}, #{item.tradeCoin,jdbcType=VARCHAR}, #{item.linkCoinPairs,jdbcType=VARCHAR},
+                #{item.airDropCoin,jdbcType=VARCHAR}, #{item.airDropAmount,jdbcType=VARCHAR},
+                #{item.airDropTotal,jdbcType=VARCHAR}, #{item.airDropType,jdbcType=VARCHAR},
+                #{item.airDropRule,jdbcType=DOUBLE}, #{item.startTime,jdbcType=TIMESTAMP},
+                #{item.endTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},
+                #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--
+      根据主键批量更新数据库表中的记录
+    -->
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            update system_activity_trade
+            <set>
+                <trim suffixOverrides=",">
+                    <if test="item.id != null">
+                        id = #{item.id,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.tradeCoin != null">
+                        trade_coin = #{item.tradeCoin,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.linkCoinPairs != null">
+                        link_coin_pairs = #{item.linkCoinPairs,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.airDropCoin != null">
+                        air_drop_coin = #{item.airDropCoin,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.airDropAmount != null">
+                        air_drop_amount = #{item.airDropAmount,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.airDropTotal != null">
+                        air_drop_total = #{item.airDropTotal,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.airDropType != null">
+                        air_drop_type = #{item.airDropType,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.airDropRule != null">
+                        air_drop_rule = #{item.airDropRule,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.startTime != null">
+                        start_time = #{item.startTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.endTime != null">
+                        end_time = #{item.endTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.status != null">
+                        status = #{item.status,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.createTime != null">
+                        create_time = #{item.createTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.updateTime != null">
+                        update_time = #{item.updateTime,jdbcType=TIMESTAMP}
+                    </if>
+                </trim>
+            </set>
+            <where>
+                <trim suffixOverrides=",">
+                    where id = #{item.id,jdbcType=INTEGER}
+                </trim>
+            </where>
+        </foreach>
+    </update>
+
+    <!--
+     使用给定的字段名定义Where子句
+   -->
+    <sql id="Identifiers_Array_Conditions">
+        <foreach collection="array" index="index" item="item" separator=" and ">
+            <if test="item == 'id'">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'tradeCoin'">
+                trade_coin = #{tradeCoin,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'linkCoinPairs'">
+                link_coin_pairs = #{linkCoinPairs,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'airDropCoin'">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'airDropAmount'">
+                air_drop_amount = #{airDropAmount,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'airDropTotal'">
+                air_drop_total = #{airDropTotal,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'airDropType'">
+                air_drop_type = #{airDropType,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'airDropRule'">
+                air_drop_rule = #{airDropRule,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'startTime'">
+                start_time = #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'endTime'">
+                end_time = #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'status'">
+                status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'createTime'">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'updateTime'">
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </foreach>
+    </sql>
+
+    <!--
+      存在即更新否则插入
+    -->
+    <update id="upsert" parameterType="com.hotcoin.activity.model.po.AdminActivityTradePo">
+        insert into system_activity_trade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, trade_coin, link_coin_pairs, air_drop_coin, air_drop_amount, air_drop_total, air_drop_type,
+            air_drop_rule, start_time, end_time, status, create_time, update_time
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{tradeCoin,jdbcType=VARCHAR}, #{linkCoinPairs,jdbcType=VARCHAR},
+            #{airDropCoin,jdbcType=VARCHAR}, #{airDropAmount,jdbcType=VARCHAR}, #{airDropTotal,jdbcType=VARCHAR},
+            #{airDropType,jdbcType=VARCHAR}, #{airDropRule,jdbcType=DOUBLE}, #{startTime,jdbcType=TIMESTAMP},
+            #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{tradeCoin,jdbcType=VARCHAR}, #{linkCoinPairs,jdbcType=VARCHAR},
+            #{airDropCoin,jdbcType=VARCHAR}, #{airDropAmount,jdbcType=VARCHAR}, #{airDropTotal,jdbcType=VARCHAR},
+            #{airDropType,jdbcType=VARCHAR}, #{airDropRule,jdbcType=DOUBLE}, #{startTime,jdbcType=TIMESTAMP},
+            #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}
+        </trim>
+    </update>
+
+
+    <!--
+      带有空值检查的存在即更新否则插入
+    -->
+    <update id="upsertSelective" parameterType="com.hotcoin.activity.model.po.AdminActivityTradePo">
+        insert into system_activity_trade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id,
+            </if>
+            <if test="tradeCoin !=null ">
+                trade_coin,
+            </if>
+            <if test="linkCoinPairs !=null ">
+                link_coin_pairs,
+            </if>
+            <if test="airDropCoin !=null ">
+                air_drop_coin,
+            </if>
+            <if test="airDropAmount !=null ">
+                air_drop_amount,
+            </if>
+            <if test="airDropTotal !=null ">
+                air_drop_total,
+            </if>
+            <if test="airDropType !=null ">
+                air_drop_type,
+            </if>
+            <if test="airDropRule !=null ">
+                air_drop_rule,
+            </if>
+            <if test="startTime !=null ">
+                start_time,
+            </if>
+            <if test="endTime !=null ">
+                end_time,
+            </if>
+            <if test="status !=null ">
+                status,
+            </if>
+            <if test="createTime !=null ">
+                create_time,
+            </if>
+            <if test="updateTime !=null ">
+                update_time
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="tradeCoin !=null ">
+                trade_coin = #{tradeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinPairs !=null ">
+                link_coin_pairs = #{linkCoinPairs,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropCoin !=null ">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropAmount !=null ">
+                air_drop_amount = #{airDropAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal !=null ">
+                air_drop_total = #{airDropTotal,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropType !=null ">
+                air_drop_type = #{airDropType,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropRule !=null ">
+                air_drop_rule = #{airDropRule,jdbcType=DOUBLE},
+            </if>
+            <if test="startTime !=null ">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime !=null ">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status !=null ">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime !=null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime !=null ">
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="tradeCoin !=null ">
+                trade_coin = #{tradeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="linkCoinPairs !=null ">
+                link_coin_pairs = #{linkCoinPairs,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropCoin !=null ">
+                air_drop_coin = #{airDropCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropAmount !=null ">
+                air_drop_amount = #{airDropAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropTotal !=null ">
+                air_drop_total = #{airDropTotal,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropType !=null ">
+                air_drop_type = #{airDropType,jdbcType=VARCHAR},
+            </if>
+            <if test="airDropRule !=null ">
+                air_drop_rule = #{airDropRule,jdbcType=DOUBLE},
+            </if>
+            <if test="startTime !=null ">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime !=null ">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status !=null ">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime !=null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime !=null ">
+                update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </update>
+
+    <select id="query" resultMap="BaseResultMap" parameterType="com.hotcoin.activity.model.po.AdminActivityTradePo">
+        select
+        <include refid="Base_Column_List"/>
+        from system_activity_trade
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(*) from system_activity_trade
+    </select>
+
+
+    <delete id="deleteBatch">
+        delete from system_activity_trade where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

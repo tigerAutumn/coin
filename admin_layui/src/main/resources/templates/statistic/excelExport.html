@@ -1,0 +1,33 @@
+<div class="layui-form" lay-href="admin/excelExport" xmlns:th="http://www.thymeleaf.org"
+     xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+ 
+		
+    <div class="layui-conten-box">
+        <table class="layui-table" width="160%">
+            <thead>
+            <tr>
+                <th data-order-field="id" style="width: 100px">序号</th>
+                <th style="width: 200px">创建时间</th>
+                <th style="width: 200px">操作帐号</th>
+                <th style="width: 200px">表格名称</th>
+                <th style="width: 200px">导出状态</th>
+                <th style="width: 200px">下载地址</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(list)}">
+            <tr th:each="e : ${list.data}">
+                <td th:text="${e.id}" style="width: 100px"></td>
+                <td th:text="${e.createTime== null ? '':#dates.format(e.createTime, 'yyyy-MM-dd HH:mm:ss')}" style="width: 200px"></td>
+                <td th:text="${e.operator}" style="width: 200px"></td>
+                <td th:text="${e.tableName}" style="width: 200px"></td>
+                <td th:text="${e.status==1?'导出中':(e.status==2?'已完成':'导出失败')}" style="width: 200px" />
+                <td style="width: 200px">
+                <a th:if="${e.excelFileName!= null}"  th:href="@{admin/downloadExcel(fileName=${e.excelFileName})}" class="layui-btn layui-btn-sm">下载Excel</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-laypage-box" th:if="${not #lists.isEmpty(list)}"
+         th:attr="lay-pages=${list.totalPages}, lay-curr=${list.currentPage}"></div>
+</div>

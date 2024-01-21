@@ -1,0 +1,28 @@
+<div xmlns:th="http://www.thymeleaf.org" class="layui-form layui-form-pane" lay-href="admin/updateHistoricVersion">
+	<div class="layui-form-item">
+        <label class="layui-form-label">版本号：</label>
+        <div class="layui-input-block">
+        	<input type="hidden" name="id" th:value="${historicVersion.id}" />
+            <input class="layui-input" name="version" lay-verify="required" th:value="${historicVersion.version}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布日期：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="createTime" lay-verify="required" onclick="layui.laydate({ elem: this, istime: true, format: 'YYYY-MM-DD'})"
+            th:value="${#dates.format(historicVersion.createTime, 'yyyy-MM-dd')}"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">安卓下载地址：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="androidUrl" lay-verify="required" th:value="${historicVersion.androidUrl}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">苹果下载地址：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="iosUrl" lay-verify="required" th:value="${historicVersion.iosUrl}" />
+        </div>
+    </div>
+</div>

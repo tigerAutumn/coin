@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hotcoin.dao.SystemRiskManagementDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="hotcoin.model.po.SystemRiskManagementPo" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="telephone" column="telephone"/>
+        <result property="email" column="email"/>
+        <result property="rechargeCoin" column="recharge_coin"/>
+        <result property="rechargeFunds" column="recharge_funds"/>
+        <result property="debitTimes" column="debit_times"/>
+        <result property="capitalWarningLine" column="capital_warning_line"/>
+        <result property="capitalCloseoutLine" column="capital_closeout_line"/>
+        <result property="accountRealFunds" column="account_real_funds"/>
+        <result property="rechargeTime" column="recharge_time"/>
+        <result property="updateStatusTime" column="update_status_time"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="noticeChannel" column="notice_channel"/>
+        <result property="coinId" column="coin_id"/>
+    </resultMap>
+
+    <!--
+          选择性插入
+        -->
+    <sql id="Base_Insert_Selective">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="rechargeCoin != null">
+                recharge_coin,
+            </if>
+            <if test="rechargeFunds != null">
+                recharge_funds,
+            </if>
+            <if test="debitTimes != null">
+                debit_times,
+            </if>
+            <if test="capitalWarningLine != null">
+                capital_warning_line,
+            </if>
+            <if test="capitalCloseoutLine != null">
+                capital_closeout_line,
+            </if>
+            <if test="accountRealFunds != null">
+                account_real_funds,
+            </if>
+            <if test="rechargeTime != null">
+                recharge_time,
+            </if>
+            <if test="updateStatusTime != null">
+                update_status_time,
+            </if>
+            <if test="userStatus != null">
+                user_status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="noticeChannel != null">
+                notice_channel,
+            </if>
+            <if test="coinId != null">
+                coin_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeCoin != null">
+                #{rechargeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeFunds != null">
+                #{rechargeFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="debitTimes != null">
+                #{debitTimes,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalWarningLine != null">
+                #{capitalWarningLine,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalCloseoutLine != null">
+                #{capitalCloseoutLine,jdbcType=DOUBLE},
+            </if>
+            <if test="accountRealFunds != null">
+                #{accountRealFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="rechargeTime != null">
+                #{rechargeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateStatusTime != null">
+                #{updateStatusTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userStatus != null">
+                #{userStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="noticeChannel != null">
+                #{noticeChannel,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                #{coinId,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </sql>
+
+    <!--
+      数据库表的基本查询列名集合
+    -->
+    <sql id="Base_Column_List">
+        id, user_id, telephone, email, recharge_coin, recharge_funds, debit_times, capital_warning_line,
+        capital_closeout_line, account_real_funds, recharge_time, update_status_time, user_status, create_time,
+        notice_channel, coin_id
+    </sql>
+
+    <!--
+        Where子句
+      -->
+    <sql id="Base_Query_Where">
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=INTEGER}
+        </if>
+        <if test="telephone != null">
+            and telephone = #{telephone,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null">
+            and email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="rechargeCoin != null">
+            and recharge_coin = #{rechargeCoin,jdbcType=VARCHAR}
+        </if>
+        <if test="rechargeFunds != null">
+            and recharge_funds = #{rechargeFunds,jdbcType=DOUBLE}
+        </if>
+        <if test="debitTimes != null">
+            and debit_times = #{debitTimes,jdbcType=DOUBLE}
+        </if>
+        <if test="capitalWarningLine != null">
+            and capital_warning_line = #{capitalWarningLine,jdbcType=DOUBLE}
+        </if>
+        <if test="capitalCloseoutLine != null">
+            and capital_closeout_line = #{capitalCloseoutLine,jdbcType=DOUBLE}
+        </if>
+        <if test="accountRealFunds != null">
+            and account_real_funds = #{accountRealFunds,jdbcType=DOUBLE}
+        </if>
+        <if test="rechargeTime != null">
+            and recharge_time = #{rechargeTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateStatusTime != null">
+            and update_status_time = #{updateStatusTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="userStatus != null">
+            and user_status = #{userStatus,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="noticeChannel != null">
+            and notice_channel = #{noticeChannel,jdbcType=INTEGER}
+        </if>
+        <if test="coinId != null">
+            and coin_id = #{coinId,jdbcType=INTEGER}
+        </if>
+    </sql>
+
+    <!--
+        基本更新字段
+    -->
+    <sql id="Base_Update_Column">
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeCoin != null">
+                recharge_coin = #{rechargeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeFunds != null">
+                recharge_funds = #{rechargeFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="debitTimes != null">
+                debit_times = #{debitTimes,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalWarningLine != null">
+                capital_warning_line = #{capitalWarningLine,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalCloseoutLine != null">
+                capital_closeout_line = #{capitalCloseoutLine,jdbcType=DOUBLE},
+            </if>
+            <if test="accountRealFunds != null">
+                account_real_funds = #{accountRealFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="rechargeTime != null">
+                recharge_time = #{rechargeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateStatusTime != null">
+                update_status_time = #{updateStatusTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userStatus != null">
+                user_status = #{userStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="noticeChannel != null">
+                notice_channel = #{noticeChannel,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                coin_id = #{coinId,jdbcType=INTEGER}
+            </if>
+        </set>
+    </sql>
+
+    <!--
+        分页查询数据库表
+      -->
+    <select id="selectPaged" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from system_risk_management
+    </select>
+
+    <!--
+      根据主键查询数据库表
+    -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from system_risk_management
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <!--
+      根据主键删除数据库表中的记录
+    -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete FROM system_risk_management
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--
+      添加一条记录到数据库表中
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="hotcoin.model.po.SystemRiskManagementPo">
+        insert into system_risk_management
+        (<include refid="Base_Column_List"/>)
+        values (
+        <if test="id != null">
+            #{id,jdbcType=INTEGER},
+        </if>
+        <if test="userId != null">
+            #{userId,jdbcType=INTEGER},
+        </if>
+        <if test="telephone != null">
+            #{telephone,jdbcType=VARCHAR},
+        </if>
+        <if test="email != null">
+            #{email,jdbcType=VARCHAR},
+        </if>
+        <if test="rechargeCoin != null">
+            #{rechargeCoin,jdbcType=VARCHAR},
+        </if>
+        <if test="rechargeFunds != null">
+            #{rechargeFunds,jdbcType=DOUBLE},
+        </if>
+        <if test="debitTimes != null">
+            #{debitTimes,jdbcType=DOUBLE},
+        </if>
+        <if test="capitalWarningLine != null">
+            #{capitalWarningLine,jdbcType=DOUBLE},
+        </if>
+        <if test="capitalCloseoutLine != null">
+            #{capitalCloseoutLine,jdbcType=DOUBLE},
+        </if>
+        <if test="accountRealFunds != null">
+            #{accountRealFunds,jdbcType=DOUBLE},
+        </if>
+        <if test="rechargeTime != null">
+            #{rechargeTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateStatusTime != null">
+            #{updateStatusTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="userStatus != null">
+            #{userStatus,jdbcType=INTEGER},
+        </if>
+        <if test="createTime != null">
+            #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="noticeChannel != null">
+            #{noticeChannel,jdbcType=INTEGER},
+        </if>
+        <if test="coinId != null">
+            #{coinId,jdbcType=INTEGER}
+        </if>
+        )
+    </insert>
+
+    <!--
+     有选择的添加一条记录到数据库表中
+   -->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="hotcoin.model.po.SystemRiskManagementPo">
+        insert into system_risk_management
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      有选择的可忽略添加一条记录到数据库表中
+    -->
+    <insert id="insertSelectiveIgnore" useGeneratedKeys="true" keyProperty="id"
+            parameterType="hotcoin.model.po.SystemRiskManagementPo">
+        insert ignore into system_risk_management
+        <include refid="Base_Insert_Selective"/>
+    </insert>
+
+    <!--
+      根据主键有选择的更新数据库表
+    -->
+    <update id="updateByPrimaryKeySelective" parameterType="hotcoin.model.po.SystemRiskManagementPo">
+        update system_risk_management
+        <include refid="Base_Update_Column"></include>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <!--
+      根据主键更新数据库表
+    -->
+    <update id="updateByPrimaryKey" parameterType="hotcoin.model.po.SystemRiskManagementPo">
+        update system_risk_management
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeCoin != null">
+                recharge_coin = #{rechargeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeFunds != null">
+                recharge_funds = #{rechargeFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="debitTimes != null">
+                debit_times = #{debitTimes,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalWarningLine != null">
+                capital_warning_line = #{capitalWarningLine,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalCloseoutLine != null">
+                capital_closeout_line = #{capitalCloseoutLine,jdbcType=DOUBLE},
+            </if>
+            <if test="accountRealFunds != null">
+                account_real_funds = #{accountRealFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="rechargeTime != null">
+                recharge_time = #{rechargeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateStatusTime != null">
+                update_status_time = #{updateStatusTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userStatus != null">
+                user_status = #{userStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="noticeChannel != null">
+                notice_channel = #{noticeChannel,jdbcType=INTEGER},
+            </if>
+            <if test="coinId != null">
+                coin_id = #{coinId,jdbcType=INTEGER}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--
+      批量添加记录到数据库表中
+    -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into system_risk_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, user_id, telephone, email, recharge_coin, recharge_funds, debit_times, capital_warning_line,
+            capital_closeout_line, account_real_funds, recharge_time, update_status_time, user_status, create_time,
+            notice_channel, coin_id
+        </trim>
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.id,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER}, #{item.telephone,jdbcType=VARCHAR},
+                #{item.email,jdbcType=VARCHAR}, #{item.rechargeCoin,jdbcType=VARCHAR},
+                #{item.rechargeFunds,jdbcType=DOUBLE}, #{item.debitTimes,jdbcType=DOUBLE},
+                #{item.capitalWarningLine,jdbcType=DOUBLE}, #{item.capitalCloseoutLine,jdbcType=DOUBLE},
+                #{item.accountRealFunds,jdbcType=DOUBLE}, #{item.rechargeTime,jdbcType=TIMESTAMP},
+                #{item.updateStatusTime,jdbcType=TIMESTAMP}, #{item.userStatus,jdbcType=INTEGER},
+                #{item.createTime,jdbcType=TIMESTAMP}, #{item.noticeChannel,jdbcType=INTEGER},
+                #{item.coinId,jdbcType=INTEGER}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--
+      根据主键批量更新数据库表中的记录
+    -->
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" separator=";">
+            update system_risk_management
+            <set>
+                <trim suffixOverrides=",">
+                    <if test="item.id != null">
+                        id = #{item.id,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.userId != null">
+                        user_id = #{item.userId,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.telephone != null">
+                        telephone = #{item.telephone,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.email != null">
+                        email = #{item.email,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.rechargeCoin != null">
+                        recharge_coin = #{item.rechargeCoin,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.rechargeFunds != null">
+                        recharge_funds = #{item.rechargeFunds,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.debitTimes != null">
+                        debit_times = #{item.debitTimes,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.capitalWarningLine != null">
+                        capital_warning_line = #{item.capitalWarningLine,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.capitalCloseoutLine != null">
+                        capital_closeout_line = #{item.capitalCloseoutLine,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.accountRealFunds != null">
+                        account_real_funds = #{item.accountRealFunds,jdbcType=DOUBLE},
+                    </if>
+                    <if test="item.rechargeTime != null">
+                        recharge_time = #{item.rechargeTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.updateStatusTime != null">
+                        update_status_time = #{item.updateStatusTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.userStatus != null">
+                        user_status = #{item.userStatus,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.createTime != null">
+                        create_time = #{item.createTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.noticeChannel != null">
+                        notice_channel = #{item.noticeChannel,jdbcType=INTEGER},
+                    </if>
+                    <if test="item.coinId != null">
+                        coin_id = #{item.coinId,jdbcType=INTEGER}
+                    </if>
+                </trim>
+            </set>
+            <where>
+                <trim suffixOverrides=",">
+                    where id = #{item.id,jdbcType=INTEGER}
+                </trim>
+            </where>
+        </foreach>
+    </update>
+
+    <!--
+     使用给定的字段名定义Where子句
+   -->
+    <sql id="Identifiers_Array_Conditions">
+        <foreach collection="array" index="index" item="item" separator=" and ">
+            <if test="item == 'id'">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'userId'">
+                user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'telephone'">
+                telephone = #{telephone,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'email'">
+                email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'rechargeCoin'">
+                recharge_coin = #{rechargeCoin,jdbcType=VARCHAR}
+            </if>
+            <if test="item == 'rechargeFunds'">
+                recharge_funds = #{rechargeFunds,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'debitTimes'">
+                debit_times = #{debitTimes,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'capitalWarningLine'">
+                capital_warning_line = #{capitalWarningLine,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'capitalCloseoutLine'">
+                capital_closeout_line = #{capitalCloseoutLine,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'accountRealFunds'">
+                account_real_funds = #{accountRealFunds,jdbcType=DOUBLE}
+            </if>
+            <if test="item == 'rechargeTime'">
+                recharge_time = #{rechargeTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'updateStatusTime'">
+                update_status_time = #{updateStatusTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'userStatus'">
+                user_status = #{userStatus,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'createTime'">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="item == 'noticeChannel'">
+                notice_channel = #{noticeChannel,jdbcType=INTEGER}
+            </if>
+            <if test="item == 'coinId'">
+                coin_id = #{coinId,jdbcType=INTEGER}
+            </if>
+        </foreach>
+    </sql>
+
+    <!--
+      存在即更新否则插入
+    -->
+    <update id="upsert" parameterType="hotcoin.model.po.SystemRiskManagementPo">
+        insert into system_risk_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id, user_id, telephone, email, recharge_coin, recharge_funds, debit_times, capital_warning_line,
+            capital_closeout_line, account_real_funds, recharge_time, update_status_time, user_status, create_time,
+            notice_channel, coin_id
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR}, #{rechargeCoin,jdbcType=VARCHAR}, #{rechargeFunds,jdbcType=DOUBLE},
+            #{debitTimes,jdbcType=DOUBLE}, #{capitalWarningLine,jdbcType=DOUBLE},
+            #{capitalCloseoutLine,jdbcType=DOUBLE}, #{accountRealFunds,jdbcType=DOUBLE},
+            #{rechargeTime,jdbcType=TIMESTAMP}, #{updateStatusTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER},
+            #{createTime,jdbcType=TIMESTAMP}, #{noticeChannel,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            #{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{telephone,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR}, #{rechargeCoin,jdbcType=VARCHAR}, #{rechargeFunds,jdbcType=DOUBLE},
+            #{debitTimes,jdbcType=DOUBLE}, #{capitalWarningLine,jdbcType=DOUBLE},
+            #{capitalCloseoutLine,jdbcType=DOUBLE}, #{accountRealFunds,jdbcType=DOUBLE},
+            #{rechargeTime,jdbcType=TIMESTAMP}, #{updateStatusTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER},
+            #{createTime,jdbcType=TIMESTAMP}, #{noticeChannel,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}
+        </trim>
+    </update>
+
+
+    <!--
+      带有空值检查的存在即更新否则插入
+    -->
+    <update id="upsertSelective" parameterType="hotcoin.model.po.SystemRiskManagementPo">
+        insert into system_risk_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id,
+            </if>
+            <if test="userId !=null ">
+                user_id,
+            </if>
+            <if test="telephone !=null ">
+                telephone,
+            </if>
+            <if test="email !=null ">
+                email,
+            </if>
+            <if test="rechargeCoin !=null ">
+                recharge_coin,
+            </if>
+            <if test="rechargeFunds !=null ">
+                recharge_funds,
+            </if>
+            <if test="debitTimes !=null ">
+                debit_times,
+            </if>
+            <if test="capitalWarningLine !=null ">
+                capital_warning_line,
+            </if>
+            <if test="capitalCloseoutLine !=null ">
+                capital_closeout_line,
+            </if>
+            <if test="accountRealFunds !=null ">
+                account_real_funds,
+            </if>
+            <if test="rechargeTime !=null ">
+                recharge_time,
+            </if>
+            <if test="updateStatusTime !=null ">
+                update_status_time,
+            </if>
+            <if test="userStatus !=null ">
+                user_status,
+            </if>
+            <if test="createTime !=null ">
+                create_time,
+            </if>
+            <if test="noticeChannel !=null ">
+                notice_channel,
+            </if>
+            <if test="coinId !=null ">
+                coin_id
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId !=null ">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="telephone !=null ">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="email !=null ">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeCoin !=null ">
+                recharge_coin = #{rechargeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeFunds !=null ">
+                recharge_funds = #{rechargeFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="debitTimes !=null ">
+                debit_times = #{debitTimes,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalWarningLine !=null ">
+                capital_warning_line = #{capitalWarningLine,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalCloseoutLine !=null ">
+                capital_closeout_line = #{capitalCloseoutLine,jdbcType=DOUBLE},
+            </if>
+            <if test="accountRealFunds !=null ">
+                account_real_funds = #{accountRealFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="rechargeTime !=null ">
+                recharge_time = #{rechargeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateStatusTime !=null ">
+                update_status_time = #{updateStatusTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userStatus !=null ">
+                user_status = #{userStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createTime !=null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="noticeChannel !=null ">
+                notice_channel = #{noticeChannel,jdbcType=INTEGER},
+            </if>
+            <if test="coinId !=null ">
+                coin_id = #{coinId,jdbcType=INTEGER}
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id !=null ">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId !=null ">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="telephone !=null ">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="email !=null ">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeCoin !=null ">
+                recharge_coin = #{rechargeCoin,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeFunds !=null ">
+                recharge_funds = #{rechargeFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="debitTimes !=null ">
+                debit_times = #{debitTimes,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalWarningLine !=null ">
+                capital_warning_line = #{capitalWarningLine,jdbcType=DOUBLE},
+            </if>
+            <if test="capitalCloseoutLine !=null ">
+                capital_closeout_line = #{capitalCloseoutLine,jdbcType=DOUBLE},
+            </if>
+            <if test="accountRealFunds !=null ">
+                account_real_funds = #{accountRealFunds,jdbcType=DOUBLE},
+            </if>
+            <if test="rechargeTime !=null ">
+                recharge_time = #{rechargeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateStatusTime !=null ">
+                update_status_time = #{updateStatusTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userStatus !=null ">
+                user_status = #{userStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createTime !=null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="noticeChannel !=null ">
+                notice_channel = #{noticeChannel,jdbcType=INTEGER},
+            </if>
+            <if test="coinId !=null ">
+                coin_id = #{coinId,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </update>
+
+    <select id="query" resultMap="BaseResultMap" parameterType="hotcoin.model.po.SystemRiskManagementPo">
+        select
+        <include refid="Base_Column_List"/>
+        from system_risk_management
+        <where>
+            <include refid="Base_Query_Where"></include>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(*) from system_risk_management
+    </select>
+
+
+    <delete id="deleteBatch">
+        delete from system_risk_management where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
